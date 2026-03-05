@@ -258,7 +258,7 @@
         body.edit-mode .edit-img { outline: 3px dashed var(--accent-yellow); cursor: pointer; opacity: 0.8; }
         body.edit-mode .edit-img:hover { opacity: 1; filter: brightness(1.2); }
 
-        /* ==================== RESPONSIVE DESIGN (APP LIKE DANA) ==================== */
+        /* ==================== RESPONSIVE DESIGN ==================== */
         @media (max-width: 992px) {
             .about-grid, .edukasi-grid, .contact-grid { grid-template-columns: 1fr; }
             .hero h1 { font-size: 3rem; }
@@ -505,6 +505,177 @@
             <button class="modal-close" onclick="triggerCloseModal()">&times;</button>
             <div id="modal-dynamic-content">
                 <!-- Konten dinamis akan masuk ke sini saat modal dibuka -->
+            </div>
+        </div>
+    </div>
+
+    <!-- STORAGE DATA HTML (Tersembunyi, sumber data utama yang editable) -->
+    <div id="service-data-storage" style="display: none;">
+        
+        <!-- CAT 1 -->
+        <div id="cat-1" class="cat-data-container">
+            <img class="modal-header-img edit-img" data-id="m1-img" src="images/potocopy.jpg" onerror="this.src='https://images.unsplash.com/photo-1563298723-dcfebaa392e3?auto=format&fit=crop&q=80&w=600'">
+            <div class="modal-body">
+                <h2 class="modal-title edit-txt" data-id="m1-title">Fotocopy & Printing</h2>
+                <p class="modal-desc edit-txt" data-id="m1-desc">Layanan fotocopy hitam putih, warna, print tugas, serta penjilidan untuk kebutuhan personal maupun instansi.</p>
+                <div class="sub-item-list">
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i1">Fotocopy hitam putih (A4, F4, Legal)</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i2">Fotocopy warna</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i3">Print hitam putih</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i4">Print warna</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i5">Print bolak-balik</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i6">Print ukuran besar (A3)</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i7">Scan dokumen</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i8">Jilid spiral</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i9">Jilid lakban</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i10">Jilid hardcover</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i11">Laminating</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i12">Cutting kertas</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i13">Pengetikan dokumen</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i14">Edit & layout dokumen</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CAT 2 -->
+        <div id="cat-2" class="cat-data-container">
+            <img class="modal-header-img edit-img" data-id="m2-img" src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=600" onerror="this.src='https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=600'">
+            <div class="modal-body">
+                <h2 class="modal-title edit-txt" data-id="m2-title">Khusus Sekolah & Kampus</h2>
+                <p class="modal-desc edit-txt" data-id="m2-desc">Kami melayani cetak kebutuhan administrasi dan laporan pendidikan untuk sekolah dan kampus.</p>
+                <div class="sub-item-list">
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c2-i1">Cetak makalah</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c2-i2">Cetak skripsi</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c2-i3">Cetak proposal</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c2-i4">Cetak laporan</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c2-i5">Cetak soal ujian</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c2-i6">Cetak modul</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c2-i7">Cetak ijazah (cover saja)</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c2-i8">Map raport custom</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CAT 3 -->
+        <div id="cat-3" class="cat-data-container">
+            <img class="modal-header-img edit-img" data-id="m3-img" src="images/idcard.jpg" onerror="this.src='https://images.unsplash.com/photo-1544626053-8985dc34ae63?auto=format&fit=crop&q=80&w=600'">
+            <div class="modal-body">
+                <h2 class="modal-title edit-txt" data-id="m3-title">Identitas & Administrasi</h2>
+                <p class="modal-desc edit-txt" data-id="m3-desc">Cetak segala macam kartu identitas, member card, dan kelengkapan administrasi peserta/karyawan.</p>
+                <div class="sub-item-list">
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c3-i1">ID Card</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c3-i2">Kartu Panitia</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c3-i3">Kartu Pelajar</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c3-i4">Kartu Nama (Business Card)</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c3-i5">Kartu Anggota</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c3-i6">Kartu Undangan</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CAT 4 -->
+        <div id="cat-4" class="cat-data-container">
+            <img class="modal-header-img edit-img" data-id="m4-img" src="images/perkantoran.jpg" onerror="this.src='https://images.unsplash.com/photo-1554774853-719586f82d77?auto=format&fit=crop&q=80&w=600'">
+            <div class="modal-body">
+                <h2 class="modal-title edit-txt" data-id="m4-title">Usaha & Perkantoran</h2>
+                <p class="modal-desc edit-txt" data-id="m4-desc">Berbagai macam kebutuhan alat tulis, nota, dan perlengkapan perkantoran untuk operasional usaha Anda.</p>
+                <div class="sub-item-list">
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i1">Nota</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i2">Kwitansi</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i3">Invoice</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i4">Stempel</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i5">Kop Surat</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i6">Amplop custom</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i7">Buku Yasin</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i8">Buku agenda</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i9">Map perusahaan</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i10">Stopmap</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CAT 5 -->
+        <div id="cat-5" class="cat-data-container">
+            <img class="modal-header-img edit-img" data-id="m5-img" src="images/undangan.jpg" onerror="this.src='https://images.unsplash.com/photo-1563298723-dcfebaa392e3?auto=format&fit=crop&q=80&w=600'">
+            <div class="modal-body">
+                <h2 class="modal-title edit-txt" data-id="m5-title">Event & Promosi</h2>
+                <p class="modal-desc edit-txt" data-id="m5-desc">Layanan cetak media promosi dan kebutuhan acara mulai dari banner hingga flyer promosi.</p>
+                <div class="sub-item-list">
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i1">Spanduk</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i2">Banner</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i3">X-Banner</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i4">Roll Up Banner</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i5">Baliho</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i6">Poster</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i7">Brosur</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i8">Flyer</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i9">Pamflet</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i10">Undangan pernikahan</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i11">Undangan khitanan</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i12">Undangan ulang tahun</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CAT 6 -->
+        <div id="cat-6" class="cat-data-container">
+            <img class="modal-header-img edit-img" data-id="m6-img" src="images/cetak-poto.jpg" onerror="this.src='https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=600'">
+            <div class="modal-body">
+                <h2 class="modal-title edit-txt" data-id="m6-title">Cetak Foto</h2>
+                <p class="modal-desc edit-txt" data-id="m6-desc">Cetak foto berbagai ukuran dari pas foto hingga ukuran besar berserta bingkai & laminasi.</p>
+                <div class="sub-item-list">
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c6-i1">Cetak foto 2x3, 3x4, 4x6</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c6-i2">Cetak foto 10R, 16R</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c6-i3">Pas foto background merah / biru</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c6-i4">Edit & retouch foto</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c6-i5">Cetak foto laminasi</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CAT 7 -->
+        <div id="cat-7" class="cat-data-container">
+            <img class="modal-header-img edit-img" data-id="m7-img" src="images/website.jpg" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=600'">
+            <div class="modal-body">
+                <h2 class="modal-title edit-txt" data-id="m7-title">Pembuatan Website</h2>
+                <p class="modal-desc edit-txt" data-id="m7-desc">Layanan jasa pembuatan website profesional untuk sekolah, instansi, desa, maupun bisnis UMKM.</p>
+                <div class="sub-item-list">
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c7-i0">Website Trekking Gunung Rinjani</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c7-i1">Website Company Profile</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c7-i2">Website Sekolah & PPDB</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c7-i3">Website Toko Online</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c7-i4">Sistem Informasi Desa</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CAT 8 -->
+        <div id="cat-8" class="cat-data-container">
+            <img class="modal-header-img edit-img" data-id="m8-img" src="images/panggung.jpg" onerror="this.src='https://images.unsplash.com/photo-1470229722913-7c090be5f5ae?auto=format&fit=crop&q=80&w=600'">
+            <div class="modal-body">
+                <h2 class="modal-title edit-txt" data-id="m8-title">Sewa Panggung & Band</h2>
+                <p class="modal-desc edit-txt" data-id="m8-desc">D'JANGKOS bekerjasama dengan AMARA'S PRODUCTION melayani sewa panggung, sound system, dan music band.</p>
+                <div class="sub-item-list">
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c8-i1">Sewa Panggung Rigging</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c8-i2">Sound System</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c8-i3">Music Band (Akustik / Full Band)</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c8-i4">Lighting & Genset Acara</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CAT 9 -->
+        <div id="cat-9" class="cat-data-container">
+            <img class="modal-header-img edit-img" data-id="m9-img" src="images/ktp-npwp.jpeg" onerror="this.src='https://images.unsplash.com/photo-1554774853-719586f82d77?auto=format&fit=crop&q=80&w=600'">
+            <div class="modal-body">
+                <h2 class="modal-title edit-txt" data-id="m9-title">Daftar NPWP, NIB & Tiket</h2>
+                <p class="modal-desc edit-txt" data-id="m9-desc">Jasa pembuatan atau pendaftaran NPWP, NIB, pembelian tiket pesawat, dan layanan online lainnya.</p>
+                <div class="sub-item-list">
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c9-i1">Pembuatan NPWP Online</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c9-i2">Pendaftaran NIB (OSS)</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c9-i3">Pesan Tiket Pesawat & Kereta Api</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c9-i4">Pendaftaran Online Lainnya</span></div>
+                </div>
             </div>
         </div>
     </div>
@@ -803,6 +974,7 @@
         let instansiDataMap = {}; // Untuk simpan pemetaan ID ke Nama
 
         const loadSavedData = () => {
+            // Load text & general images (Bisa mengambil yg disembunyikan juga!)
             const savedData = JSON.parse(localStorage.getItem('djangkosV6Content')) || {};
             document.querySelectorAll('.edit-txt').forEach(el => {
                 const id = el.getAttribute('data-id');
