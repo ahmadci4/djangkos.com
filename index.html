@@ -245,6 +245,16 @@
         .footer-cta { margin-top: 20px; padding: 40px 20px; background: rgba(255, 255, 255, 0.02); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: var(--shadow-md);}
         .footer-bottom { text-align: center; padding: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.4); background: #041228; }
 
+        /* KOTAK BERLANGGANAN (NEWSLETTER) */
+        .newsletter-box {
+            margin-top: 40px; background: linear-gradient(135deg, rgba(28, 111, 230, 0.1) 0%, rgba(250, 204, 21, 0.05) 100%);
+            border: 1px solid rgba(255,255,255,0.1); padding: 40px 20px; border-radius: var(--radius-lg);
+            max-width: 800px; margin-left: auto; margin-right: auto; box-shadow: var(--shadow-md);
+        }
+        .newsletter-input-group { display: flex; gap: 10px; max-width: 500px; margin: 0 auto; }
+        .newsletter-input-group input { flex-grow: 1; padding: 12px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: var(--white); outline: none; font-family: inherit;}
+        .newsletter-input-group input:focus { border-color: var(--accent-yellow); }
+
         /* ==================== ADMIN EDIT MODE ==================== */
         .admin-toggle-btn { position: fixed; bottom: 30px; left: 30px; width: 45px; height: 45px; background: rgba(0,0,0,0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 9999; border: 1px solid rgba(255,255,255,0.2); transition: var(--transition); }
         .admin-toggle-btn:hover { background: var(--white); transform: rotate(90deg); }
@@ -279,6 +289,7 @@
             .dana-icon-wrapper svg { width: 22px; height: 22px; }
             .dana-title { font-size: 0.7rem; line-height: 1.2; }
             .wa-tooltip { display: none; } 
+            .newsletter-input-group { flex-direction: column; }
         }
         @media (max-width: 400px) { .dana-title { font-size: 0.65rem; } }
     </style>
@@ -370,7 +381,7 @@
         </div>
     </section>
 
-    <!-- 4. LAYANAN KAMI (DANA APP STYLE MENU - HTML STATIS AGAR EDITABLE) -->
+    <!-- 4. LAYANAN KAMI -->
     <section id="layanan" class="section-padding">
         <div class="container">
             <div class="section-title reveal">
@@ -459,13 +470,23 @@
             
             <h2 class="edit-txt" data-id="stat-title">THANKS TO</h2>
             
-            <!-- Area Mitra Pindahan dari Atas -->
+            <!-- Area Mitra -->
             <div style="max-width: 800px; margin: 0 auto; text-align: center;">
                 <h4 style="color: var(--accent-yellow); margin-bottom: 15px; font-size: 1.3rem;" class="edit-txt" data-id="thanks-title">Telah Dipercaya Oleh:</h4>
                 <p style="color: var(--text-light); font-size: 1.05rem; line-height: 1.8;" class="edit-txt" data-id="thanks-desc">
                     <strong>Sekolah & Mitra SIPLAH:</strong> SMPN 1 BAYAN, SMPN 3 BAYAN, seluruh TK/PAUD di Desa Karang Bajo, serta sebagian sekolah dari tingkat TK/PAUD/SD/SMP di Kecamatan Bayan.<br><br>
                     <strong>Mitra INAPROC:</strong> KANTOR CAMAT BAYAN.
                 </p>
+            </div>
+
+            <!-- FITUR BARU: KOTAK BERLANGGANAN / NEWSLETTER -->
+            <div class="newsletter-box">
+                <h3 class="edit-txt" data-id="news-title" style="color: var(--accent-yellow); font-size: 1.5rem; margin-bottom: 10px;">Berlangganan Info Promo & Diskon!</h3>
+                <p class="edit-txt" data-id="news-desc" style="color: var(--text-light); font-size: 0.95rem; margin-bottom: 25px;">Masukkan Nomor WhatsApp atau Email Anda untuk mendapatkan update layanan terbaru dan promo eksklusif dari D'JANGKOS.</p>
+                <form id="subscribe-form" onsubmit="subscribeNewsletter(event)" class="newsletter-input-group">
+                    <input type="text" id="sub-contact" placeholder="Masukkan No. WhatsApp / Email..." required>
+                    <button type="submit" class="btn btn-primary" style="border-radius: 8px;">Berlangganan</button>
+                </form>
             </div>
 
             <!-- Area Alamat, Kontak, dan Footer -->
@@ -783,6 +804,19 @@
                         </table>
                     </div>
                 </div>
+                
+                <!-- NEW: Tabel Daftar Subscriber Berlangganan -->
+                <div style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                    <h4 style="margin-bottom: 10px; color: var(--accent-yellow);">Daftar Kontak Berlangganan (Newsletter)</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 15px;">Salin nomor WA/Email di bawah ini untuk mengirimkan pesan promo.</p>
+                    <div class="table-responsive">
+                        <table class="nota-table">
+                            <thead><tr><th>Tanggal Daftar</th><th>Nomor WA / Email</th></tr></thead>
+                            <tbody id="admin-subscribers-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
 
             <!-- View: Dashboard Pelanggan -->
@@ -901,6 +935,9 @@
             if (document.getElementById('service-modal').classList.contains('active')) {
                 closeServiceModalOnly();
             }
+            if (document.getElementById('portal-modal').classList.contains('active')) {
+                closePortalModal();
+            }
         });
 
         // Tutup modal jika klik di luar box (overlay background)
@@ -971,6 +1008,7 @@
         let currentUser = null;
         let dbUnsubscribeInstansi = null;
         let dbUnsubscribeTransaksi = null;
+        let dbUnsubscribeSubscribers = null;
         let instansiDataMap = {}; // Untuk simpan pemetaan ID ke Nama
 
         const loadSavedData = () => {
@@ -1180,14 +1218,11 @@
                 dbUnsubscribeTransaksi(); // Matikan listener saat tutup
                 dbUnsubscribeTransaksi = null;
             }
-        }
-
-        // Handle History Back untuk Portal
-        window.addEventListener('popstate', (e) => {
-            if (document.getElementById('portal-modal').classList.contains('active')) {
-                closePortalModal();
+            if(dbUnsubscribeSubscribers) {
+                dbUnsubscribeSubscribers();
+                dbUnsubscribeSubscribers = null;
             }
-        });
+        }
 
         function switchPortalView(viewId) {
             document.getElementById('portal-login-view').style.display = 'none';
@@ -1211,9 +1246,47 @@
                 dbUnsubscribeTransaksi();
                 dbUnsubscribeTransaksi = null;
             }
+            if(dbUnsubscribeSubscribers) {
+                dbUnsubscribeSubscribers();
+                dbUnsubscribeSubscribers = null;
+            }
             document.getElementById('instansi-password').value = '';
             document.getElementById('admin-portal-password').value = '';
         }
+
+
+        // ==========================================
+        // FUNGSI NEWSLETTER / BERLANGGANAN
+        // ==========================================
+
+        async function subscribeNewsletter(e) {
+            e.preventDefault();
+            if(!currentUser) {
+                alert("Sistem sedang memuat atau terjadi kesalahan jaringan. Tunggu sebentar.");
+                return;
+            }
+            
+            const contactInput = document.getElementById('sub-contact').value;
+            const btn = e.target.querySelector('button');
+            btn.innerText = "Memproses...";
+
+            try {
+                const subRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'subscribers');
+                await window.addDoc(subRef, {
+                    kontak: contactInput,
+                    tanggal: new Date().toISOString()
+                });
+                
+                alert("Terima kasih! Anda telah berhasil berlangganan info & promo D'JANGKOS.");
+                document.getElementById('subscribe-form').reset();
+                btn.innerText = "Berlangganan";
+            } catch(err) {
+                console.error("Error saving subscriber:", err);
+                alert("Gagal berlangganan. Silakan periksa koneksi Anda.");
+                btn.innerText = "Berlangganan";
+            }
+        }
+
 
         // --- FUNGSI PELANGGAN / INSTANSI ---
 
@@ -1299,6 +1372,7 @@
             if(pass === "djangkosbos") {
                 switchPortalView('portal-admin-dashboard');
                 listenToAllTransactions();
+                listenToSubscribersList(); // Buka data subscribers
             } else {
                 alert("Password Admin Salah!");
             }
@@ -1432,6 +1506,45 @@
                     console.error("Gagal hapus data", e);
                 }
             }
+        }
+
+        // Tampilkan Data Kontak Langganan (Newsletter) di Dashboard Admin
+        function listenToSubscribersList() {
+            if(!currentUser) return;
+            const subRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'subscribers');
+            
+            if(dbUnsubscribeSubscribers) dbUnsubscribeSubscribers();
+
+            dbUnsubscribeSubscribers = window.onSnapshot(subRef, (snapshot) => {
+                const tbody = document.getElementById('admin-subscribers-body');
+                tbody.innerHTML = '';
+                
+                let subList = [];
+                snapshot.forEach(doc => {
+                    subList.push({id: doc.id, ...doc.data()});
+                });
+
+                // Urutkan pendaftar terbaru di atas
+                subList.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+
+                if(subList.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="2" style="text-align:center;">Belum ada kontak yang berlangganan.</td></tr>';
+                }
+
+                subList.forEach(data => {
+                    // Format tampilan tanggal
+                    const tgl = new Date(data.tanggal).toLocaleString('id-ID', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' });
+                    
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${tgl}</td>
+                        <td style="font-weight:bold; color:var(--accent-yellow); letter-spacing:1px;">${data.kontak}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }, (error) => {
+                console.error("Gagal memuat pelanggan newsletter", error);
+            });
         }
 
     </script>
