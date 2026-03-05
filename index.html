@@ -114,6 +114,7 @@
         .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('images/potocopy.jpg') center/cover no-repeat; opacity: 0.45; z-index: -1; }
         .hero-content { max-width: 900px; text-align: center; margin: 0 auto; position: relative; z-index: 2;}
         .hero-subtitle { font-size: 1.2rem; letter-spacing: 2px; color: var(--text-light); margin-bottom: 5px; font-weight: 600; }
+        .hero-tagline { color: var(--accent-yellow); font-weight: 600; font-size: 1.1rem; margin-bottom: -10px; letter-spacing: 1px; }
         .hero h1 { font-size: 4rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px; text-shadow: 0 10px 30px rgba(0,0,0,0.8); }
         .hero h1 .script-font { font-family: 'Dancing Script', cursive; color: var(--accent-yellow); font-size: 5rem; display: block; margin-top: -10px; margin-bottom: 10px; font-weight: 700; }
         .hero p.desc { font-size: 1.1rem; margin-bottom: 40px; color: var(--text-light); max-width: 700px; margin-left: auto; margin-right: auto; text-shadow: 0 2px 4px rgba(0,0,0,0.8); font-weight: 500;}
@@ -179,7 +180,6 @@
         
         /* Grid Admin Layouts */
         .admin-grid-layout { display: grid; grid-template-columns: 1fr 2.5fr; gap: 30px; }
-        .admin-grid-layout-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 30px; }
 
         /* POS Cart Style */
         .pos-container { background: #fff; color: #333; border-radius: var(--radius-md); overflow: hidden; font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; margin-bottom: 30px; }
@@ -198,7 +198,8 @@
         .item-name { font-weight: 600; font-size: 0.95rem; color: #333; }
         .item-price-small { font-size: 0.8rem; color: #888; }
         .qty-controls { display: flex; align-items: center; gap: 5px; flex: 1; justify-content: center; }
-        .qty-input { width: 50px; text-align: center; border: 1px solid #ddd; border-radius: 4px; padding: 4px; font-weight: bold; outline: none;}
+        .qty-input { width: 50px; text-align: center; border: 1px solid #ddd; border-radius: 4px; padding: 4px; font-weight: bold; outline: none; -moz-appearance: textfield;}
+        .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         .qty-input:focus { border-color: var(--primary-blue); }
         .qty-btn { width: 25px; height: 25px; border-radius: 50%; border: 1px solid #ddd; background: #fff; cursor: pointer; font-weight: bold; color: #555; }
         .item-subtotal { flex: 1; text-align: right; font-weight: 700; color: #333; }
@@ -275,8 +276,15 @@
         .floating-wa { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.4); z-index: 9998; transition: var(--transition); text-decoration: none; animation: pulse-wa 2s infinite; }
         .floating-wa:hover { transform: scale(1.1); background: #128C7E; }
         .floating-wa svg { width: 35px; height: 35px; fill: white; }
-        /* Fix the tooltip to prevent wrapping */
-        .wa-tooltip { position: absolute; right: 75px; top: 50%; transform: translateY(-50%) translateX(10px); background: var(--white); color: var(--bg-main); padding: 8px 15px; border-radius: 20px 20px 0 20px; font-size: 0.85rem; font-weight: 600; white-space: nowrap; width: max-content; box-shadow: var(--shadow-md); opacity: 0; visibility: hidden; transition: var(--transition); pointer-events: none; }
+        
+        /* FIX TOOLTIP WA (Mencegah teks memanjang kebawah) */
+        .wa-tooltip { 
+            position: absolute; right: 75px; top: 50%; transform: translateY(-50%) translateX(10px); 
+            background: var(--white); color: var(--bg-main); padding: 10px 20px; 
+            border-radius: 20px 20px 0 20px; font-size: 0.9rem; font-weight: 600; 
+            white-space: nowrap; min-width: max-content; box-shadow: var(--shadow-md); 
+            opacity: 0; visibility: hidden; transition: var(--transition); pointer-events: none; 
+        }
         .floating-wa:hover .wa-tooltip { opacity: 1; visibility: visible; transform: translateY(-50%) translateX(0); }
         @keyframes pulse-wa { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
 
@@ -327,8 +335,8 @@
             .dana-title { font-size: 0.7rem; line-height: 1.2; }
             .newsletter-input-group { flex-direction: column; }
             
-            /* Responsive Admin Grid */
-            .admin-grid-layout, .admin-grid-layout-2 { grid-template-columns: 1fr !important; }
+            /* Responsive Admin Grid (Memperbaiki tampilan gepeng di HP) */
+            .admin-grid-layout { display: flex !important; flex-direction: column !important; gap: 20px; }
             .pos-footer-inputs { flex-direction: column; align-items: stretch; }
             .pos-footer-inputs > div { width: 100%; min-width: 100%; }
         }
@@ -390,7 +398,7 @@
     <!-- 2.5 BANNER PROMO POP-UP -->
     <div id="promo-popup-modal" class="modal-overlay" style="z-index: 10001;">
         <div class="modal-content" style="padding: 10px;">
-            <button onclick="closePromo()" class="modal-close">&times;</button>
+            <button onclick="closePromo()" class="modal-close" style="z-index: 20;">&times;</button>
             <a id="promo-link" href="#" target="_blank">
                 <img id="promo-img-display" src="" alt="Promo Banner" style="width: 100%; border-radius: 12px; box-shadow: 0 15px 30px rgba(0,0,0,0.6); object-fit: cover;">
             </a>
@@ -815,7 +823,6 @@
                     <div style="flex: 1; padding: 0 10px;">
                         <p style="margin-bottom: 50px;">Hormat Kami,</p>
                         <p style="border-bottom: 1px solid #333; display: inline-block; width: 100px; margin-bottom: 5px; font-weight:bold;">D'JANGKOS</p>
-                        <!-- (Stempel ditaruh manual di atas area ini jika dicetak) -->
                     </div>
                 </div>
 
@@ -845,18 +852,18 @@
         function closeServiceModalOnly() {
             const modalBody = document.getElementById('modal-dynamic-content');
             const storage = document.getElementById('service-data-storage');
-            while(modalBody.firstChild) { storage.appendChild(modalBody.firstChild); }
-            document.getElementById('service-modal').classList.remove('active');
+            while(modalBody?.firstChild) { storage.appendChild(modalBody.firstChild); }
+            document.getElementById('service-modal')?.classList.remove('active');
         }
 
         function triggerCloseModal() { history.back(); }
 
-        function closePromo() { document.getElementById('promo-popup-modal').classList.remove('active'); }
+        window.closePromo = function() { document.getElementById('promo-popup-modal')?.classList.remove('active'); }
 
         window.addEventListener('popstate', (e) => {
-            if (document.getElementById('service-modal').classList.contains('active')) closeServiceModalOnly();
-            if (document.getElementById('portal-modal').classList.contains('active')) closePortalModal();
-            if (document.getElementById('receipt-modal').classList.contains('active')) closeReceiptModal();
+            if (document.getElementById('service-modal')?.classList.contains('active')) closeServiceModalOnly();
+            if (document.getElementById('portal-modal')?.classList.contains('active')) closePortalModal();
+            if (document.getElementById('receipt-modal')?.classList.contains('active')) closeReceiptModal();
         });
 
         window.onclick = function(event) {
@@ -870,20 +877,22 @@
             hamburger.addEventListener('click', () => { navLinks.classList.toggle('active'); });
         }
         document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => { navLinks.classList.remove('active'); });
+            link.addEventListener('click', () => { navLinks?.classList.remove('active'); });
         });
 
         // --- 3. Sticky Navbar ---
         const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.style.background = "rgba(6, 26, 58, 0.98)";
-                navbar.style.boxShadow = "0 4px 20px rgba(0,0,0,0.5)";
-            } else {
-                navbar.style.background = "rgba(6, 26, 58, 0.9)";
-                navbar.style.boxShadow = "none";
-            }
-        });
+        if(navbar) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.style.background = "rgba(6, 26, 58, 0.98)";
+                    navbar.style.boxShadow = "0 4px 20px rgba(0,0,0,0.5)";
+                } else {
+                    navbar.style.background = "rgba(6, 26, 58, 0.9)";
+                    navbar.style.boxShadow = "none";
+                }
+            });
+        }
 
         // --- 4. Scroll Reveal Animation ---
         const reveals = document.querySelectorAll('.reveal');
@@ -898,13 +907,37 @@
         window.addEventListener('scroll', revealOnScroll);
         revealOnScroll();
 
-        // --- 5. ADMIN EDIT MODE & PROMO BANNER ---
+        // --- 5. NEWSLETTER SUBSCRIBER ---
+        window.subscribeNewsletter = async function(e) {
+            e.preventDefault();
+            if(!currentUser) {
+                alert("Sistem sedang memuat atau terjadi kesalahan jaringan. Tunggu sebentar.");
+                return;
+            }
+            const contactInput = document.getElementById('sub-contact').value;
+            const btn = e.target.querySelector('button');
+            btn.innerText = "Memproses...";
+            try {
+                const subRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'subscribers');
+                await window.addDoc(subRef, { kontak: contactInput, tanggal: new Date().toISOString() });
+                alert("Terima kasih! Anda telah berhasil berlangganan info promo kami.");
+                document.getElementById('subscribe-form').reset();
+                btn.innerText = "Berlangganan";
+            } catch(err) {
+                console.error(err); alert("Gagal berlangganan. Silakan coba lagi."); btn.innerText = "Berlangganan";
+            }
+        }
+
+        // --- 6. ADMIN EDIT MODE & PROMO BANNER ---
         const adminBtn = document.getElementById('admin-btn');
         const adminPanel = document.getElementById('admin-panel');
         const saveBtn = document.getElementById('save-btn');
         const exitBtn = document.getElementById('exit-btn');
         const imageUpload = document.getElementById('image-upload');
         const promoUploadInput = document.getElementById('promo-upload');
+        const promoImg = document.getElementById('promo-img');
+        const deletePromoBtn = document.getElementById('delete-promo-btn');
+        const promoSection = document.getElementById('promo-section');
         
         let isEditMode = false;
         let currentEditingImage = null;
@@ -917,7 +950,7 @@
         window.transactionsMap = {};
 
         const loadSavedData = () => {
-            const savedData = JSON.parse(localStorage.getItem('djangkosV6Content')) || {};
+            const savedData = JSON.parse(localStorage.getItem('djangkosV7Content')) || {};
             document.querySelectorAll('.edit-txt').forEach(el => {
                 const id = el.getAttribute('data-id');
                 if (savedData[id]) el.innerHTML = savedData[id];
@@ -927,12 +960,14 @@
                 if (savedData[id]) el.src = savedData[id];
             });
 
-            // Tampilkan Promo Popup saat web pertama kali dibuka jika ada data promo
+            // Tampilkan Promo Popup
             const promoData = JSON.parse(localStorage.getItem('djangkosPromoData'));
             if (promoData && promoData.img) {
-                document.getElementById('promo-img-display').src = promoData.img;
-                document.getElementById('promo-link').href = promoData.link || "#";
-                document.getElementById('promo-popup-modal').classList.add('active');
+                const display = document.getElementById('promo-img-display');
+                const link = document.getElementById('promo-link');
+                if(display) display.src = promoData.img;
+                if(link) link.href = promoData.link || "#";
+                document.getElementById('promo-popup-modal')?.classList.add('active');
             }
         };
 
@@ -961,26 +996,27 @@
 
         const enableEditMode = () => {
             isEditMode = true; document.body.classList.add('edit-mode');
-            adminPanel.style.display = 'flex'; adminBtn.style.display = 'none';
+            if(adminPanel) adminPanel.style.display = 'flex'; 
+            if(adminBtn) adminBtn.style.display = 'none';
             document.querySelectorAll('.edit-txt').forEach(el => { el.setAttribute('contenteditable', 'true'); });
             document.querySelectorAll('.edit-img').forEach(el => { el.addEventListener('click', imageClickHandler); });
         };
 
         const disableEditMode = () => {
             isEditMode = false; document.body.classList.remove('edit-mode');
-            adminPanel.style.display = 'none'; adminBtn.style.display = 'flex';
+            if(adminPanel) adminPanel.style.display = 'none'; 
+            if(adminBtn) adminBtn.style.display = 'flex';
             document.querySelectorAll('.edit-txt').forEach(el => { el.removeAttribute('contenteditable'); });
             document.querySelectorAll('.edit-img').forEach(el => { el.removeEventListener('click', imageClickHandler); });
         };
 
-        // IMAGE CLICK (Bisa URL Embed / Upload Lokal)
         function imageClickHandler(e) {
-            if(isEditMode) { 
+            if(isEditMode && e.target !== promoImg) { 
                 currentEditingImage = e.target; 
                 const url = prompt("Masukkan Link/URL Gambar (contoh dari Google/Instagram).\nAtau KOSONGKAN lalu tekan OK untuk Upload file dari HP/Laptop:");
                 if (url && url.trim() !== "") {
                     currentEditingImage.src = url.trim();
-                } else if (url === "") { // User pressed OK leaving it empty
+                } else if (url === "") { 
                     imageUpload.click(); 
                 }
             }
@@ -998,7 +1034,6 @@
             });
         }
 
-        // PROMO POPUP ADMIN
         window.managePromoPopup = function() {
             const opt = prompt("Ketik angka pilihan:\n[1] Masukkan URL/Link Gambar Promo\n[2] Upload File Gambar dari Perangkat\n[0] Matikan Pop-up Promo");
             if (opt === '1') {
@@ -1008,7 +1043,7 @@
                     savePromoData(url, link || "#");
                 }
             } else if (opt === '2') {
-                promoUploadInput.click();
+                if(promoUploadInput) promoUploadInput.click();
             } else if (opt === '0') {
                 localStorage.removeItem('djangkosPromoData');
                 alert("Banner Pop-up dinonaktifkan.");
@@ -1040,7 +1075,7 @@
                 const dataToSave = {};
                 document.querySelectorAll('.edit-txt').forEach(el => { dataToSave[el.getAttribute('data-id')] = el.innerHTML; });
                 document.querySelectorAll('.edit-img').forEach(el => { dataToSave[el.getAttribute('data-id')] = el.src; });
-                localStorage.setItem('djangkosV6Content', JSON.stringify(dataToSave));
+                localStorage.setItem('djangkosV7Content', JSON.stringify(dataToSave));
 
                 const btnOriginalText = saveBtn.innerText;
                 saveBtn.innerText = "Tersimpan ✔";
@@ -1094,7 +1129,7 @@
             dbUnsubscribeInstansi = window.onSnapshot(instansiRef, (snapshot) => {
                 const selectLogin = document.getElementById('instansi-select');
                 const selectPos = document.getElementById('pos-instansi');
-                const tableAdminList = document.getElementById('admin-instansi-list'); // Table in admin
+                const tableAdminList = document.getElementById('admin-instansi-list');
                 
                 if(selectLogin) selectLogin.innerHTML = '<option value="">-- Pilih Instansi Anda --</option>';
                 if(selectPos) selectPos.innerHTML = '<option value="">-- Pilih Pelanggan --</option>';
@@ -1111,7 +1146,6 @@
                     const optPos = document.createElement('option'); optPos.value = doc.id; optPos.textContent = data.nama;
                     if(selectPos) selectPos.appendChild(optPos);
 
-                    // Row untuk tabel admin
                     if(tableAdminList) {
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
@@ -1125,25 +1159,27 @@
             });
         }
 
-        function openPortalModal() {
-            document.getElementById('portal-modal').classList.add('active');
+        window.openPortalModal = function() {
+            document.getElementById('portal-modal')?.classList.add('active');
             history.pushState({ portalOpen: true }, "", "#portal-nota");
             switchPortalView('portal-login-view');
         }
 
-        function closePortalModal() {
-            document.getElementById('portal-modal').classList.remove('active');
+        window.closePortalModal = function() {
+            document.getElementById('portal-modal')?.classList.remove('active');
             if(dbUnsubscribeTransaksi) { dbUnsubscribeTransaksi(); dbUnsubscribeTransaksi = null; }
         }
 
-        function switchPortalView(viewId) {
+        window.switchPortalView = function(viewId) {
             ['portal-login-view', 'portal-admin-login', 'portal-admin-dashboard', 'portal-customer-dashboard'].forEach(id => {
-                if(document.getElementById(id)) document.getElementById(id).style.display = 'none';
+                const el = document.getElementById(id);
+                if(el) el.style.display = 'none';
             });
-            if(document.getElementById(viewId)) document.getElementById(viewId).style.display = 'block';
+            const target = document.getElementById(viewId);
+            if(target) target.style.display = 'block';
         }
 
-        function logoutPortal() {
+        window.logoutPortal = function() {
             switchPortalView('portal-login-view');
             if(dbUnsubscribeTransaksi) { dbUnsubscribeTransaksi(); dbUnsubscribeTransaksi = null; }
             if(document.getElementById('instansi-password')) document.getElementById('instansi-password').value = '';
@@ -1162,12 +1198,10 @@
             nameInput.value = ''; priceInput.value = ''; updateCartUI();
         }
 
-        // Tombol +/-
         window.updateCartQty = function(index, delta) {
             if(posCart[index]) { posCart[index].qty += delta; if(posCart[index].qty < 1) posCart[index].qty = 1; updateCartUI(); }
         }
 
-        // Input Angka Manual pada keranjang
         window.updateCartQtyDirect = function(index, val) {
             let newVal = parseInt(val);
             if (isNaN(newVal) || newVal < 1) newVal = 1;
@@ -1175,6 +1209,7 @@
         }
 
         window.removeCartItem = function(index) { posCart.splice(index, 1); updateCartUI(); }
+        
         window.clearCart = function() { 
             posCart = []; 
             if(document.getElementById('pos-tax-type')) document.getElementById('pos-tax-type').value = '0'; 
@@ -1191,7 +1226,6 @@
                 posCart.forEach((item, index) => {
                     const itemTotal = item.price * item.qty; subtotal += itemTotal;
                     const row = document.createElement('div'); row.className = 'cart-item';
-                    // Kolom Input Manual (class="qty-input")
                     row.innerHTML = `<div class="item-info"><div class="item-name">${item.name}</div><div class="item-price-small">${formatRupiah(item.price)} / pcs</div></div>
                         <div class="qty-controls">
                             <button class="qty-btn" onclick="updateCartQty(${index}, -1)">-</button>
@@ -1204,7 +1238,6 @@
                 });
             }
             
-            // Hitung Pajak via Dropdown (Persentase)
             const taxRate = parseFloat(document.getElementById('pos-tax-type')?.value) || 0;
             const taxAmount = subtotal * (taxRate / 100);
             const grandTotal = subtotal + taxAmount;
@@ -1213,10 +1246,9 @@
         }
 
         window.processCart = async function(status) {
-            if(!currentUser) return;
+            if(!currentUser) { alert("Menghubungkan ke database... Coba beberapa saat lagi."); return; }
             if(posCart.length === 0) { alert("Keranjang masih kosong!"); return; }
             
-            // Perbaikan ID (Menggunakan pos-instansi)
             const instId = document.getElementById('pos-instansi').value;
             if(!instId) { alert("Pilih Pelanggan / Instansi di bagian bawah keranjang terlebih dahulu!"); return; }
             
@@ -1231,21 +1263,13 @@
             try {
                 const transRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'transaksi');
                 await window.addDoc(transRef, { 
-                    trxId: trxId, 
-                    instansiId: instId, 
-                    tanggal: dateIso, 
-                    item: summaryString, 
-                    cart: posCart, 
-                    total: subtotal, 
-                    pajak: taxAmount, 
-                    taxRate: taxRate, // Simpan % persennya juga
-                    status: status, 
-                    createdAt: dateIso 
+                    trxId: trxId, instansiId: instId, tanggal: dateIso, 
+                    item: summaryString, cart: posCart, total: subtotal, 
+                    pajak: taxAmount, taxRate: taxRate, status: status, createdAt: dateIso 
                 });
                 clearCart();
                 
                 if(status === 'LUNAS') {
-                    // Beri jeda sistem baca database, lalu auto-print nota
                     setTimeout(() => {
                         const trxs = Object.values(window.transactionsMap).filter(t => t.instansiId === instId).sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
                         if(trxs.length > 0) openReceiptModal(trxs[0].id);
@@ -1274,21 +1298,22 @@
             if(dbUnsubscribeTransaksi) dbUnsubscribeTransaksi();
             dbUnsubscribeTransaksi = window.onSnapshot(transRef, (snapshot) => {
                 const tbody = document.getElementById('cust-table-body');
-                tbody.innerHTML = ''; let totalHutang = 0; let transList = [];
+                if(tbody) tbody.innerHTML = ''; 
+                let totalHutang = 0; let transList = [];
                 snapshot.forEach(doc => {
                     const data = doc.data(); window.transactionsMap[doc.id] = {id: doc.id, ...data}; 
                     if(data.instansiId === instId) { transList.push({id: doc.id, ...data}); }
                 });
                 transList.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
-                if(transList.length === 0) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Belum ada riwayat transaksi.</td></tr>'; }
+                if(transList.length === 0 && tbody) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Belum ada riwayat transaksi.</td></tr>'; }
                 transList.forEach(data => {
                     const tr = document.createElement('tr'); const grandTotal = parseInt(data.total) + parseInt(data.pajak);
                     if(data.status === 'HUTANG') { totalHutang += grandTotal; }
                     const tglSimple = new Date(data.tanggal).toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'});
                     tr.innerHTML = `<td>${tglSimple}</td><td style="font-weight:bold;">${formatRupiah(grandTotal)}</td><td><span class="status-badge ${data.status === 'LUNAS' ? 'status-lunas' : 'status-hutang'}">${data.status}</span></td><td><button class="btn-sm" style="background:var(--tosca-start); color:white;" onclick="openReceiptModal('${data.id}')">Lihat Nota</button></td>`;
-                    tbody.appendChild(tr);
+                    if(tbody) tbody.appendChild(tr);
                 });
-                document.getElementById('cust-total-hutang').innerText = formatRupiah(totalHutang);
+                if(document.getElementById('cust-total-hutang')) document.getElementById('cust-total-hutang').innerText = formatRupiah(totalHutang);
             });
         }
 
@@ -1301,7 +1326,7 @@
         }
 
         window.addInstansi = async function() {
-            if(!currentUser) { alert("Sistem belum siap. Tunggu sebentar."); return; }
+            if(!currentUser) { alert("Sistem sedang menghubungi database. Coba tekan tombol lagi dalam beberapa detik."); return; }
             const nama = document.getElementById('new-inst-name').value;
             const pass = document.getElementById('new-inst-pass').value;
             if(!nama || !pass) { alert("Nama dan sandi wajib diisi!"); return; }
@@ -1314,7 +1339,6 @@
             } catch(e) { console.error(e); alert("Gagal menambah data."); }
         }
 
-        // Fitur Edit Sandi Instansi dari Admin Panel
         window.editInstansiPassword = async function(instId) {
             const currentName = instansiDataMap[instId].nama;
             const newPass = prompt(`Masukkan sandi (password) baru untuk Instansi/Sekolah:\n${currentName}`);
@@ -1333,7 +1357,8 @@
             if(dbUnsubscribeTransaksi) dbUnsubscribeTransaksi();
             dbUnsubscribeTransaksi = window.onSnapshot(transRef, (snapshot) => {
                 const tbody = document.getElementById('admin-table-body');
-                tbody.innerHTML = ''; let transList = [];
+                if(tbody) tbody.innerHTML = ''; 
+                let transList = [];
                 snapshot.forEach(doc => { const data = doc.data(); window.transactionsMap[doc.id] = {id: doc.id, ...data}; transList.push({id: doc.id, ...data}); });
                 transList.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
                 transList.forEach(data => {
@@ -1341,7 +1366,7 @@
                     const tr = document.createElement('tr'); const grandTotal = parseInt(data.total) + parseInt(data.pajak);
                     const tglSimple = new Date(data.tanggal).toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'});
                     tr.innerHTML = `<td>${tglSimple}</td><td>${instName}</td><td style="font-size:0.8rem;">${data.item.length > 30 ? data.item.substring(0,30)+'...' : data.item}</td><td style="font-weight:bold;">${formatRupiah(grandTotal)}</td><td><button class="btn-sm ${data.status === 'LUNAS' ? 'status-lunas' : 'status-hutang'}" onclick="toggleStatus('${data.id}', '${data.status}')" title="Klik untuk ubah status">${data.status}</button></td><td style="white-space:nowrap;"><button class="btn-sm" style="background:var(--tosca-start); color:white;" onclick="openReceiptModal('${data.id}')">Nota</button><button class="btn-sm" style="background:#ff4757; color:white; padding:4px 8px;" onclick="deleteTransaksi('${data.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button></td>`;
-                    tbody.appendChild(tr);
+                    if(tbody) tbody.appendChild(tr);
                 });
             });
         }
@@ -1381,7 +1406,6 @@
             document.getElementById('rcpt-id').innerText = data.trxId || ("#TRX" + transId.substring(0,6).toUpperCase());
             document.getElementById('rcpt-customer').innerText = instansiDataMap[data.instansiId] ? instansiDataMap[data.instansiId].nama : "Instansi";
             
-            // Format Label Pajak (Misal: PPN 12%)
             const rateLabel = data.taxRate ? ` (${data.taxRate}%)` : '';
             document.getElementById('rcpt-tax-label').innerText = `Pajak / PPN` + rateLabel;
             document.getElementById('rcpt-tax').innerText = formatRupiah(data.pajak);
@@ -1393,12 +1417,12 @@
                 row.innerHTML = `<div class="r-item-left"><div class="r-item-name">${item.name}</div><div class="r-item-qty">${item.qty} x ${formatRupiah(item.price)}</div></div><div class="r-item-sub">${formatRupiah(sub)}</div>`;
                 itemsContainer.appendChild(row);
             });
-            document.getElementById('receipt-modal').classList.add('active');
+            document.getElementById('receipt-modal')?.classList.add('active');
             history.pushState({ receiptOpen: true }, "", "#nota");
         }
 
         window.closeReceiptModal = function() {
-            document.getElementById('receipt-modal').classList.remove('active');
+            document.getElementById('receipt-modal')?.classList.remove('active');
             currentActiveReceipt = null;
         }
 
