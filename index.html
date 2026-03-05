@@ -7,7 +7,7 @@
     <meta name="keywords" content="Percetakan, Pengadaan Barang, SIPLAH, INAPROC, D'JANGKOS, ATK, Pembuatan Website">
     <title>D'JANGKOS | Percetakan & Pengadaan Terpercaya</title>
     
-    <!-- Google Fonts Import: Poppins & Dancing Script -->
+    <!-- Google Fonts Import -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -111,18 +111,13 @@
 
         /* ==================== HERO SECTION ==================== */
         .hero { min-height: 100vh; display: flex; align-items: center; position: relative; padding-top: 100px; z-index: 1; }
-        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('images/potocopy.jpg') center/cover no-repeat; opacity: 0.35; z-index: -1; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('images/potocopy.jpg') center/cover no-repeat; opacity: 0.45; z-index: -1; }
         .hero-content { max-width: 900px; text-align: center; margin: 0 auto; position: relative; z-index: 2;}
         .hero-subtitle { font-size: 1.2rem; letter-spacing: 2px; color: var(--text-light); margin-bottom: 5px; font-weight: 600; }
-        .hero-tagline { color: var(--accent-yellow); font-weight: 600; font-size: 1.1rem; margin-bottom: -10px; letter-spacing: 1px; }
         .hero h1 { font-size: 4rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px; text-shadow: 0 10px 30px rgba(0,0,0,0.8); }
         .hero h1 .script-font { font-family: 'Dancing Script', cursive; color: var(--accent-yellow); font-size: 5rem; display: block; margin-top: -10px; margin-bottom: 10px; font-weight: 700; }
         .hero p.desc { font-size: 1.1rem; margin-bottom: 40px; color: var(--text-light); max-width: 700px; margin-left: auto; margin-right: auto; text-shadow: 0 2px 4px rgba(0,0,0,0.8); font-weight: 500;}
         .hero-btns { display: flex; gap: 20px; justify-content: center; }
-
-        /* BANNER PROMO */
-        #promo-section { padding: 40px 0 0 0; position: relative; z-index: 5; text-align: center; }
-        #promo-img { max-width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
 
         /* ==================== EDUKASI (SIPLAH & INAPROC) ==================== */
         .glass-box { background: rgba(10, 46, 99, 0.6); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding: 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
@@ -168,6 +163,11 @@
         .sub-item { background: rgba(255,255,255,0.05); padding: 12px 15px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px; font-weight: 500; font-size: 0.95rem; }
         .sub-item svg { width: 18px; height: 18px; stroke: var(--tosca-start); flex-shrink: 0;}
 
+        /* ==================== PROMO POP-UP ==================== */
+        #promo-popup-modal .modal-content { max-width: 500px; background: transparent; border: none; box-shadow: none; overflow: visible; padding: 15px;}
+        #promo-popup-modal .modal-close { right: 0; top: 0; background: #ff4757; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        #promo-img-display { width: 100%; border-radius: 12px; box-shadow: 0 15px 30px rgba(0,0,0,0.6); object-fit: cover; }
+
         /* ==================== SISTEM PORTAL NOTA / KASIR UI ==================== */
         .portal-modal-content { background: var(--bg-main); border: 1px solid rgba(255,255,255,0.2); width: 95%; max-width: 1000px; border-radius: var(--radius-lg); max-height: 95vh; overflow-y: auto; position: relative; padding: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.8); }
         .portal-header { text-align: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px;}
@@ -178,12 +178,12 @@
         .form-control:focus { outline: none; border-color: var(--accent-yellow); }
         
         /* POS Cart Style */
-        .pos-container { background: #fff; color: #333; border-radius: var(--radius-md); overflow: hidden; font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; }
+        .pos-container { background: #fff; color: #333; border-radius: var(--radius-md); overflow: hidden; font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; margin-bottom: 30px; }
         .pos-header { background: #f8f9fa; padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
         .pos-header h4 { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 1.1rem; color: #ff8a00; font-weight: 700; }
         .pos-body { padding: 20px; }
         .pos-add-row { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .pos-input { flex: 1; min-width: 150px; padding: 10px; border: 1px solid #ddd; border-radius: 6px; outline: none; }
+        .pos-input { flex: 1; min-width: 150px; padding: 10px; border: 1px solid #ddd; border-radius: 6px; outline: none; font-family: inherit;}
         .pos-btn { background: var(--primary-blue); color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: 600; white-space: nowrap; }
         .pos-btn:hover { background: var(--dark-blue); }
         
@@ -193,8 +193,9 @@
         .item-info { flex: 2; }
         .item-name { font-weight: 600; font-size: 0.95rem; color: #333; }
         .item-price-small { font-size: 0.8rem; color: #888; }
-        .qty-controls { display: flex; align-items: center; gap: 10px; flex: 1; justify-content: center; }
-        .qty-btn { width: 25px; height: 25px; border-radius: 50%; border: 1px solid #ddd; background: #fff; cursor: pointer; font-weight: bold; color: #555; }
+        .qty-controls { display: flex; align-items: center; gap: 5px; flex: 1; justify-content: center; }
+        .qty-input { width: 50px; text-align: center; border: 1px solid #ddd; border-radius: 4px; padding: 4px; font-weight: bold; outline: none;}
+        .qty-input:focus { border-color: var(--primary-blue); }
         .item-subtotal { flex: 1; text-align: right; font-weight: 700; color: #333; }
         .item-delete { color: #ff4757; cursor: pointer; border: none; background: none; font-size: 1.2rem; margin-left: 15px; }
 
@@ -207,7 +208,7 @@
         .btn-lunas { background: var(--primary-blue); color: white; border: none; border-radius: 8px; padding: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; }
         .btn-lunas:hover { background: var(--dark-blue); }
 
-        .table-responsive { overflow-x: auto; width: 100%; margin-top: 20px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.1);}
+        .table-responsive { overflow-x: auto; width: 100%; margin-top: 10px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.1);}
         .nota-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
         .nota-table th, .nota-table td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .nota-table th { background: rgba(0,0,0,0.5); color: var(--accent-yellow); font-weight: 600; white-space: nowrap;}
@@ -251,7 +252,8 @@
         .btn-simpan { background: var(--primary-blue); color: white; border: none; border-radius: 8px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 5px; cursor: pointer; }
         .btn-print-icon { background: #444; color: white; border: none; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
-        /* Print Logic */
+        /* Print Logic & Tanda Tangan */
+        .receipt-signatures { display: none; }
         @media print {
             body.is-printing-receipt * { visibility: hidden; }
             body.is-printing-receipt #receipt-modal, 
@@ -259,14 +261,14 @@
             body.is-printing-receipt #receipt-modal { position: absolute; left: 0; top: 0; width: 100%; background: white !important; }
             .receipt-actions, .modal-close { display: none !important; }
             .receipt-card { box-shadow: none; max-width: 100%; border-radius: 0; margin: 0; }
+            /* Show Signatures only on print */
+            .receipt-signatures { display: flex; justify-content: space-between; margin-top: 50px; text-align: center; font-size: 0.85rem; color: #333; padding: 0 20px; }
         }
 
         /* ==================== FLOATING WHATSAPP BUTTON ==================== */
         .floating-wa { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.4); z-index: 9998; transition: var(--transition); text-decoration: none; animation: pulse-wa 2s infinite; }
         .floating-wa:hover { transform: scale(1.1); background: #128C7E; }
         .floating-wa svg { width: 35px; height: 35px; fill: white; }
-        .wa-tooltip { position: absolute; right: 75px; background: var(--white); color: var(--bg-main); padding: 8px 15px; border-radius: 20px 20px 0 20px; font-size: 0.85rem; font-weight: 600; white-space: nowrap; box-shadow: var(--shadow-md); opacity: 0; visibility: hidden; transition: var(--transition); transform: translateX(10px); pointer-events: none; }
-        .floating-wa:hover .wa-tooltip { opacity: 1; visibility: visible; transform: translateX(0); }
         @keyframes pulse-wa { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
 
         /* ==================== STATS & FOOTER ==================== */
@@ -274,13 +276,19 @@
         .stats-section h2 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; color: var(--accent-yellow); font-weight: 800; margin-bottom: 30px; letter-spacing: 2px;}
         .footer-cta { margin-top: 20px; padding: 40px 20px; background: rgba(255, 255, 255, 0.02); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: var(--shadow-md);}
         .footer-bottom { text-align: center; padding: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.4); background: #041228; }
+        
+        /* Newsletter */
+        .newsletter-box { margin-top: 40px; background: linear-gradient(135deg, rgba(28, 111, 230, 0.1) 0%, rgba(250, 204, 21, 0.05) 100%); border: 1px solid rgba(255,255,255,0.1); padding: 40px 20px; border-radius: var(--radius-lg); max-width: 800px; margin-left: auto; margin-right: auto; box-shadow: var(--shadow-md); }
+        .newsletter-input-group { display: flex; gap: 10px; max-width: 500px; margin: 0 auto; }
+        .newsletter-input-group input { flex-grow: 1; padding: 12px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: var(--white); outline: none; font-family: inherit;}
+        .newsletter-input-group input:focus { border-color: var(--accent-yellow); }
 
         /* ==================== ADMIN EDIT MODE ==================== */
         .admin-toggle-btn { position: fixed; bottom: 30px; left: 30px; width: 45px; height: 45px; background: rgba(0,0,0,0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 9999; border: 1px solid rgba(255,255,255,0.2); transition: var(--transition); }
         .admin-toggle-btn:hover { background: var(--white); transform: rotate(90deg); }
         .admin-toggle-btn svg { width: 24px; height: 24px; stroke: #ccc; }
         .admin-toggle-btn:hover svg { stroke: #000; }
-        .admin-panel { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 15px 25px; border-radius: 50px; z-index: 10000; display: none; align-items: center; gap: 10px; box-shadow: var(--shadow-lg); flex-wrap: wrap; justify-content: center; width: 95%; max-width: 600px; }
+        .admin-panel { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 15px 25px; border-radius: 50px; z-index: 10000; display: none; align-items: center; gap: 10px; box-shadow: var(--shadow-lg); flex-wrap: wrap; justify-content: center; width: 95%; max-width: 750px; }
         .admin-panel button { background: var(--primary-blue); color: #fff; border: none; padding: 8px 15px; border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
         .admin-panel button.exit-btn { background: #ff4757; }
         body.edit-mode .edit-txt { outline: 2px dashed var(--accent-yellow); padding: 2px; border-radius: 4px; background: rgba(255, 255, 255, 0.1); min-width: 20px; display: inline-block;}
@@ -308,7 +316,7 @@
             .dana-icon-wrapper { width: 45px; height: 45px; margin-bottom: 10px; }
             .dana-icon-wrapper svg { width: 22px; height: 22px; }
             .dana-title { font-size: 0.7rem; line-height: 1.2; }
-            .wa-tooltip { display: none; } 
+            .newsletter-input-group { flex-direction: column; }
             #portal-admin-dashboard > div { grid-template-columns: 1fr; }
         }
         @media (max-width: 400px) { .dana-title { font-size: 0.65rem; } }
@@ -352,7 +360,6 @@
         <div class="container">
             <div class="hero-content reveal">
                 <p class="hero-subtitle edit-txt" data-id="hero-pre">D'JANGKOS COPIER</p>
-                <p class="hero-tagline edit-txt" data-id="hero-tagline">Serahkan segala urusan pada ahlinya</p>
                 <h1 class="edit-txt" data-id="hero-title">
                     ATK & PRINTING
                     <span class="script-font">Terlengkap</span>
@@ -367,13 +374,15 @@
         </div>
     </section>
 
-    <!-- 2.5 BANNER PROMO -->
-    <section id="promo-section" style="display: none; padding: 40px 0 0 0; position: relative; z-index: 5; text-align: center;">
-        <div class="container" style="position: relative; display: inline-block;">
-            <img id="promo-img" src="" alt="Banner Promosi" style="max-width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);">
-            <button id="delete-promo-btn" style="position: absolute; top: -10px; right: -10px; background: #ff4757; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; font-weight: bold; cursor: pointer; display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.5);" title="Hapus Banner">&times;</button>
+    <!-- 2.5 BANNER PROMO POP-UP -->
+    <div id="promo-popup-modal" class="modal-overlay" style="z-index: 10001;">
+        <div class="modal-content" style="padding: 10px;">
+            <button onclick="closePromo()" class="modal-close">&times;</button>
+            <a id="promo-link" href="#" target="_blank">
+                <img id="promo-img-display" src="" alt="Promo Banner" style="width: 100%; border-radius: 12px; box-shadow: 0 15px 30px rgba(0,0,0,0.6); object-fit: cover;">
+            </a>
         </div>
-    </section>
+    </div>
 
     <!-- 3. EDUKASI (SIPLAH & INAPROC) -->
     <section id="edukasi" class="section-padding" style="background: rgba(0,0,0,0.1);">
@@ -409,51 +418,15 @@
             </div>
             
             <div class="dana-grid reveal" id="dynamic-services-grid">
-                <!-- Card 1 -->
-                <div class="dana-card" onclick="openServiceModal('cat-1')">
-                    <div class="dana-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg></div>
-                    <h3 class="dana-title edit-txt" data-id="grid-t-1">Fotocopy & Printing</h3>
-                </div>
-                <!-- Card 2 -->
-                <div class="dana-card" onclick="openServiceModal('cat-2')">
-                    <div class="dana-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
-                    <h3 class="dana-title edit-txt" data-id="grid-t-2">Khusus Sekolah & Kampus</h3>
-                </div>
-                <!-- Card 3 -->
-                <div class="dana-card" onclick="openServiceModal('cat-3')">
-                    <div class="dana-icon-wrapper"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-                    <h3 class="dana-title edit-txt" data-id="grid-t-3">Identitas & Administrasi</h3>
-                </div>
-                <!-- Card 4 -->
-                <div class="dana-card" onclick="openServiceModal('cat-4')">
-                    <div class="dana-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
-                    <h3 class="dana-title edit-txt" data-id="grid-t-4">Usaha & Perkantoran</h3>
-                </div>
-                <!-- Card 5 -->
-                <div class="dana-card" onclick="openServiceModal('cat-5')">
-                    <div class="dana-icon-wrapper"><svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
-                    <h3 class="dana-title edit-txt" data-id="grid-t-5">Event & Promosi</h3>
-                </div>
-                <!-- Card 6 -->
-                <div class="dana-card" onclick="openServiceModal('cat-6')">
-                    <div class="dana-icon-wrapper"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
-                    <h3 class="dana-title edit-txt" data-id="grid-t-6">Cetak Foto</h3>
-                </div>
-                <!-- Card 7 -->
-                <div class="dana-card" onclick="openServiceModal('cat-7')">
-                    <div class="dana-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/><line x1="16" y1="5" x2="22" y2="5"/><line x1="19" y1="2" x2="19" y2="8"/><circle cx="9" cy="9" r="2"/><path d="M15 13l-3-3l-6 6"/></svg></div>
-                    <h3 class="dana-title edit-txt" data-id="grid-t-7">Pembuatan Website</h3>
-                </div>
-                <!-- Card 8 -->
-                <div class="dana-card" onclick="openServiceModal('cat-8')">
-                    <div class="dana-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
-                    <h3 class="dana-title edit-txt" data-id="grid-t-8">Sewa Panggung & Band</h3>
-                </div>
-                <!-- Card 9 -->
-                <div class="dana-card" onclick="openServiceModal('cat-9')">
-                    <div class="dana-icon-wrapper"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-                    <h3 class="dana-title edit-txt" data-id="grid-t-9">Daftar NPWP, NIB & Tiket</h3>
-                </div>
+                <div class="dana-card" onclick="openServiceModal('cat-1')"><div class="dana-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg></div><h3 class="dana-title edit-txt" data-id="grid-t-1">Fotocopy & Printing</h3></div>
+                <div class="dana-card" onclick="openServiceModal('cat-2')"><div class="dana-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div><h3 class="dana-title edit-txt" data-id="grid-t-2">Khusus Sekolah & Kampus</h3></div>
+                <div class="dana-card" onclick="openServiceModal('cat-3')"><div class="dana-icon-wrapper"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><h3 class="dana-title edit-txt" data-id="grid-t-3">Identitas & Administrasi</h3></div>
+                <div class="dana-card" onclick="openServiceModal('cat-4')"><div class="dana-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div><h3 class="dana-title edit-txt" data-id="grid-t-4">Usaha & Perkantoran</h3></div>
+                <div class="dana-card" onclick="openServiceModal('cat-5')"><div class="dana-icon-wrapper"><svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div><h3 class="dana-title edit-txt" data-id="grid-t-5">Event & Promosi</h3></div>
+                <div class="dana-card" onclick="openServiceModal('cat-6')"><div class="dana-icon-wrapper"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><h3 class="dana-title edit-txt" data-id="grid-t-6">Cetak Foto</h3></div>
+                <div class="dana-card" onclick="openServiceModal('cat-7')"><div class="dana-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/><line x1="16" y1="5" x2="22" y2="5"/><line x1="19" y1="2" x2="19" y2="8"/><circle cx="9" cy="9" r="2"/><path d="M15 13l-3-3l-6 6"/></svg></div><h3 class="dana-title edit-txt" data-id="grid-t-7">Pembuatan Website</h3></div>
+                <div class="dana-card" onclick="openServiceModal('cat-8')"><div class="dana-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div><h3 class="dana-title edit-txt" data-id="grid-t-8">Sewa Panggung & Band</h3></div>
+                <div class="dana-card" onclick="openServiceModal('cat-9')"><div class="dana-icon-wrapper"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><h3 class="dana-title edit-txt" data-id="grid-t-9">Daftar NPWP, NIB & Tiket</h3></div>
             </div>
         </div>
     </section>
@@ -463,7 +436,8 @@
         <div class="container glass-box reveal">
             <div class="about-grid">
                 <div class="about-text">
-                    <img class="edit-img" data-id="tentang-extra-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='200' style='background:%23041228'><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23FACC15' font-size='20' font-family='sans-serif'>[ KLIK UNTUK UPLOAD GAMBAR TAMBAHAN ]</text></svg>" alt="Gambar Tambahan" style="width: 100%; border-radius: var(--radius-md); margin-bottom: 25px; object-fit: cover;">
+                    <!-- Tombol Tambah Gambar / URL -->
+                    <img class="edit-img" data-id="tentang-extra-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='200' style='background:%23041228'><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23FACC15' font-size='20' font-family='sans-serif'>[ KLIK UNTUK MENGUBAH GAMBAR INI ]</text></svg>" alt="Gambar Tambahan" style="width: 100%; border-radius: var(--radius-md); margin-bottom: 25px; object-fit: cover;">
                     
                     <h3 class="edit-txt" data-id="about-title">Cepat, Terpercaya, Tangan Pertama</h3>
                     <p class="edit-txt" data-id="about-desc">D'JANGKOS adalah penyedia pengadaan barang/jasa terpercaya yang melayani sekolah, instansi, dan masyarakat. Memotong birokrasi panjang dengan sistem <b>tangan pertama</b>, memastikan kualitas maksimal dan waktu pengerjaan super efisien.</p>
@@ -485,7 +459,6 @@
     <!-- 6. THANKS TO & FOOTER SECTION -->
     <section class="stats-section" id="kontak">
         <div class="container reveal">
-            
             <h2 class="edit-txt" data-id="stat-title">THANKS TO</h2>
             
             <div style="max-width: 800px; margin: 0 auto; text-align: center;">
@@ -494,6 +467,16 @@
                     <strong>Sekolah & Mitra SIPLAH:</strong> SMPN 1 BAYAN, SMPN 3 BAYAN, seluruh TK/PAUD di Desa Karang Bajo, serta sebagian sekolah dari tingkat TK/PAUD/SD/SMP di Kecamatan Bayan.<br><br>
                     <strong>Mitra INAPROC:</strong> KANTOR CAMAT BAYAN.
                 </p>
+            </div>
+
+            <!-- Formulir Langganan WA -->
+            <div class="newsletter-box">
+                <h3 class="edit-txt" data-id="news-title" style="color: var(--accent-yellow); font-size: 1.5rem; margin-bottom: 10px;">Berlangganan Info Promo & Diskon!</h3>
+                <p class="edit-txt" data-id="news-desc" style="color: var(--text-light); font-size: 0.95rem; margin-bottom: 25px;">Masukkan Nomor WhatsApp atau Email Anda untuk mendapatkan update layanan terbaru dan promo eksklusif dari D'JANGKOS.</p>
+                <form id="subscribe-form" onsubmit="subscribeNewsletter(event)" class="newsletter-input-group">
+                    <input type="text" id="sub-contact" placeholder="Masukkan No. WhatsApp / Email..." required>
+                    <button type="submit" class="btn btn-primary" style="border-radius: 8px;">Berlangganan</button>
+                </form>
             </div>
 
             <div class="footer-cta">
@@ -533,6 +516,7 @@
         </div>
     </div>
 
+    <!-- STORAGE LAYANAN (Dinamis tanpa tombol pesan) -->
     <div id="service-data-storage" style="display: none;">
         <!-- CAT 1 -->
         <div id="cat-1" class="cat-data-container">
@@ -692,62 +676,81 @@
                     <h3 style="color: var(--tosca-start);">Kasir & Admin Nota</h3>
                     <button class="btn btn-outline btn-sm" onclick="logoutPortal()">Keluar</button>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 2.5fr; gap: 30px;">
-                    <!-- Tambah Instansi -->
-                    <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); height: fit-content;">
-                        <h4 style="margin-bottom: 15px; color: var(--accent-yellow);">+ Tambah Pelanggan Baru</h4>
-                        <div class="form-group"><input type="text" id="new-inst-name" class="form-control" placeholder="Nama Instansi/Sekolah"></div>
-                        <div class="form-group"><input type="text" id="new-inst-pass" class="form-control" placeholder="Sandi untuk mereka"></div>
-                        <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="addInstansi()">Simpan Instansi</button>
+                
+                <!-- POS -->
+                <div class="pos-container">
+                    <div class="pos-header">
+                        <h4><svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> Keranjang Kasir</h4>
+                        <button class="btn-sm" style="background:#fff; color:#ff4757; border:1px solid #ff4757;" onclick="clearCart()">Hapus Semua</button>
                     </div>
-                    <!-- POS -->
-                    <div class="pos-container">
-                        <div class="pos-header">
-                            <h4><svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> Keranjang Nota</h4>
-                            <button class="btn-sm" style="background:#fff; color:#ff4757; border:1px solid #ff4757;" onclick="clearCart()">Hapus Semua</button>
+                    <div class="pos-body">
+                        <div class="pos-add-row">
+                            <input type="text" id="cart-item-name" class="pos-input" placeholder="Nama Layanan/Barang (Contoh: Cetak Undangan)">
+                            <input type="number" id="cart-item-price" class="pos-input" placeholder="Harga Satuan (Rp)" style="max-width: 180px;">
+                            <button class="pos-btn" onclick="addToCart()">Tambah</button>
                         </div>
-                        <div class="pos-body">
-                            <div class="pos-add-row">
-                                <input type="text" id="cart-item-name" class="pos-input" placeholder="Nama Layanan/Barang">
-                                <input type="number" id="cart-item-price" class="pos-input" placeholder="Harga Satuan (Rp)" style="max-width: 180px;">
-                                <button class="pos-btn" onclick="addToCart()">Tambah</button>
+                        <div class="cart-list" id="cart-list-container">
+                            <div style="padding: 20px; text-align: center; color: #888;">Keranjang kosong.</div>
+                        </div>
+                    </div>
+                    <div class="pos-footer">
+                        <div style="display: flex; gap: 15px; margin-bottom: 15px; align-items: end; flex-wrap: wrap;">
+                            <div style="flex: 2; min-width: 200px;">
+                                <label style="font-size:0.8rem; color:#555; display:block; margin-bottom:5px;">Pilih Pelanggan / Instansi</label>
+                                <!-- FIXED ID HERE untuk pos-instansi -->
+                                <select id="pos-instansi" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc; background:#fff; color:#333;"></select>
                             </div>
-                            <div class="cart-list" id="cart-list-container">
-                                <div style="padding: 20px; text-align: center; color: #888;">Keranjang kosong.</div>
+                            <div style="flex: 1; min-width: 150px;">
+                                <label style="font-size:0.8rem; color:#555; display:block; margin-bottom:5px;">Pajak (Opsional)</label>
+                                <!-- FIXED Pajak PPN/PPH menggunakan persen -->
+                                <select id="pos-tax-type" onchange="updateCartUI()" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc; background:#fff; color:#333;">
+                                    <option value="0">Tanpa Pajak (0%)</option>
+                                    <option value="12">PPN Saja (12%)</option>
+                                    <option value="0.5">PPH Saja (0.5%)</option>
+                                    <option value="12.5">PPN + PPH (12.5%)</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="pos-footer">
-                            <div style="display: flex; gap: 15px; margin-bottom: 15px; align-items: end; flex-wrap: wrap;">
-                                <div style="flex: 2; min-width: 200px;">
-                                    <label style="font-size:0.8rem; color:#555; display:block; margin-bottom:5px;">Pilih Pelanggan / Instansi</label>
-                                    <select id="trans-instansi" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;"></select>
-                                </div>
-                                <div style="flex: 1; min-width: 150px;">
-                                    <label style="font-size:0.8rem; color:#555; display:block; margin-bottom:5px;">Pajak PPN/PPH (Rp)</label>
-                                    <input type="number" id="cart-tax" value="0" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;" oninput="updateCartUI()">
-                                </div>
-                            </div>
-                            <div class="pos-totals-row">
-                                <span style="font-weight:600; color:#555;">TOTAL TAGIHAN</span>
-                                <span class="pos-total-text" id="cart-grand-total">Rp 0</span>
-                            </div>
-                            <div class="pos-actions">
-                                <button class="btn-hutang" onclick="processCart('HUTANG')">HUTANG</button>
-                                <button class="btn-lunas" onclick="processCart('LUNAS')">LUNAS & CETAK</button>
-                            </div>
+                        <div class="pos-totals-row">
+                            <span style="font-weight:600; color:#555;">TOTAL TAGIHAN</span>
+                            <span class="pos-total-text" id="cart-grand-total">Rp 0</span>
+                        </div>
+                        <div class="pos-actions">
+                            <button class="btn-hutang" onclick="processCart('HUTANG')">SIMPAN HUTANG</button>
+                            <button class="btn-lunas" onclick="processCart('LUNAS')">LUNAS & CETAK NOTA</button>
                         </div>
                     </div>
                 </div>
-                <div style="margin-top: 30px;">
-                    <h4 style="margin-bottom: 10px;">Semua Riwayat Transaksi</h4>
-                    <div class="table-responsive">
-                        <table class="nota-table">
-                            <thead><tr><th>Tgl</th><th>Instansi</th><th>Rincian Rangkuman</th><th>Total</th><th>Status</th><th>Aksi</th></tr></thead>
-                            <tbody id="admin-table-body"></tbody>
-                        </table>
+
+                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 30px;">
+                    <!-- Tambah & Kelola Instansi -->
+                    <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); height: fit-content;">
+                        <h4 style="margin-bottom: 15px; color: var(--accent-yellow);">+ Kelola Pelanggan (Instansi)</h4>
+                        <div class="form-group"><input type="text" id="new-inst-name" class="form-control" placeholder="Nama Instansi/Sekolah Baru"></div>
+                        <div class="form-group"><input type="text" id="new-inst-pass" class="form-control" placeholder="Buat Sandi Instansi Baru"></div>
+                        <button class="btn btn-primary btn-sm" style="width: 100%; margin-bottom: 20px;" onclick="addInstansi()">Simpan Instansi</button>
+                        
+                        <h5 style="color: var(--text-light); margin-bottom: 10px; font-size: 0.85rem;">Daftar Instansi & Sandi</h5>
+                        <div style="max-height: 200px; overflow-y: auto;">
+                            <table class="nota-table" style="font-size: 0.8rem;">
+                                <tbody id="admin-instansi-list"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tabel Riwayat Semua Transaksi -->
+                    <div>
+                        <h4 style="margin-bottom: 10px;">Semua Riwayat Transaksi</h4>
+                        <div class="table-responsive">
+                            <table class="nota-table">
+                                <thead><tr><th>Tgl</th><th>Instansi</th><th>Rincian Rangkuman</th><th>Total</th><th>Status</th><th>Aksi</th></tr></thead>
+                                <tbody id="admin-table-body"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
+
             <!-- Dashboard Pelanggan -->
             <div id="portal-customer-dashboard" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px dashed rgba(255,255,255,0.2); padding-bottom: 15px;">
@@ -791,8 +794,24 @@
                 <div class="receipt-divider"></div>
                 <div class="receipt-items" id="rcpt-items"></div>
                 <div class="receipt-divider"></div>
-                <div class="receipt-row" style="font-size: 0.8rem;"><span class="label">Pajak (PPN/PPH)</span><span class="val" id="rcpt-tax">Rp 0</span></div>
-                <div class="receipt-brand">D'Jangkos Digital Printing</div>
+                <div class="receipt-row" style="font-size: 0.8rem;"><span class="label" id="rcpt-tax-label">Pajak (0%)</span><span class="val" id="rcpt-tax">Rp 0</span></div>
+                
+                <!-- Signature Space specifically designed for Print/Save -->
+                <div class="receipt-signatures">
+                    <div style="flex: 1; padding: 0 10px;">
+                        <p style="margin-bottom: 50px;">Tanda Terima</p>
+                        <p style="border-bottom: 1px solid #333; display: inline-block; width: 100px;"></p>
+                    </div>
+                    <div style="flex: 1; padding: 0 10px;">
+                        <p style="margin-bottom: 50px;">Hormat Kami,</p>
+                        <p style="border-bottom: 1px solid #333; display: inline-block; width: 100px; margin-bottom: 5px; font-weight:bold;">D'JANGKOS</p>
+                        <!-- (Stempel ditaruh manual di atas area ini jika dicetak) -->
+                    </div>
+                </div>
+
+                <div class="receipt-brand" style="margin-top: 30px;">
+                    <img src="images/logo-djangkos.jpg" onerror="this.style.display='none'" style="width:16px;height:16px;margin-right:5px; border-radius:50%;"> D'Jangkos Digital Printing
+                </div>
             </div>
             <div class="receipt-actions">
                 <button class="btn-wa" onclick="shareReceiptWA()">Share WA</button>
@@ -815,8 +834,9 @@
     <!-- ADMIN PANEL -->
     <div class="admin-panel" id="admin-panel">
         <span><b>MODE EDIT</b></span>
-        <button id="upload-promo-btn" style="background: var(--tosca-start);"><svg style="width:14px;height:14px;vertical-align:middle;margin-right:3px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Upload Banner</button>
-        <button id="save-btn">Simpan Perubahan</button>
+        <button onclick="managePromoPopup()" style="background: var(--tosca-start);">Atur Promo Pop-up</button>
+        <button onclick="editMasterPass()" style="background: #333;">Ubah Sandi Master</button>
+        <button id="save-btn">Simpan Perubahan Teks/Foto</button>
         <button id="exit-btn" class="exit-btn">Keluar</button>
     </div>
 
@@ -844,6 +864,8 @@
 
         function triggerCloseModal() { history.back(); }
 
+        function closePromo() { document.getElementById('promo-popup-modal').classList.remove('active'); }
+
         window.addEventListener('popstate', (e) => {
             if (document.getElementById('service-modal').classList.contains('active')) closeServiceModalOnly();
             if (document.getElementById('portal-modal').classList.contains('active')) closePortalModal();
@@ -851,7 +873,7 @@
         });
 
         window.onclick = function(event) {
-            if (event.target.classList.contains('modal-overlay')) { history.back(); }
+            if (event.target.classList.contains('modal-overlay') && event.target.id !== 'promo-popup-modal') { history.back(); }
         }
 
         // --- 2. Mobile Menu Toggle ---
@@ -895,12 +917,7 @@
         const saveBtn = document.getElementById('save-btn');
         const exitBtn = document.getElementById('exit-btn');
         const imageUpload = document.getElementById('image-upload');
-        
-        const promoSection = document.getElementById('promo-section');
-        const promoImg = document.getElementById('promo-img');
-        const uploadPromoBtn = document.getElementById('upload-promo-btn');
         const promoUploadInput = document.getElementById('promo-upload');
-        const deletePromoBtn = document.getElementById('delete-promo-btn');
         
         let isEditMode = false;
         let currentEditingImage = null;
@@ -923,20 +940,34 @@
                 if (savedData[id]) el.src = savedData[id];
             });
 
-            const savedPromo = localStorage.getItem('djangkosPromoBanner');
-            if (savedPromo) {
-                promoImg.src = savedPromo;
-                promoSection.style.display = 'block';
+            // Tampilkan Promo Popup saat web pertama kali dibuka jika ada data promo
+            const promoData = JSON.parse(localStorage.getItem('djangkosPromoData'));
+            if (promoData && promoData.img) {
+                document.getElementById('promo-img-display').src = promoData.img;
+                document.getElementById('promo-link').href = promoData.link || "#";
+                document.getElementById('promo-popup-modal').classList.add('active');
             }
         };
-        loadSavedData();
+
+        window.addEventListener('DOMContentLoaded', loadSavedData);
+
+        // FITUR UBAH SANDI MASTER
+        window.editMasterPass = function() {
+            const currentPass = localStorage.getItem('djangkosMasterPass') || 'djangkos@copier';
+            const newPass = prompt("Masukkan sandi Master / Admin Nota baru:", currentPass);
+            if (newPass && newPass.trim() !== "") {
+                localStorage.setItem('djangkosMasterPass', newPass.trim());
+                alert("Sandi Master berhasil diperbarui!");
+            }
+        };
 
         if(adminBtn) {
             adminBtn.addEventListener('click', () => {
                 if(!isEditMode) {
-                    const pass = prompt("Masukkan Password Admin:");
-                    if (pass === "djangkoscopier") { enableEditMode(); } 
-                    else if (pass !== null) { alert("Password Salah!"); }
+                    const masterPass = localStorage.getItem('djangkosMasterPass') || 'djangkos@copier';
+                    const pass = prompt("Masukkan Sandi Master:");
+                    if (pass === masterPass) { enableEditMode(); } 
+                    else if (pass !== null) { alert("Sandi Master Salah!"); }
                 }
             });
         }
@@ -946,7 +977,6 @@
             adminPanel.style.display = 'flex'; adminBtn.style.display = 'none';
             document.querySelectorAll('.edit-txt').forEach(el => { el.setAttribute('contenteditable', 'true'); });
             document.querySelectorAll('.edit-img').forEach(el => { el.addEventListener('click', imageClickHandler); });
-            if (promoImg && promoImg.getAttribute('src') && promoImg.getAttribute('src') !== '') { deletePromoBtn.style.display = 'block'; }
         };
 
         const disableEditMode = () => {
@@ -954,11 +984,19 @@
             adminPanel.style.display = 'none'; adminBtn.style.display = 'flex';
             document.querySelectorAll('.edit-txt').forEach(el => { el.removeAttribute('contenteditable'); });
             document.querySelectorAll('.edit-img').forEach(el => { el.removeEventListener('click', imageClickHandler); });
-            if(deletePromoBtn) deletePromoBtn.style.display = 'none';
         };
 
+        // IMAGE CLICK (Bisa URL Embed / Upload Lokal)
         function imageClickHandler(e) {
-            if(isEditMode && e.target !== promoImg) { currentEditingImage = e.target; imageUpload.click(); }
+            if(isEditMode) { 
+                currentEditingImage = e.target; 
+                const url = prompt("Masukkan Link/URL Gambar (contoh dari Google/Instagram).\nAtau KOSONGKAN lalu tekan OK untuk Upload file dari HP/Laptop:");
+                if (url && url.trim() !== "") {
+                    currentEditingImage.src = url.trim();
+                } else if (url === "") { // User pressed OK leaving it empty
+                    imageUpload.click(); 
+                }
+            }
         }
 
         if(imageUpload) {
@@ -973,15 +1011,31 @@
             });
         }
 
-        if(uploadPromoBtn) uploadPromoBtn.addEventListener('click', () => { promoUploadInput.click(); });
+        // PROMO POPUP ADMIN
+        window.managePromoPopup = function() {
+            const opt = prompt("Ketik angka pilihan:\n[1] Masukkan URL/Link Gambar Promo\n[2] Upload File Gambar dari Perangkat\n[0] Matikan Pop-up Promo");
+            if (opt === '1') {
+                const url = prompt("Tempel (Paste) URL/Link gambar di sini:");
+                if (url) {
+                    const link = prompt("Masukkan URL tujuan saat gambar di-klik pengunjung (Opsional):", "https://");
+                    savePromoData(url, link || "#");
+                }
+            } else if (opt === '2') {
+                promoUploadInput.click();
+            } else if (opt === '0') {
+                localStorage.removeItem('djangkosPromoData');
+                alert("Banner Pop-up dinonaktifkan.");
+            }
+        };
+
         if(promoUploadInput) {
             promoUploadInput.addEventListener('change', function(e) {
                 const file = e.target.files[0];
                 if (file) {
                     const reader = new FileReader();
                     reader.onload = function(event) { 
-                        promoImg.src = event.target.result; promoSection.style.display = 'block';
-                        if(isEditMode) deletePromoBtn.style.display = 'block';
+                        const link = prompt("Masukkan URL tujuan saat gambar di-klik pengunjung (Opsional):", "https://");
+                        savePromoData(event.target.result, link || "#");
                     };
                     reader.readAsDataURL(file);
                 }
@@ -989,13 +1043,9 @@
             });
         }
 
-        if(deletePromoBtn) {
-            deletePromoBtn.addEventListener('click', () => {
-                if(confirm("Hapus banner promosi ini?")) {
-                    promoImg.removeAttribute('src'); promoSection.style.display = 'none'; deletePromoBtn.style.display = 'none';
-                    localStorage.removeItem('djangkosPromoBanner'); 
-                }
-            });
+        function savePromoData(imgSrc, linkUrl) {
+            localStorage.setItem('djangkosPromoData', JSON.stringify({ img: imgSrc, link: linkUrl }));
+            alert("Banner Pop-up berhasil disimpan! Pengunjung akan melihatnya saat halaman dimuat ulang.");
         }
 
         if(saveBtn) {
@@ -1004,10 +1054,6 @@
                 document.querySelectorAll('.edit-txt').forEach(el => { dataToSave[el.getAttribute('data-id')] = el.innerHTML; });
                 document.querySelectorAll('.edit-img').forEach(el => { dataToSave[el.getAttribute('data-id')] = el.src; });
                 localStorage.setItem('djangkosV6Content', JSON.stringify(dataToSave));
-                
-                if (promoImg && promoImg.getAttribute('src') && promoImg.getAttribute('src') !== '') {
-                    localStorage.setItem('djangkosPromoBanner', promoImg.src);
-                } else { localStorage.removeItem('djangkosPromoBanner'); }
 
                 const btnOriginalText = saveBtn.innerText;
                 saveBtn.innerText = "Tersimpan ✔";
@@ -1060,19 +1106,34 @@
             
             dbUnsubscribeInstansi = window.onSnapshot(instansiRef, (snapshot) => {
                 const selectLogin = document.getElementById('instansi-select');
-                const selectAdmin = document.getElementById('trans-instansi');
+                const selectPos = document.getElementById('pos-instansi');
+                const tableAdminList = document.getElementById('admin-instansi-list'); // Table in admin
                 
                 if(selectLogin) selectLogin.innerHTML = '<option value="">-- Pilih Instansi Anda --</option>';
-                if(selectAdmin) selectAdmin.innerHTML = '<option value="">-- Pilih Pelanggan --</option>';
+                if(selectPos) selectPos.innerHTML = '<option value="">-- Pilih Pelanggan --</option>';
+                if(tableAdminList) tableAdminList.innerHTML = '';
                 instansiDataMap = {};
 
                 snapshot.forEach((doc) => {
                     const data = doc.data();
                     instansiDataMap[doc.id] = data; 
+                    
                     const optLogin = document.createElement('option'); optLogin.value = doc.id; optLogin.textContent = data.nama;
                     if(selectLogin) selectLogin.appendChild(optLogin);
-                    const optAdmin = document.createElement('option'); optAdmin.value = doc.id; optAdmin.textContent = data.nama;
-                    if(selectAdmin) selectAdmin.appendChild(optAdmin);
+                    
+                    const optPos = document.createElement('option'); optPos.value = doc.id; optPos.textContent = data.nama;
+                    if(selectPos) selectPos.appendChild(optPos);
+
+                    // Row untuk tabel admin
+                    if(tableAdminList) {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${data.nama}</td>
+                            <td>${data.password}</td>
+                            <td><button onclick="editInstansiPassword('${doc.id}')" style="background:var(--accent-yellow); border:none; border-radius:4px; padding:2px 8px; font-weight:bold; cursor:pointer;">Edit Sandi</button></td>
+                        `;
+                        tableAdminList.appendChild(tr);
+                    }
                 });
             });
         }
@@ -1103,7 +1164,7 @@
             clearCart();
         }
 
-        // POS
+        // ================= POS / KASIR KERANJANG =================
         let posCart = [];
         window.addToCart = function() {
             const nameInput = document.getElementById('cart-item-name');
@@ -1114,12 +1175,25 @@
             nameInput.value = ''; priceInput.value = ''; updateCartUI();
         }
 
+        // Tombol +/-
         window.updateCartQty = function(index, delta) {
             if(posCart[index]) { posCart[index].qty += delta; if(posCart[index].qty < 1) posCart[index].qty = 1; updateCartUI(); }
         }
 
+        // Input Angka Manual pada keranjang
+        window.updateCartQtyDirect = function(index, val) {
+            let newVal = parseInt(val);
+            if (isNaN(newVal) || newVal < 1) newVal = 1;
+            if(posCart[index]) { posCart[index].qty = newVal; updateCartUI(); }
+        }
+
         window.removeCartItem = function(index) { posCart.splice(index, 1); updateCartUI(); }
-        window.clearCart = function() { posCart = []; if(document.getElementById('cart-tax')) document.getElementById('cart-tax').value = '0'; if(document.getElementById('trans-instansi')) document.getElementById('trans-instansi').value = ''; updateCartUI(); }
+        window.clearCart = function() { 
+            posCart = []; 
+            if(document.getElementById('pos-tax-type')) document.getElementById('pos-tax-type').value = '0'; 
+            if(document.getElementById('pos-instansi')) document.getElementById('pos-instansi').value = ''; 
+            updateCartUI(); 
+        }
 
         window.updateCartUI = function() {
             const container = document.getElementById('cart-list-container');
@@ -1130,35 +1204,68 @@
                 posCart.forEach((item, index) => {
                     const itemTotal = item.price * item.qty; subtotal += itemTotal;
                     const row = document.createElement('div'); row.className = 'cart-item';
-                    row.innerHTML = `<div class="item-info"><div class="item-name">${item.name}</div><div class="item-price-small">${formatRupiah(item.price)} / pcs</div></div><div class="qty-controls"><button class="qty-btn" onclick="updateCartQty(${index}, -1)">-</button><span>${item.qty}</span><button class="qty-btn" onclick="updateCartQty(${index}, 1)">+</button></div><div class="item-subtotal">${formatRupiah(itemTotal)}</div><button class="item-delete" onclick="removeCartItem(${index})"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>`;
+                    // Kolom Input Manual (class="qty-input")
+                    row.innerHTML = `<div class="item-info"><div class="item-name">${item.name}</div><div class="item-price-small">${formatRupiah(item.price)} / pcs</div></div>
+                        <div class="qty-controls">
+                            <button class="qty-btn" onclick="updateCartQty(${index}, -1)">-</button>
+                            <input type="number" class="qty-input" value="${item.qty}" min="1" onchange="updateCartQtyDirect(${index}, this.value)">
+                            <button class="qty-btn" onclick="updateCartQty(${index}, 1)">+</button>
+                        </div>
+                        <div class="item-subtotal">${formatRupiah(itemTotal)}</div>
+                        <button class="item-delete" onclick="removeCartItem(${index})"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>`;
                     container.appendChild(row);
                 });
             }
-            const taxInput = parseInt(document.getElementById('cart-tax')?.value) || 0;
-            const grandTotal = subtotal + taxInput;
+            
+            // Hitung Pajak via Dropdown (Persentase)
+            const taxRate = parseFloat(document.getElementById('pos-tax-type')?.value) || 0;
+            const taxAmount = subtotal * (taxRate / 100);
+            const grandTotal = subtotal + taxAmount;
+            
             if(document.getElementById('cart-grand-total')) document.getElementById('cart-grand-total').innerText = formatRupiah(grandTotal);
         }
 
         window.processCart = async function(status) {
             if(!currentUser) return;
             if(posCart.length === 0) { alert("Keranjang masih kosong!"); return; }
-            const instId = document.getElementById('trans-instansi').value;
-            if(!instId) { alert("Pilih Pelanggan / Instansi terlebih dahulu!"); return; }
-            const taxInput = parseInt(document.getElementById('cart-tax').value) || 0;
+            
+            // Perbaikan ID (Menggunakan pos-instansi)
+            const instId = document.getElementById('pos-instansi').value;
+            if(!instId) { alert("Pilih Pelanggan / Instansi di bagian bawah keranjang terlebih dahulu!"); return; }
+            
             let subtotal = 0; posCart.forEach(i => subtotal += (i.price * i.qty));
+            const taxRate = parseFloat(document.getElementById('pos-tax-type').value) || 0;
+            const taxAmount = subtotal * (taxRate / 100);
+            
             const dateIso = new Date().toISOString();
             const summaryString = posCart.map(i => `${i.qty}x ${i.name}`).join(', ');
             const trxId = "TRX" + Date.now().toString().slice(-5);
+            
             try {
                 const transRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'transaksi');
-                await window.addDoc(transRef, { trxId: trxId, instansiId: instId, tanggal: dateIso, item: summaryString, cart: posCart, total: subtotal, pajak: taxInput, status: status, createdAt: dateIso });
+                await window.addDoc(transRef, { 
+                    trxId: trxId, 
+                    instansiId: instId, 
+                    tanggal: dateIso, 
+                    item: summaryString, 
+                    cart: posCart, 
+                    total: subtotal, 
+                    pajak: taxAmount, 
+                    taxRate: taxRate, // Simpan % persennya juga
+                    status: status, 
+                    createdAt: dateIso 
+                });
                 clearCart();
+                
                 if(status === 'LUNAS') {
+                    // Beri jeda sistem baca database, lalu auto-print nota
                     setTimeout(() => {
                         const trxs = Object.values(window.transactionsMap).filter(t => t.instansiId === instId).sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
                         if(trxs.length > 0) openReceiptModal(trxs[0].id);
-                    }, 500);
-                } else { alert("Tagihan Hutang berhasil dicatat!"); }
+                    }, 800);
+                } else { 
+                    alert("Tagihan HUTANG berhasil dicatat!"); 
+                }
             } catch(e) { console.error(e); alert("Gagal mencatat transaksi."); }
         }
 
@@ -1200,7 +1307,8 @@
 
         window.loginAdminPortal = function() {
             const pass = document.getElementById('admin-portal-password').value;
-            if(pass === "djangkosbos") {
+            const masterPass = localStorage.getItem('djangkosMasterPass') || 'djangkos@copier';
+            if(pass === masterPass) {
                 switchPortalView('portal-admin-dashboard'); listenToAllTransactions();
             } else { alert("Password Admin Salah!"); }
         }
@@ -1218,6 +1326,19 @@
                 btn.innerText = "Tersimpan ✔"; setTimeout(() => btn.innerText = "Simpan Instansi", 2000);
             } catch(e) { console.error(e); alert("Gagal menambah data."); }
         }
+
+        // Fitur Edit Sandi Instansi dari Admin Panel
+        window.editInstansiPassword = async function(instId) {
+            const currentName = instansiDataMap[instId].nama;
+            const newPass = prompt(`Masukkan sandi (password) baru untuk Instansi/Sekolah:\n${currentName}`);
+            if (newPass && newPass.trim() !== "") {
+                try {
+                    const docRef = window.doc(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'instansi', instId);
+                    await window.updateDoc(docRef, { password: newPass.trim() });
+                    alert("Sandi instansi berhasil diubah!");
+                } catch(e) { console.error(e); alert("Gagal mengubah sandi."); }
+            }
+        };
 
         function listenToAllTransactions() {
             if(!currentUser) return;
@@ -1265,13 +1386,19 @@
             currentActiveReceipt = data;
             const header = document.getElementById('rcpt-header'); const statusTxt = document.getElementById('rcpt-status');
             if(data.status === 'LUNAS') { header.className = 'receipt-header header-lunas'; statusTxt.innerText = 'LUNAS'; } 
-            else { header.className = 'receipt-header header-hutang'; statusTxt.innerText = 'Menunggu Pembayaran'; }
+            else { header.className = 'receipt-header header-hutang'; statusTxt.innerText = 'BELUM LUNAS'; }
+            
             document.getElementById('rcpt-date').innerText = formatDateReadable(data.tanggal);
             const grandTotal = parseInt(data.total) + parseInt(data.pajak);
             document.getElementById('rcpt-total').innerText = formatRupiah(grandTotal);
             document.getElementById('rcpt-id').innerText = data.trxId || ("#TRX" + transId.substring(0,6).toUpperCase());
             document.getElementById('rcpt-customer').innerText = instansiDataMap[data.instansiId] ? instansiDataMap[data.instansiId].nama : "Instansi";
+            
+            // Format Label Pajak (Misal: PPN 12%)
+            const rateLabel = data.taxRate ? ` (${data.taxRate}%)` : '';
+            document.getElementById('rcpt-tax-label').innerText = `Pajak / PPN` + rateLabel;
             document.getElementById('rcpt-tax').innerText = formatRupiah(data.pajak);
+            
             const itemsContainer = document.getElementById('rcpt-items'); itemsContainer.innerHTML = '';
             const cartItems = data.cart || [{name: data.item, qty: 1, price: data.total}];
             cartItems.forEach(item => {
