@@ -18,7 +18,6 @@
         import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDocs, addDoc, onSnapshot, query, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Make Firebase available globally for our scripts
         window.firebaseApp = initializeApp(typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {});
         window.firebaseAuth = getAuth(window.firebaseApp);
         window.firebaseDb = getFirestore(window.firebaseApp);
@@ -75,24 +74,12 @@
         img { max-width: 100%; height: auto; display: block; }
 
         /* ==================== ANIMASI LATAR BELAKANG SILUET ==================== */
-        .bg-rings {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            overflow: hidden; z-index: -1; pointer-events: none;
-        }
-        .ring {
-            position: absolute; border-radius: 50%; filter: blur(12px);
-            background: radial-gradient(circle, rgba(28, 111, 230, 0.15) 0%, transparent 70%);
-            animation: floatAnim 15s infinite alternate ease-in-out;
-        }
+        .bg-rings { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -1; pointer-events: none; }
+        .ring { position: absolute; border-radius: 50%; filter: blur(12px); background: radial-gradient(circle, rgba(28, 111, 230, 0.15) 0%, transparent 70%); animation: floatAnim 15s infinite alternate ease-in-out; }
         .ring-1 { width: 500px; height: 500px; top: -100px; left: -150px; animation-delay: 0s; }
         .ring-2 { width: 400px; height: 400px; top: 40%; right: -100px; background: radial-gradient(circle, rgba(250, 204, 21, 0.08) 0%, transparent 70%); animation-delay: -5s; }
         .ring-3 { width: 600px; height: 600px; bottom: -200px; left: 20%; animation-delay: -10s; }
-
-        @keyframes floatAnim {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(30px, 40px) scale(1.1); }
-            100% { transform: translate(-20px, -20px) scale(0.9); }
-        }
+        @keyframes floatAnim { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, 40px) scale(1.1); } 100% { transform: translate(-20px, -20px) scale(0.9); } }
 
         /* ==================== REUSABLE COMPONENTS ==================== */
         .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
@@ -124,12 +111,7 @@
 
         /* ==================== HERO SECTION ==================== */
         .hero { min-height: 100vh; display: flex; align-items: center; position: relative; padding-top: 100px; z-index: 1; }
-        /* Latar Belakang Potocopy Opacity Dinaikkan (0.35) */
-        .hero::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: url('images/potocopy.jpg') center/cover no-repeat;
-            opacity: 0.35; z-index: -1;
-        }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('images/potocopy.jpg') center/cover no-repeat; opacity: 0.35; z-index: -1; }
         .hero-content { max-width: 900px; text-align: center; margin: 0 auto; position: relative; z-index: 2;}
         .hero-subtitle { font-size: 1.2rem; letter-spacing: 2px; color: var(--text-light); margin-bottom: 5px; font-weight: 600; }
         .hero-tagline { color: var(--accent-yellow); font-weight: 600; font-size: 1.1rem; margin-bottom: -10px; letter-spacing: 1px; }
@@ -147,15 +129,7 @@
         .edukasi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: stretch; }
         .edu-card { background: var(--bg-card); padding: 40px; border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.1); transition: var(--transition); text-align: center; display: flex; flex-direction: column; justify-content: space-between;}
         .edu-card:hover { transform: translateY(-5px); border-color: var(--accent-yellow); box-shadow: var(--shadow-md); }
-        
-        /* Glow Effect pada Logo */
-        .glow-logo {
-            max-width: 100%; height: 100px; object-fit: contain; margin: 0 auto 20px;
-            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6));
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
-            border-radius: 20px; padding: 10px;
-        }
-        
+        .glow-logo { max-width: 100%; height: 100px; object-fit: contain; margin: 0 auto 20px; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6)); background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%); border-radius: 20px; padding: 10px; }
         .edu-card h3 { color: var(--accent-yellow); font-size: 1.5rem; margin-bottom: 15px; }
         .edu-card p { color: var(--text-light); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px; }
 
@@ -185,42 +159,6 @@
         .modal-close { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); border: none; color: var(--white); width: 35px; height: 35px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: var(--transition); }
         .modal-close:hover { background: #ff4757; }
         
-        /* Modals Khusus untuk Sistem Nota */
-        .portal-modal-content {
-            background: var(--bg-main); border: 1px solid rgba(255,255,255,0.2); width: 95%; max-width: 900px; border-radius: var(--radius-lg); max-height: 90vh; overflow-y: auto; position: relative; padding: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.8);
-        }
-        .portal-header { text-align: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px;}
-        .portal-header h2 { color: var(--accent-yellow); font-size: 2rem; margin-bottom: 5px;}
-        .portal-header p { color: var(--text-light); font-size: 0.9rem;}
-        
-        .form-group { margin-bottom: 15px; text-align: left; }
-        .form-group label { display: block; margin-bottom: 5px; color: var(--text-light); font-size: 0.9rem; }
-        .form-control { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: var(--white); font-family: inherit; }
-        .form-control:focus { outline: none; border-color: var(--accent-yellow); }
-        
-        .table-responsive { overflow-x: auto; width: 100%; margin-top: 20px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.1);}
-        .nota-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
-        .nota-table th, .nota-table td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .nota-table th { background: rgba(0,0,0,0.5); color: var(--accent-yellow); font-weight: 600; white-space: nowrap;}
-        .nota-table tr:hover { background: rgba(255,255,255,0.02); }
-        .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
-        .status-lunas { background: rgba(37, 211, 102, 0.2); color: #25D366; border: 1px solid #25D366; }
-        .status-hutang { background: rgba(255, 71, 87, 0.2); color: #ff4757; border: 1px solid #ff4757; }
-
-        .btn-sm { padding: 6px 12px; font-size: 0.8rem; border-radius: 6px; margin-right: 5px;}
-        .btn-print { background: var(--tosca-start); color: white; border: none; cursor: pointer;}
-
-        /* Cetak Nota Print Styles */
-        @media print {
-            body * { visibility: hidden; }
-            #print-area, #print-area * { visibility: visible; }
-            #print-area { position: absolute; left: 0; top: 0; width: 100%; background: white !important; color: black !important;}
-            .no-print { display: none !important; }
-            .portal-modal-content { border: none; box-shadow: none; padding: 0; background: white;}
-            .nota-table th { background: #f0f0f0 !important; color: black !important; }
-            .nota-table th, .nota-table td { border-color: #ccc !important; }
-        }
-        
         .modal-header-img { width: 100%; height: 200px; object-fit: cover; border-bottom: 3px solid var(--accent-yellow); }
         .modal-body { padding: 30px; }
         .modal-title { font-size: 1.8rem; color: var(--accent-yellow); font-weight: 700; margin-bottom: 10px; }
@@ -230,6 +168,99 @@
         .sub-item { background: rgba(255,255,255,0.05); padding: 12px 15px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px; font-weight: 500; font-size: 0.95rem; }
         .sub-item svg { width: 18px; height: 18px; stroke: var(--tosca-start); flex-shrink: 0;}
 
+        /* ==================== SISTEM PORTAL NOTA / KASIR UI ==================== */
+        .portal-modal-content { background: var(--bg-main); border: 1px solid rgba(255,255,255,0.2); width: 95%; max-width: 1000px; border-radius: var(--radius-lg); max-height: 95vh; overflow-y: auto; position: relative; padding: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.8); }
+        .portal-header { text-align: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px;}
+        .portal-header h2 { color: var(--accent-yellow); font-size: 2rem; margin-bottom: 5px;}
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 5px; color: var(--text-light); font-size: 0.9rem; }
+        .form-control { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: var(--white); font-family: inherit; }
+        .form-control:focus { outline: none; border-color: var(--accent-yellow); }
+        
+        /* POS Cart Style */
+        .pos-container { background: #fff; color: #333; border-radius: var(--radius-md); overflow: hidden; font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; }
+        .pos-header { background: #f8f9fa; padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .pos-header h4 { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 1.1rem; color: #ff8a00; font-weight: 700; }
+        .pos-body { padding: 20px; }
+        .pos-add-row { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .pos-input { flex: 1; min-width: 150px; padding: 10px; border: 1px solid #ddd; border-radius: 6px; outline: none; }
+        .pos-btn { background: var(--primary-blue); color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: 600; white-space: nowrap; }
+        .pos-btn:hover { background: var(--dark-blue); }
+        
+        .cart-list { border: 1px solid #eee; border-radius: 8px; max-height: 250px; overflow-y: auto; margin-bottom: 20px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #f0f0f0; }
+        .cart-item:last-child { border-bottom: none; }
+        .item-info { flex: 2; }
+        .item-name { font-weight: 600; font-size: 0.95rem; color: #333; }
+        .item-price-small { font-size: 0.8rem; color: #888; }
+        .qty-controls { display: flex; align-items: center; gap: 10px; flex: 1; justify-content: center; }
+        .qty-btn { width: 25px; height: 25px; border-radius: 50%; border: 1px solid #ddd; background: #fff; cursor: pointer; font-weight: bold; color: #555; }
+        .item-subtotal { flex: 1; text-align: right; font-weight: 700; color: #333; }
+        .item-delete { color: #ff4757; cursor: pointer; border: none; background: none; font-size: 1.2rem; margin-left: 15px; }
+
+        .pos-footer { background: #f8f9fa; padding: 20px; border-top: 1px solid #eee; }
+        .pos-totals-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .pos-total-text { font-size: 1.5rem; font-weight: 800; color: #ff8a00; }
+        .pos-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .btn-hutang { background: white; color: #ff4757; border: 2px solid #ff4757; border-radius: 8px; padding: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; }
+        .btn-hutang:hover { background: rgba(255,71,87,0.1); }
+        .btn-lunas { background: var(--primary-blue); color: white; border: none; border-radius: 8px; padding: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; }
+        .btn-lunas:hover { background: var(--dark-blue); }
+
+        .table-responsive { overflow-x: auto; width: 100%; margin-top: 20px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.1);}
+        .nota-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
+        .nota-table th, .nota-table td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .nota-table th { background: rgba(0,0,0,0.5); color: var(--accent-yellow); font-weight: 600; white-space: nowrap;}
+        .nota-table tr:hover { background: rgba(255,255,255,0.02); }
+        .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+        .status-lunas { background: rgba(37, 211, 102, 0.2); color: #25D366; border: 1px solid #25D366; }
+        .status-hutang { background: rgba(255, 71, 87, 0.2); color: #ff4757; border: 1px solid #ff4757; }
+        .btn-sm { padding: 6px 12px; font-size: 0.8rem; border-radius: 6px; margin-right: 5px; border: none; cursor: pointer; font-weight: 600; }
+
+        /* RECEIPT MODAL */
+        #receipt-modal { z-index: 10005; }
+        .receipt-card { background: white; width: 100%; max-width: 400px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.3); font-family: 'Poppins', sans-serif; position: relative; margin: 20px auto; color: #333; }
+        .receipt-header { padding: 30px 20px; text-align: center; color: white; position: relative; }
+        .header-hutang { background: #FF8A00; }
+        .header-lunas { background: #25D366; }
+        .receipt-logo { background: white; width: 60px; height: 60px; border-radius: 50%; padding: 5px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; }
+        .receipt-logo img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .receipt-status-text { font-size: 1.4rem; font-weight: 800; margin-bottom: 5px; }
+        .receipt-date { font-size: 0.8rem; opacity: 0.9; }
+        
+        .receipt-body { background: white; padding: 25px 20px; border-radius: 20px 20px 0 0; margin-top: -20px; position: relative; }
+        .receipt-total-box { text-align: center; margin-bottom: 20px; }
+        .receipt-total-label { font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+        .receipt-total-amount { font-size: 2.2rem; font-weight: 800; color: #333; line-height: 1.2; }
+        
+        .receipt-divider { border-top: 2px dashed #eee; margin: 15px 0; }
+        .receipt-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; }
+        .receipt-row .label { color: #888; }
+        .receipt-row .val { font-weight: 600; color: #333; text-align: right;}
+        
+        .receipt-items { margin-top: 15px; }
+        .r-item { display: flex; justify-content: space-between; margin-bottom: 12px; align-items: flex-start; }
+        .r-item-left { flex: 1; }
+        .r-item-name { font-weight: 600; font-size: 0.9rem; color: #333; line-height: 1.2; margin-bottom: 2px; }
+        .r-item-qty { font-size: 0.75rem; color: #888; }
+        .r-item-sub { font-weight: 700; font-size: 0.95rem; color: #333; }
+        
+        .receipt-brand { text-align: center; margin-top: 20px; font-size: 0.8rem; font-weight: 600; color: var(--primary-blue); display: flex; justify-content: center; align-items: center; gap: 5px;}
+        .receipt-actions { display: grid; grid-template-columns: 1fr 1fr 50px; gap: 10px; padding: 15px 20px; background: #f8f9fa; }
+        .btn-wa { background: #25D366; color: white; border: none; border-radius: 8px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 5px; cursor: pointer; }
+        .btn-simpan { background: var(--primary-blue); color: white; border: none; border-radius: 8px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 5px; cursor: pointer; }
+        .btn-print-icon { background: #444; color: white; border: none; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+
+        /* Print Logic */
+        @media print {
+            body.is-printing-receipt * { visibility: hidden; }
+            body.is-printing-receipt #receipt-modal, 
+            body.is-printing-receipt #receipt-modal * { visibility: visible; }
+            body.is-printing-receipt #receipt-modal { position: absolute; left: 0; top: 0; width: 100%; background: white !important; }
+            .receipt-actions, .modal-close { display: none !important; }
+            .receipt-card { box-shadow: none; max-width: 100%; border-radius: 0; margin: 0; }
+        }
+
         /* ==================== FLOATING WHATSAPP BUTTON ==================== */
         .floating-wa { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.4); z-index: 9998; transition: var(--transition); text-decoration: none; animation: pulse-wa 2s infinite; }
         .floating-wa:hover { transform: scale(1.1); background: #128C7E; }
@@ -238,22 +269,11 @@
         .floating-wa:hover .wa-tooltip { opacity: 1; visibility: visible; transform: translateX(0); }
         @keyframes pulse-wa { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
 
-        /* ==================== STATS & FOOTER (THANKS TO) ==================== */
+        /* ==================== STATS & FOOTER ==================== */
         .stats-section { padding: 60px 0 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 50px; }
         .stats-section h2 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; color: var(--accent-yellow); font-weight: 800; margin-bottom: 30px; letter-spacing: 2px;}
-        
         .footer-cta { margin-top: 20px; padding: 40px 20px; background: rgba(255, 255, 255, 0.02); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: var(--shadow-md);}
         .footer-bottom { text-align: center; padding: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.4); background: #041228; }
-
-        /* KOTAK BERLANGGANAN (NEWSLETTER) */
-        .newsletter-box {
-            margin-top: 40px; background: linear-gradient(135deg, rgba(28, 111, 230, 0.1) 0%, rgba(250, 204, 21, 0.05) 100%);
-            border: 1px solid rgba(255,255,255,0.1); padding: 40px 20px; border-radius: var(--radius-lg);
-            max-width: 800px; margin-left: auto; margin-right: auto; box-shadow: var(--shadow-md);
-        }
-        .newsletter-input-group { display: flex; gap: 10px; max-width: 500px; margin: 0 auto; }
-        .newsletter-input-group input { flex-grow: 1; padding: 12px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: var(--white); outline: none; font-family: inherit;}
-        .newsletter-input-group input:focus { border-color: var(--accent-yellow); }
 
         /* ==================== ADMIN EDIT MODE ==================== */
         .admin-toggle-btn { position: fixed; bottom: 30px; left: 30px; width: 45px; height: 45px; background: rgba(0,0,0,0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 9999; border: 1px solid rgba(255,255,255,0.2); transition: var(--transition); }
@@ -270,7 +290,7 @@
 
         /* ==================== RESPONSIVE DESIGN ==================== */
         @media (max-width: 992px) {
-            .about-grid, .edukasi-grid, .contact-grid { grid-template-columns: 1fr; }
+            .about-grid, .edukasi-grid { grid-template-columns: 1fr; }
             .hero h1 { font-size: 3rem; }
             .hero h1 .script-font { font-size: 4rem; }
             .about-img { order: -1; }
@@ -289,14 +309,13 @@
             .dana-icon-wrapper svg { width: 22px; height: 22px; }
             .dana-title { font-size: 0.7rem; line-height: 1.2; }
             .wa-tooltip { display: none; } 
-            .newsletter-input-group { flex-direction: column; }
+            #portal-admin-dashboard > div { grid-template-columns: 1fr; }
         }
         @media (max-width: 400px) { .dana-title { font-size: 0.65rem; } }
     </style>
 </head>
 <body>
 
-    <!-- Animasi Siluet Latar -->
     <div class="bg-rings">
         <div class="ring ring-1"></div>
         <div class="ring ring-2"></div>
@@ -348,7 +367,7 @@
         </div>
     </section>
 
-    <!-- 2.5 BANNER PROMO (BISA DIUPLOAD LEWAT ADMIN) -->
+    <!-- 2.5 BANNER PROMO -->
     <section id="promo-section" style="display: none; padding: 40px 0 0 0; position: relative; z-index: 5; text-align: center;">
         <div class="container" style="position: relative; display: inline-block;">
             <img id="promo-img" src="" alt="Banner Promosi" style="max-width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);">
@@ -389,7 +408,7 @@
                 <p class="edit-txt" data-id="srv-subtitle">Pilih kategori layanan di bawah untuk melihat detail selengkapnya.</p>
             </div>
             
-            <div class="dana-grid reveal">
+            <div class="dana-grid reveal" id="dynamic-services-grid">
                 <!-- Card 1 -->
                 <div class="dana-card" onclick="openServiceModal('cat-1')">
                     <div class="dana-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg></div>
@@ -444,8 +463,7 @@
         <div class="container glass-box reveal">
             <div class="about-grid">
                 <div class="about-text">
-                    <!-- Tombol Tambah Poto di Atas Judul Cepat Terpercaya -->
-                    <img class="edit-img" data-id="tentang-extra-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='200' style='background:%23041228'><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23FACC15' font-size='20' font-family='sans-serif'>[ AREA UPLOAD GAMBAR TAMBAHAN ]</text></svg>" alt="Gambar Tambahan" style="width: 100%; border-radius: var(--radius-md); margin-bottom: 25px; object-fit: cover;">
+                    <img class="edit-img" data-id="tentang-extra-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='200' style='background:%23041228'><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23FACC15' font-size='20' font-family='sans-serif'>[ KLIK UNTUK UPLOAD GAMBAR TAMBAHAN ]</text></svg>" alt="Gambar Tambahan" style="width: 100%; border-radius: var(--radius-md); margin-bottom: 25px; object-fit: cover;">
                     
                     <h3 class="edit-txt" data-id="about-title">Cepat, Terpercaya, Tangan Pertama</h3>
                     <p class="edit-txt" data-id="about-desc">D'JANGKOS adalah penyedia pengadaan barang/jasa terpercaya yang melayani sekolah, instansi, dan masyarakat. Memotong birokrasi panjang dengan sistem <b>tangan pertama</b>, memastikan kualitas maksimal dan waktu pengerjaan super efisien.</p>
@@ -470,7 +488,6 @@
             
             <h2 class="edit-txt" data-id="stat-title">THANKS TO</h2>
             
-            <!-- Area Mitra -->
             <div style="max-width: 800px; margin: 0 auto; text-align: center;">
                 <h4 style="color: var(--accent-yellow); margin-bottom: 15px; font-size: 1.3rem;" class="edit-txt" data-id="thanks-title">Telah Dipercaya Oleh:</h4>
                 <p style="color: var(--text-light); font-size: 1.05rem; line-height: 1.8;" class="edit-txt" data-id="thanks-desc">
@@ -479,17 +496,6 @@
                 </p>
             </div>
 
-            <!-- FITUR BARU: KOTAK BERLANGGANAN / NEWSLETTER -->
-            <div class="newsletter-box">
-                <h3 class="edit-txt" data-id="news-title" style="color: var(--accent-yellow); font-size: 1.5rem; margin-bottom: 10px;">Berlangganan Info Promo & Diskon!</h3>
-                <p class="edit-txt" data-id="news-desc" style="color: var(--text-light); font-size: 0.95rem; margin-bottom: 25px;">Masukkan Nomor WhatsApp atau Email Anda untuk mendapatkan update layanan terbaru dan promo eksklusif dari D'JANGKOS.</p>
-                <form id="subscribe-form" onsubmit="subscribeNewsletter(event)" class="newsletter-input-group">
-                    <input type="text" id="sub-contact" placeholder="Masukkan No. WhatsApp / Email..." required>
-                    <button type="submit" class="btn btn-primary" style="border-radius: 8px;">Berlangganan</button>
-                </form>
-            </div>
-
-            <!-- Area Alamat, Kontak, dan Footer -->
             <div class="footer-cta">
                 <img src="images/logo-djangkos.jpg" class="edit-img" data-id="footer-logo" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin: 0 auto 20px;" onerror="this.src='https://via.placeholder.com/150'">
                 
@@ -500,7 +506,6 @@
                 
                 <a href="https://maps.app.goo.gl/tx4LyqNEV66zyQSt5" target="_blank" class="btn btn-outline edit-txt" data-id="btn-map" style="margin-bottom: 40px; background: rgba(255,255,255,0.05);">Buka di Google Maps</a>
                 
-                <!-- Google Maps iFrame -->
                 <div style="border-radius: var(--radius-md); overflow: hidden; margin: 0 auto 40px; max-width: 800px; height: 250px; border: 1px solid rgba(255,255,255,0.1);">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11513.793751761694!2d116.4259877!3d-8.2562479!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwMTUnMjIuNSJTIDExNsKwMjUnMzMuNiJF!5e0!3m2!1sen!2sid!4v1611111111111!5m2!1sen!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                 </div>
@@ -524,21 +529,17 @@
     <div id="service-modal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close" onclick="triggerCloseModal()">&times;</button>
-            <div id="modal-dynamic-content">
-                <!-- Konten dinamis akan masuk ke sini saat modal dibuka -->
-            </div>
+            <div id="modal-dynamic-content"></div>
         </div>
     </div>
 
-    <!-- STORAGE DATA HTML (Tersembunyi, sumber data utama yang editable) -->
     <div id="service-data-storage" style="display: none;">
-        
         <!-- CAT 1 -->
         <div id="cat-1" class="cat-data-container">
             <img class="modal-header-img edit-img" data-id="m1-img" src="images/potocopy.jpg" onerror="this.src='https://images.unsplash.com/photo-1563298723-dcfebaa392e3?auto=format&fit=crop&q=80&w=600'">
             <div class="modal-body">
                 <h2 class="modal-title edit-txt" data-id="m1-title">Fotocopy & Printing</h2>
-                <p class="modal-desc edit-txt" data-id="m1-desc">Layanan fotocopy hitam putih, warna, print tugas, serta penjilidan untuk kebutuhan personal maupun instansi.</p>
+                <p class="modal-desc edit-txt" data-id="m1-desc">Layanan fotocopy hitam putih, warna, print tugas, serta penjilidan.</p>
                 <div class="sub-item-list">
                     <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i1">Fotocopy hitam putih (A4, F4, Legal)</span></div>
                     <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i2">Fotocopy warna</span></div>
@@ -547,97 +548,61 @@
                     <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i5">Print bolak-balik</span></div>
                     <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i6">Print ukuran besar (A3)</span></div>
                     <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i7">Scan dokumen</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i8">Jilid spiral</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i9">Jilid lakban</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i10">Jilid hardcover</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i11">Laminating</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i12">Cutting kertas</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i13">Pengetikan dokumen</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i14">Edit & layout dokumen</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c1-i8">Jilid spiral / lakban / hardcover</span></div>
                 </div>
             </div>
         </div>
-
         <!-- CAT 2 -->
         <div id="cat-2" class="cat-data-container">
             <img class="modal-header-img edit-img" data-id="m2-img" src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=600" onerror="this.src='https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=600'">
             <div class="modal-body">
                 <h2 class="modal-title edit-txt" data-id="m2-title">Khusus Sekolah & Kampus</h2>
-                <p class="modal-desc edit-txt" data-id="m2-desc">Kami melayani cetak kebutuhan administrasi dan laporan pendidikan untuk sekolah dan kampus.</p>
+                <p class="modal-desc edit-txt" data-id="m2-desc">Kami melayani cetak kebutuhan administrasi dan laporan pendidikan.</p>
                 <div class="sub-item-list">
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c2-i1">Cetak makalah</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c2-i2">Cetak skripsi</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c2-i3">Cetak proposal</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c2-i4">Cetak laporan</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c2-i5">Cetak soal ujian</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c2-i6">Cetak modul</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c2-i7">Cetak ijazah (cover saja)</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c2-i8">Map raport custom</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c2-i1">Cetak makalah / skripsi / proposal</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c2-i2">Cetak soal ujian / modul</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c2-i3">Cetak ijazah (cover) & Map raport</span></div>
                 </div>
             </div>
         </div>
-
         <!-- CAT 3 -->
         <div id="cat-3" class="cat-data-container">
             <img class="modal-header-img edit-img" data-id="m3-img" src="images/idcard.jpg" onerror="this.src='https://images.unsplash.com/photo-1544626053-8985dc34ae63?auto=format&fit=crop&q=80&w=600'">
             <div class="modal-body">
                 <h2 class="modal-title edit-txt" data-id="m3-title">Identitas & Administrasi</h2>
-                <p class="modal-desc edit-txt" data-id="m3-desc">Cetak segala macam kartu identitas, member card, dan kelengkapan administrasi peserta/karyawan.</p>
+                <p class="modal-desc edit-txt" data-id="m3-desc">Cetak segala macam kartu identitas dan kelengkapan administrasi.</p>
                 <div class="sub-item-list">
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c3-i1">ID Card</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c3-i2">Kartu Panitia</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c3-i3">Kartu Pelajar</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c3-i4">Kartu Nama (Business Card)</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c3-i5">Kartu Anggota</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c3-i6">Kartu Undangan</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c3-i1">ID Card / Kartu Panitia / Pelajar</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c3-i2">Kartu Nama (Business Card)</span></div>
                 </div>
             </div>
         </div>
-
         <!-- CAT 4 -->
         <div id="cat-4" class="cat-data-container">
             <img class="modal-header-img edit-img" data-id="m4-img" src="images/perkantoran.jpg" onerror="this.src='https://images.unsplash.com/photo-1554774853-719586f82d77?auto=format&fit=crop&q=80&w=600'">
             <div class="modal-body">
                 <h2 class="modal-title edit-txt" data-id="m4-title">Usaha & Perkantoran</h2>
-                <p class="modal-desc edit-txt" data-id="m4-desc">Berbagai macam kebutuhan alat tulis, nota, dan perlengkapan perkantoran untuk operasional usaha Anda.</p>
+                <p class="modal-desc edit-txt" data-id="m4-desc">Kebutuhan alat tulis, nota, dan perlengkapan usaha Anda.</p>
                 <div class="sub-item-list">
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i1">Nota</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i2">Kwitansi</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i3">Invoice</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i4">Stempel</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i5">Kop Surat</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i6">Amplop custom</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i7">Buku Yasin</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i8">Buku agenda</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i9">Map perusahaan</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i10">Stopmap</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i1">Nota / Kwitansi / Invoice</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i2">Stempel / Kop Surat / Amplop</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c4-i3">Buku Yasin / Agenda / Stopmap</span></div>
                 </div>
             </div>
         </div>
-
         <!-- CAT 5 -->
         <div id="cat-5" class="cat-data-container">
             <img class="modal-header-img edit-img" data-id="m5-img" src="images/undangan.jpg" onerror="this.src='https://images.unsplash.com/photo-1563298723-dcfebaa392e3?auto=format&fit=crop&q=80&w=600'">
             <div class="modal-body">
                 <h2 class="modal-title edit-txt" data-id="m5-title">Event & Promosi</h2>
-                <p class="modal-desc edit-txt" data-id="m5-desc">Layanan cetak media promosi dan kebutuhan acara mulai dari banner hingga flyer promosi.</p>
+                <p class="modal-desc edit-txt" data-id="m5-desc">Layanan cetak promosi dan kebutuhan acara mulai dari banner hingga flyer.</p>
                 <div class="sub-item-list">
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i1">Spanduk</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i2">Banner</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i3">X-Banner</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i4">Roll Up Banner</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i5">Baliho</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i6">Poster</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i7">Brosur</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i8">Flyer</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i9">Pamflet</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i10">Undangan pernikahan</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i11">Undangan khitanan</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i12">Undangan ulang tahun</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i1">Spanduk / Banner / Baliho / Poster</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i2">Brosur / Flyer / Pamflet</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c5-i3">Undangan Pernikahan / Khitanan</span></div>
                 </div>
             </div>
         </div>
-
         <!-- CAT 6 -->
         <div id="cat-6" class="cat-data-container">
             <img class="modal-header-img edit-img" data-id="m6-img" src="images/cetak-poto.jpg" onerror="this.src='https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=600'">
@@ -645,79 +610,62 @@
                 <h2 class="modal-title edit-txt" data-id="m6-title">Cetak Foto</h2>
                 <p class="modal-desc edit-txt" data-id="m6-desc">Cetak foto berbagai ukuran dari pas foto hingga ukuran besar berserta bingkai & laminasi.</p>
                 <div class="sub-item-list">
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c6-i1">Cetak foto 2x3, 3x4, 4x6</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c6-i2">Cetak foto 10R, 16R</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c6-i3">Pas foto background merah / biru</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c6-i4">Edit & retouch foto</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c6-i5">Cetak foto laminasi</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c6-i1">Cetak foto 2x3, 3x4, 4x6 / Pas Foto</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c6-i2">Cetak foto 10R, 16R & Laminasi</span></div>
                 </div>
             </div>
         </div>
-
         <!-- CAT 7 -->
         <div id="cat-7" class="cat-data-container">
             <img class="modal-header-img edit-img" data-id="m7-img" src="images/website.jpg" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=600'">
             <div class="modal-body">
                 <h2 class="modal-title edit-txt" data-id="m7-title">Pembuatan Website</h2>
-                <p class="modal-desc edit-txt" data-id="m7-desc">Layanan jasa pembuatan website profesional untuk sekolah, instansi, desa, maupun bisnis UMKM.</p>
+                <p class="modal-desc edit-txt" data-id="m7-desc">Layanan jasa pembuatan website profesional untuk sekolah, instansi, maupun bisnis.</p>
                 <div class="sub-item-list">
                     <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c7-i0">Website Trekking Gunung Rinjani</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c7-i1">Website Company Profile</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c7-i2">Website Sekolah & PPDB</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c7-i3">Website Toko Online</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c7-i4">Sistem Informasi Desa</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c7-i1">Website Company Profile / Sekolah</span></div>
                 </div>
             </div>
         </div>
-
         <!-- CAT 8 -->
         <div id="cat-8" class="cat-data-container">
             <img class="modal-header-img edit-img" data-id="m8-img" src="images/panggung.jpg" onerror="this.src='https://images.unsplash.com/photo-1470229722913-7c090be5f5ae?auto=format&fit=crop&q=80&w=600'">
             <div class="modal-body">
                 <h2 class="modal-title edit-txt" data-id="m8-title">Sewa Panggung & Band</h2>
-                <p class="modal-desc edit-txt" data-id="m8-desc">D'JANGKOS bekerjasama dengan AMARA'S PRODUCTION melayani sewa panggung, sound system, dan music band.</p>
+                <p class="modal-desc edit-txt" data-id="m8-desc">D'JANGKOS bekerjasama dengan AMARA'S PRODUCTION melayani kebutuhan panggung.</p>
                 <div class="sub-item-list">
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c8-i1">Sewa Panggung Rigging</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c8-i2">Sound System</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c8-i3">Music Band (Akustik / Full Band)</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c8-i4">Lighting & Genset Acara</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c8-i1">Sewa Panggung Rigging & Sound System</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c8-i2">Music Band / Lighting & Genset</span></div>
                 </div>
             </div>
         </div>
-
         <!-- CAT 9 -->
         <div id="cat-9" class="cat-data-container">
             <img class="modal-header-img edit-img" data-id="m9-img" src="images/ktp-npwp.jpeg" onerror="this.src='https://images.unsplash.com/photo-1554774853-719586f82d77?auto=format&fit=crop&q=80&w=600'">
             <div class="modal-body">
                 <h2 class="modal-title edit-txt" data-id="m9-title">Daftar NPWP, NIB & Tiket</h2>
-                <p class="modal-desc edit-txt" data-id="m9-desc">Jasa pembuatan atau pendaftaran NPWP, NIB, pembelian tiket pesawat, dan layanan online lainnya.</p>
+                <p class="modal-desc edit-txt" data-id="m9-desc">Jasa pembuatan atau pendaftaran online instansi dan perorangan.</p>
                 <div class="sub-item-list">
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c9-i1">Pembuatan NPWP Online</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c9-i2">Pendaftaran NIB (OSS)</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c9-i3">Pesan Tiket Pesawat & Kereta Api</span></div>
-                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c9-i4">Pendaftaran Online Lainnya</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c9-i1">Pembuatan NPWP Online & NIB (OSS)</span></div>
+                    <div class="sub-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="edit-txt" style="flex-grow:1;" data-id="c9-i2">Pesan Tiket Pesawat & Pendaftaran Lainnya</span></div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- MODAL PORTAL NOTA & TAGIHAN -->
-    <div id="portal-modal" class="modal-overlay">
-        <div class="portal-modal-content" id="print-area">
+    <div id="portal-modal" class="modal-overlay no-print">
+        <div class="portal-modal-content">
             <button class="modal-close no-print" onclick="closePortalModal()">&times;</button>
-            
             <div class="portal-header">
                 <h2>Portal Rekap Tagihan</h2>
-                <p class="no-print">Cek riwayat transaksi, hutang, dan cetak nota (Khusus Instansi Terdaftar).</p>
+                <p>Cek riwayat transaksi, hutang, dan cetak nota.</p>
             </div>
-
-            <!-- View: Login Pelanggan -->
+            <!-- Login Pelanggan -->
             <div id="portal-login-view" style="max-width: 400px; margin: 0 auto; text-align: center;">
                 <div class="form-group">
                     <label>Pilih Instansi / Sekolah</label>
-                    <select id="instansi-select" class="form-control">
-                        <option value="">-- Memuat Data --</option>
-                    </select>
+                    <select id="instansi-select" class="form-control"><option value="">-- Memuat Data --</option></select>
                 </div>
                 <div class="form-group">
                     <label>Kata Sandi</label>
@@ -728,8 +676,7 @@
                     Login Admin? <a href="javascript:void(0)" onclick="switchPortalView('portal-admin-login')" style="color: var(--tosca-start);">Klik disini</a>
                 </p>
             </div>
-
-            <!-- View: Login Admin -->
+            <!-- Login Admin -->
             <div id="portal-admin-login" style="max-width: 400px; margin: 0 auto; text-align: center; display: none;">
                 <h3 style="margin-bottom: 20px; color: var(--tosca-start);">Login Administrator</h3>
                 <div class="form-group">
@@ -739,134 +686,120 @@
                 <button class="btn" style="background: var(--tosca-start); color: white; width: 100%; border: none;" onclick="loginAdminPortal()">Masuk sebagai Admin</button>
                 <button class="btn btn-outline" style="width: 100%; margin-top: 10px;" onclick="switchPortalView('portal-login-view')">Kembali</button>
             </div>
-
-            <!-- View: Dashboard Admin -->
-            <div id="portal-admin-dashboard" style="display: none;" class="no-print">
+            <!-- Dashboard Admin -->
+            <div id="portal-admin-dashboard" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="color: var(--tosca-start);">Dashboard Admin Nota</h3>
+                    <h3 style="color: var(--tosca-start);">Kasir & Admin Nota</h3>
                     <button class="btn btn-outline btn-sm" onclick="logoutPortal()">Keluar</button>
                 </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 30px;">
-                    <!-- Panel Kiri: Tambah Instansi -->
-                    <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);">
-                        <h4 style="margin-bottom: 15px; color: var(--accent-yellow);">+ Tambah Instansi</h4>
+                <div style="display: grid; grid-template-columns: 1fr 2.5fr; gap: 30px;">
+                    <!-- Tambah Instansi -->
+                    <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); height: fit-content;">
+                        <h4 style="margin-bottom: 15px; color: var(--accent-yellow);">+ Tambah Pelanggan Baru</h4>
                         <div class="form-group"><input type="text" id="new-inst-name" class="form-control" placeholder="Nama Instansi/Sekolah"></div>
                         <div class="form-group"><input type="text" id="new-inst-pass" class="form-control" placeholder="Sandi untuk mereka"></div>
                         <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="addInstansi()">Simpan Instansi</button>
                     </div>
-
-                    <!-- Panel Kanan: Tambah Transaksi -->
-                    <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);">
-                        <h4 style="margin-bottom: 15px; color: var(--accent-yellow);">+ Catat Transaksi / Hutang Baru</h4>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                            <div class="form-group">
-                                <label>Instansi Tujuan</label>
-                                <select id="trans-instansi" class="form-control"></select>
+                    <!-- POS -->
+                    <div class="pos-container">
+                        <div class="pos-header">
+                            <h4><svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> Keranjang Nota</h4>
+                            <button class="btn-sm" style="background:#fff; color:#ff4757; border:1px solid #ff4757;" onclick="clearCart()">Hapus Semua</button>
+                        </div>
+                        <div class="pos-body">
+                            <div class="pos-add-row">
+                                <input type="text" id="cart-item-name" class="pos-input" placeholder="Nama Layanan/Barang">
+                                <input type="number" id="cart-item-price" class="pos-input" placeholder="Harga Satuan (Rp)" style="max-width: 180px;">
+                                <button class="pos-btn" onclick="addToCart()">Tambah</button>
                             </div>
-                            <div class="form-group">
-                                <label>Tanggal</label>
-                                <input type="date" id="trans-date" class="form-control">
+                            <div class="cart-list" id="cart-list-container">
+                                <div style="padding: 20px; text-align: center; color: #888;">Keranjang kosong.</div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>Nama Barang / Layanan</label>
-                            <input type="text" id="trans-item" class="form-control" placeholder="Cetak Spanduk, dll">
+                        <div class="pos-footer">
+                            <div style="display: flex; gap: 15px; margin-bottom: 15px; align-items: end; flex-wrap: wrap;">
+                                <div style="flex: 2; min-width: 200px;">
+                                    <label style="font-size:0.8rem; color:#555; display:block; margin-bottom:5px;">Pilih Pelanggan / Instansi</label>
+                                    <select id="trans-instansi" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;"></select>
+                                </div>
+                                <div style="flex: 1; min-width: 150px;">
+                                    <label style="font-size:0.8rem; color:#555; display:block; margin-bottom:5px;">Pajak PPN/PPH (Rp)</label>
+                                    <input type="number" id="cart-tax" value="0" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;" oninput="updateCartUI()">
+                                </div>
+                            </div>
+                            <div class="pos-totals-row">
+                                <span style="font-weight:600; color:#555;">TOTAL TAGIHAN</span>
+                                <span class="pos-total-text" id="cart-grand-total">Rp 0</span>
+                            </div>
+                            <div class="pos-actions">
+                                <button class="btn-hutang" onclick="processCart('HUTANG')">HUTANG</button>
+                                <button class="btn-lunas" onclick="processCart('LUNAS')">LUNAS & CETAK</button>
+                            </div>
                         </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
-                            <div class="form-group">
-                                <label>Total Tagihan (Rp)</label>
-                                <input type="number" id="trans-total" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>PPN/PPH (Rp)</label>
-                                <input type="number" id="trans-tax" class="form-control" value="0">
-                            </div>
-                            <div class="form-group">
-                                <label>Status</label>
-                                <select id="trans-status" class="form-control">
-                                    <option value="HUTANG">HUTANG</option>
-                                    <option value="LUNAS">LUNAS</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary btn-sm" onclick="addTransaksi()">Catat Transaksi</button>
                     </div>
                 </div>
-
-                <!-- Tabel Riwayat Semua Transaksi (Admin View) -->
                 <div style="margin-top: 30px;">
                     <h4 style="margin-bottom: 10px;">Semua Riwayat Transaksi</h4>
                     <div class="table-responsive">
                         <table class="nota-table">
-                            <thead><tr><th>Tanggal</th><th>Instansi</th><th>Item</th><th>Tagihan</th><th>Pajak</th><th>Total</th><th>Status</th><th>Aksi</th></tr></thead>
+                            <thead><tr><th>Tgl</th><th>Instansi</th><th>Rincian Rangkuman</th><th>Total</th><th>Status</th><th>Aksi</th></tr></thead>
                             <tbody id="admin-table-body"></tbody>
                         </table>
                     </div>
                 </div>
-                
-                <!-- NEW: Tabel Daftar Subscriber Berlangganan -->
-                <div style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
-                    <h4 style="margin-bottom: 10px; color: var(--accent-yellow);">Daftar Kontak Berlangganan (Newsletter)</h4>
-                    <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 15px;">Salin nomor WA/Email di bawah ini untuk mengirimkan pesan promo.</p>
-                    <div class="table-responsive">
-                        <table class="nota-table">
-                            <thead><tr><th>Tanggal Daftar</th><th>Nomor WA / Email</th></tr></thead>
-                            <tbody id="admin-subscribers-body"></tbody>
-                        </table>
-                    </div>
-                </div>
-
             </div>
-
-            <!-- View: Dashboard Pelanggan -->
+            <!-- Dashboard Pelanggan -->
             <div id="portal-customer-dashboard" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px dashed rgba(255,255,255,0.2); padding-bottom: 15px;">
                     <div>
                         <h3 style="color: var(--tosca-start); font-size: 1.5rem;" id="cust-name-display">Nama Instansi</h3>
-                        <p style="color: var(--text-light); font-size: 0.9rem;">Riwayat Tagihan & Nota Pembayaran D'JANGKOS</p>
+                        <p style="color: var(--text-light); font-size: 0.9rem;">Riwayat Tagihan & Nota Pembayaran</p>
                     </div>
-                    <div class="no-print">
-                        <button class="btn btn-outline btn-sm" onclick="window.print()"><svg style="width:14px;height:14px;vertical-align:middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> Cetak / PDF</button>
-                        <button class="btn btn-outline btn-sm" onclick="logoutPortal()">Keluar</button>
-                    </div>
+                    <div><button class="btn btn-outline btn-sm" onclick="logoutPortal()">Keluar</button></div>
                 </div>
-                
-                <!-- Ringkasan Hutang -->
                 <div style="background: rgba(255, 71, 87, 0.1); border: 1px solid rgba(255, 71, 87, 0.3); padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center;">
                     <span style="display: block; font-size: 0.9rem; color: var(--text-light);">Total Hutang Belum Lunas:</span>
                     <strong style="font-size: 2rem; color: #ff4757;" id="cust-total-hutang">Rp 0</strong>
                 </div>
-
                 <div class="table-responsive">
                     <table class="nota-table">
-                        <thead>
-                            <tr>
-                                <th>Tgl. Transaksi</th>
-                                <th>Rincian Layanan / Barang</th>
-                                <th>Harga Dasar</th>
-                                <th>PPN / PPH</th>
-                                <th>Total Tagihan</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cust-table-body">
-                            <!-- Data Transaksi Pelanggan Masuk Sini -->
-                        </tbody>
+                        <thead><tr><th>Tgl. Transaksi</th><th>Total Tagihan</th><th>Status</th><th>Aksi</th></tr></thead>
+                        <tbody id="cust-table-body"></tbody>
                     </table>
                 </div>
-                
-                <!-- Tanda Tangan Nota (Hanya Muncul Saat Print) -->
-                <div style="display: none; margin-top: 50px; text-align: right; padding-right: 50px;" id="print-signature">
-                    <p>Hormat Kami,</p>
-                    <br><br><br>
-                    <strong>D'JANGKOS COPIER</strong>
-                </div>
             </div>
-
         </div>
     </div>
 
+    <!-- MODAL NOTA / RECEIPT -->
+    <div id="receipt-modal" class="modal-overlay">
+        <div class="receipt-card" id="receipt-card">
+            <button class="modal-close no-print" onclick="closeReceiptModal()" style="top:-15px; right:-15px;">&times;</button>
+            <div class="receipt-header" id="rcpt-header">
+                <div class="receipt-logo"><img src="images/logo-djangkos.jpg" onerror="this.src='https://via.placeholder.com/60?text=D'"></div>
+                <div class="receipt-status-text" id="rcpt-status">Menunggu Pembayaran</div>
+                <div class="receipt-date" id="rcpt-date">Kamis, 05 Maret 2026 pukul 14.23</div>
+            </div>
+            <div class="receipt-body">
+                <div class="receipt-total-box">
+                    <div class="receipt-total-label">TOTAL PEMBAYARAN</div>
+                    <div class="receipt-total-amount" id="rcpt-total">Rp 0</div>
+                </div>
+                <div class="receipt-divider"></div>
+                <div class="receipt-row"><span class="label">ID Transaksi</span><span class="val" id="rcpt-id">#000000</span></div>
+                <div class="receipt-row"><span class="label">Pelanggan</span><span class="val" id="rcpt-customer">NAMA INSTANSI</span></div>
+                <div class="receipt-divider"></div>
+                <div class="receipt-items" id="rcpt-items"></div>
+                <div class="receipt-divider"></div>
+                <div class="receipt-row" style="font-size: 0.8rem;"><span class="label">Pajak (PPN/PPH)</span><span class="val" id="rcpt-tax">Rp 0</span></div>
+                <div class="receipt-brand">D'Jangkos Digital Printing</div>
+            </div>
+            <div class="receipt-actions">
+                <button class="btn-wa" onclick="shareReceiptWA()">Share WA</button>
+                <button class="btn-simpan" onclick="printReceipt()">Simpan / Print</button>
+            </div>
+        </div>
+    </div>
 
     <!-- FLOATING WA BUTTON -->
     <a href="https://wa.me/6285956684081" class="floating-wa" target="_blank" title="Hubungi Kami via WhatsApp">
@@ -876,19 +809,13 @@
 
     <!-- HIDDEN ADMIN BUTTON & PANEL -->
     <div class="admin-toggle-btn" id="admin-btn" title="Admin Setting">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
     </div>
 
     <!-- ADMIN PANEL -->
     <div class="admin-panel" id="admin-panel">
         <span><b>MODE EDIT</b></span>
-        <button id="upload-promo-btn" style="background: var(--tosca-start);">
-            <svg style="width:14px;height:14px;vertical-align:middle;margin-right:3px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            Upload Banner
-        </button>
+        <button id="upload-promo-btn" style="background: var(--tosca-start);"><svg style="width:14px;height:14px;vertical-align:middle;margin-right:3px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Upload Banner</button>
         <button id="save-btn">Simpan Perubahan</button>
         <button id="exit-btn" class="exit-btn">Keluar</button>
     </div>
@@ -896,67 +823,46 @@
     <input type="file" id="image-upload" accept="image/*" style="display: none;">
     <input type="file" id="promo-upload" accept="image/*" style="display: none;">
 
-    <!-- ==================== JAVASCRIPT ==================== -->
     <script>
-        // --- 1. LOGIKA MODAL POPUP & HISTORY API (BACK BUTTON ANDROID) ---
+        // --- 1. LOGIKA MODAL POPUP & HISTORY API ---
         function openServiceModal(catId) {
             const modalBody = document.getElementById('modal-dynamic-content');
             const catElement = document.getElementById(catId);
-            
-            // Pindahkan DOM asli ke dalam modal agar bisa diedit dan tersimpan
-            modalBody.appendChild(catElement);
-            
-            // Tambahkan status ke riwayat browser (History API)
-            history.pushState({ modalOpen: true, cat: catId }, "", "#layanan-detail");
-            
-            document.getElementById('service-modal').classList.add('active');
+            if(catElement) {
+                modalBody.appendChild(catElement);
+                history.pushState({ modalOpen: true, cat: catId }, "", "#layanan-detail");
+                document.getElementById('service-modal').classList.add('active');
+            }
         }
 
-        // Fungsi hanya untuk menutup modal (digunakan saat PopState)
         function closeServiceModalOnly() {
             const modalBody = document.getElementById('modal-dynamic-content');
             const storage = document.getElementById('service-data-storage');
-            
-            // Kembalikan anak (DOM layanan) ke tempat penyimpanan tersembunyi
-            while(modalBody.firstChild) {
-                storage.appendChild(modalBody.firstChild);
-            }
+            while(modalBody.firstChild) { storage.appendChild(modalBody.firstChild); }
             document.getElementById('service-modal').classList.remove('active');
         }
 
-        // Fungsi saat tombol X ditekan
-        function triggerCloseModal() {
-            // Gunakan history.back() agar status History API selaras (memanggil event popstate)
-            history.back();
-        }
+        function triggerCloseModal() { history.back(); }
 
-        // Deteksi jika tombol Kembali ditekan
         window.addEventListener('popstate', (e) => {
-            if (document.getElementById('service-modal').classList.contains('active')) {
-                closeServiceModalOnly();
-            }
-            if (document.getElementById('portal-modal').classList.contains('active')) {
-                closePortalModal();
-            }
+            if (document.getElementById('service-modal').classList.contains('active')) closeServiceModalOnly();
+            if (document.getElementById('portal-modal').classList.contains('active')) closePortalModal();
+            if (document.getElementById('receipt-modal').classList.contains('active')) closeReceiptModal();
         });
 
-        // Tutup modal jika klik di luar box (overlay background)
         window.onclick = function(event) {
-            if (event.target.classList.contains('modal-overlay')) {
-                history.back();
-            }
+            if (event.target.classList.contains('modal-overlay')) { history.back(); }
         }
-
 
         // --- 2. Mobile Menu Toggle ---
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('nav-links');
-
-        hamburger.addEventListener('click', () => { navLinks.classList.toggle('active'); });
+        if(hamburger) {
+            hamburger.addEventListener('click', () => { navLinks.classList.toggle('active'); });
+        }
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => { navLinks.classList.remove('active'); });
         });
-
 
         // --- 3. Sticky Navbar ---
         const navbar = document.getElementById('navbar');
@@ -970,7 +876,6 @@
             }
         });
 
-
         // --- 4. Scroll Reveal Animation ---
         const reveals = document.querySelectorAll('.reveal');
         const revealOnScroll = () => {
@@ -978,14 +883,11 @@
             const elementVisible = 100;
             reveals.forEach((reveal) => {
                 const elementTop = reveal.getBoundingClientRect().top;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveal.classList.add('active');
-                }
+                if (elementTop < windowHeight - elementVisible) { reveal.classList.add('active'); }
             });
         };
         window.addEventListener('scroll', revealOnScroll);
         revealOnScroll();
-
 
         // --- 5. ADMIN EDIT MODE & PROMO BANNER ---
         const adminBtn = document.getElementById('admin-btn');
@@ -994,7 +896,6 @@
         const exitBtn = document.getElementById('exit-btn');
         const imageUpload = document.getElementById('image-upload');
         
-        // Elemen Banner
         const promoSection = document.getElementById('promo-section');
         const promoImg = document.getElementById('promo-img');
         const uploadPromoBtn = document.getElementById('upload-promo-btn');
@@ -1008,11 +909,10 @@
         let currentUser = null;
         let dbUnsubscribeInstansi = null;
         let dbUnsubscribeTransaksi = null;
-        let dbUnsubscribeSubscribers = null;
-        let instansiDataMap = {}; // Untuk simpan pemetaan ID ke Nama
+        let instansiDataMap = {}; 
+        window.transactionsMap = {};
 
         const loadSavedData = () => {
-            // Load text & general images (Bisa mengambil yg disembunyikan juga!)
             const savedData = JSON.parse(localStorage.getItem('djangkosV6Content')) || {};
             document.querySelectorAll('.edit-txt').forEach(el => {
                 const id = el.getAttribute('data-id');
@@ -1023,7 +923,6 @@
                 if (savedData[id]) el.src = savedData[id];
             });
 
-            // Load Promo Banner
             const savedPromo = localStorage.getItem('djangkosPromoBanner');
             if (savedPromo) {
                 promoImg.src = savedPromo;
@@ -1032,24 +931,22 @@
         };
         loadSavedData();
 
-        adminBtn.addEventListener('click', () => {
-            if(!isEditMode) {
-                const pass = prompt("Masukkan Password Admin:");
-                if (pass === "djangkoscopier") { enableEditMode(); } 
-                else if (pass !== null) { alert("Password Salah!"); }
-            }
-        });
+        if(adminBtn) {
+            adminBtn.addEventListener('click', () => {
+                if(!isEditMode) {
+                    const pass = prompt("Masukkan Password Admin:");
+                    if (pass === "djangkoscopier") { enableEditMode(); } 
+                    else if (pass !== null) { alert("Password Salah!"); }
+                }
+            });
+        }
 
         const enableEditMode = () => {
             isEditMode = true; document.body.classList.add('edit-mode');
             adminPanel.style.display = 'flex'; adminBtn.style.display = 'none';
             document.querySelectorAll('.edit-txt').forEach(el => { el.setAttribute('contenteditable', 'true'); });
             document.querySelectorAll('.edit-img').forEach(el => { el.addEventListener('click', imageClickHandler); });
-            
-            // Tampilkan tombol Hapus Banner jika ada gambar banner
-            if (promoImg.src && promoImg.getAttribute('src') !== '') {
-                deletePromoBtn.style.display = 'block';
-            }
+            if (promoImg && promoImg.getAttribute('src') && promoImg.getAttribute('src') !== '') { deletePromoBtn.style.display = 'block'; }
         };
 
         const disableEditMode = () => {
@@ -1057,155 +954,129 @@
             adminPanel.style.display = 'none'; adminBtn.style.display = 'flex';
             document.querySelectorAll('.edit-txt').forEach(el => { el.removeAttribute('contenteditable'); });
             document.querySelectorAll('.edit-img').forEach(el => { el.removeEventListener('click', imageClickHandler); });
-            deletePromoBtn.style.display = 'none';
+            if(deletePromoBtn) deletePromoBtn.style.display = 'none';
         };
 
         function imageClickHandler(e) {
-            // Abaikan klik pada banner promo karena dia punya upload filenya sendiri
-            if(isEditMode && e.target !== promoImg) { 
-                currentEditingImage = e.target; 
-                imageUpload.click(); 
-            }
+            if(isEditMode && e.target !== promoImg) { currentEditingImage = e.target; imageUpload.click(); }
         }
 
-        // Upload Standard Image
-        imageUpload.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file && currentEditingImage) {
-                const reader = new FileReader();
-                reader.onload = function(event) { currentEditingImage.src = event.target.result; };
-                reader.readAsDataURL(file);
-            }
-            this.value = '';
-        });
-
-        // Event Tombol Upload Promo Banner
-        uploadPromoBtn.addEventListener('click', () => {
-            promoUploadInput.click();
-        });
-
-        // Proses Upload Promo Banner
-        promoUploadInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) { 
-                    promoImg.src = event.target.result; 
-                    promoSection.style.display = 'block';
-                    if(isEditMode) deletePromoBtn.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
-            this.value = '';
-        });
-
-        // Event Hapus Promo Banner
-        deletePromoBtn.addEventListener('click', () => {
-            if(confirm("Hapus banner promosi ini?")) {
-                promoImg.removeAttribute('src');
-                promoSection.style.display = 'none';
-                deletePromoBtn.style.display = 'none';
-                localStorage.removeItem('djangkosPromoBanner'); // Langsung hapus dari memori
-            }
-        });
-
-        saveBtn.addEventListener('click', () => {
-            // Save text & general images (Bisa menyimpan yg tersembunyi juga)
-            const dataToSave = {};
-            document.querySelectorAll('.edit-txt').forEach(el => { dataToSave[el.getAttribute('data-id')] = el.innerHTML; });
-            document.querySelectorAll('.edit-img').forEach(el => { dataToSave[el.getAttribute('data-id')] = el.src; });
-            localStorage.setItem('djangkosV6Content', JSON.stringify(dataToSave));
-            
-            // Save Promo Banner
-            if (promoImg.src && promoImg.getAttribute('src') !== '') {
-                localStorage.setItem('djangkosPromoBanner', promoImg.src);
-            } else {
-                localStorage.removeItem('djangkosPromoBanner');
-            }
-
-            const btnOriginalText = saveBtn.innerText;
-            saveBtn.innerText = "Tersimpan ✔";
-            saveBtn.style.background = "#0fd850";
-            
-            setTimeout(() => {
-                saveBtn.innerText = btnOriginalText;
-                saveBtn.style.background = "var(--primary-blue)";
-            }, 2000);
-        });
-
-        exitBtn.addEventListener('click', () => {
-            if(confirm("Keluar dari Mode Edit? Pastikan Anda sudah menyimpan perubahan.")) disableEditMode();
-        });
-
-
-        // ==========================================
-        // SISTEM PORTAL NOTA & FIREBASE INTEGRATION
-        // ==========================================
-
-        function formatRupiah(angka) {
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+        if(imageUpload) {
+            imageUpload.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file && currentEditingImage) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) { currentEditingImage.src = event.target.result; };
+                    reader.readAsDataURL(file);
+                }
+                this.value = '';
+            });
         }
 
-        // Setup Firebase Authentication
+        if(uploadPromoBtn) uploadPromoBtn.addEventListener('click', () => { promoUploadInput.click(); });
+        if(promoUploadInput) {
+            promoUploadInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) { 
+                        promoImg.src = event.target.result; promoSection.style.display = 'block';
+                        if(isEditMode) deletePromoBtn.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+                this.value = '';
+            });
+        }
+
+        if(deletePromoBtn) {
+            deletePromoBtn.addEventListener('click', () => {
+                if(confirm("Hapus banner promosi ini?")) {
+                    promoImg.removeAttribute('src'); promoSection.style.display = 'none'; deletePromoBtn.style.display = 'none';
+                    localStorage.removeItem('djangkosPromoBanner'); 
+                }
+            });
+        }
+
+        if(saveBtn) {
+            saveBtn.addEventListener('click', () => {
+                const dataToSave = {};
+                document.querySelectorAll('.edit-txt').forEach(el => { dataToSave[el.getAttribute('data-id')] = el.innerHTML; });
+                document.querySelectorAll('.edit-img').forEach(el => { dataToSave[el.getAttribute('data-id')] = el.src; });
+                localStorage.setItem('djangkosV6Content', JSON.stringify(dataToSave));
+                
+                if (promoImg && promoImg.getAttribute('src') && promoImg.getAttribute('src') !== '') {
+                    localStorage.setItem('djangkosPromoBanner', promoImg.src);
+                } else { localStorage.removeItem('djangkosPromoBanner'); }
+
+                const btnOriginalText = saveBtn.innerText;
+                saveBtn.innerText = "Tersimpan ✔";
+                saveBtn.style.background = "#0fd850";
+                setTimeout(() => { saveBtn.innerText = btnOriginalText; saveBtn.style.background = "var(--primary-blue)"; }, 2000);
+            });
+        }
+
+        if(exitBtn) {
+            exitBtn.addEventListener('click', () => {
+                if(confirm("Keluar dari Mode Edit? Pastikan Anda sudah menyimpan perubahan.")) disableEditMode();
+            });
+        }
+
+        // ==========================================
+        // SISTEM PORTAL NOTA & KASIR (POS)
+        // ==========================================
+
+        function formatRupiah(angka) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka); }
+        function formatDateReadable(isoString) {
+            const date = new Date(isoString);
+            const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+            const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+            const dayName = days[date.getDay()]; const day = String(date.getDate()).padStart(2, '0');
+            const month = months[date.getMonth()]; const year = date.getFullYear();
+            const hours = String(date.getHours()).padStart(2, '0'); const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${dayName}, ${day} ${month} ${year} pukul ${hours}.${minutes}`;
+        }
+
         const initFirebaseAuth = async () => {
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     await window.signInWithCustomToken(window.firebaseAuth, __initial_auth_token);
-                } else {
-                    await window.signInAnonymously(window.firebaseAuth);
-                }
-            } catch (error) {
-                console.error("Auth Error:", error);
-            }
+                } else { await window.signInAnonymously(window.firebaseAuth); }
+            } catch (error) { console.error("Auth Error:", error); }
         };
 
         window.addEventListener('DOMContentLoaded', () => {
             initFirebaseAuth();
-            
-            // Listen for Auth changes to setup listeners
             window.onAuthStateChanged(window.firebaseAuth, (user) => {
                 currentUser = user;
-                if (user) {
-                    listenToInstansiList();
-                }
+                if (user) { listenToInstansiList(); }
             });
         });
 
-        // 1. Memuat Daftar Instansi untuk Select Dropdown (Realtime)
         function listenToInstansiList() {
             if (!currentUser) return;
             const instansiRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'instansi');
-            
             if(dbUnsubscribeInstansi) dbUnsubscribeInstansi();
             
             dbUnsubscribeInstansi = window.onSnapshot(instansiRef, (snapshot) => {
                 const selectLogin = document.getElementById('instansi-select');
                 const selectAdmin = document.getElementById('trans-instansi');
                 
-                selectLogin.innerHTML = '<option value="">-- Pilih Instansi Anda --</option>';
-                selectAdmin.innerHTML = '';
+                if(selectLogin) selectLogin.innerHTML = '<option value="">-- Pilih Instansi Anda --</option>';
+                if(selectAdmin) selectAdmin.innerHTML = '<option value="">-- Pilih Pelanggan --</option>';
                 instansiDataMap = {};
 
                 snapshot.forEach((doc) => {
                     const data = doc.data();
-                    instansiDataMap[doc.id] = data; // Simpan ke memory
-                    
-                    const optLogin = document.createElement('option');
-                    optLogin.value = doc.id;
-                    optLogin.textContent = data.nama;
-                    selectLogin.appendChild(optLogin);
-
-                    const optAdmin = document.createElement('option');
-                    optAdmin.value = doc.id;
-                    optAdmin.textContent = data.nama;
-                    selectAdmin.appendChild(optAdmin);
+                    instansiDataMap[doc.id] = data; 
+                    const optLogin = document.createElement('option'); optLogin.value = doc.id; optLogin.textContent = data.nama;
+                    if(selectLogin) selectLogin.appendChild(optLogin);
+                    const optAdmin = document.createElement('option'); optAdmin.value = doc.id; optAdmin.textContent = data.nama;
+                    if(selectAdmin) selectAdmin.appendChild(optAdmin);
                 });
-            }, (error) => {
-                console.error("Gagal load instansi:", error);
             });
         }
 
-        // Buka Modal Portal
         function openPortalModal() {
             document.getElementById('portal-modal').classList.add('active');
             history.pushState({ portalOpen: true }, "", "#portal-nota");
@@ -1214,337 +1085,221 @@
 
         function closePortalModal() {
             document.getElementById('portal-modal').classList.remove('active');
-            if(dbUnsubscribeTransaksi) {
-                dbUnsubscribeTransaksi(); // Matikan listener saat tutup
-                dbUnsubscribeTransaksi = null;
-            }
-            if(dbUnsubscribeSubscribers) {
-                dbUnsubscribeSubscribers();
-                dbUnsubscribeSubscribers = null;
-            }
+            if(dbUnsubscribeTransaksi) { dbUnsubscribeTransaksi(); dbUnsubscribeTransaksi = null; }
         }
 
         function switchPortalView(viewId) {
-            document.getElementById('portal-login-view').style.display = 'none';
-            document.getElementById('portal-admin-login').style.display = 'none';
-            document.getElementById('portal-admin-dashboard').style.display = 'none';
-            document.getElementById('portal-customer-dashboard').style.display = 'none';
-            
-            document.getElementById(viewId).style.display = 'block';
-            
-            // Tampilkan signature print hanya jika di dashboard customer
-            if(viewId === 'portal-customer-dashboard') {
-                document.getElementById('print-signature').style.display = 'block';
-            } else {
-                document.getElementById('print-signature').style.display = 'none';
-            }
+            ['portal-login-view', 'portal-admin-login', 'portal-admin-dashboard', 'portal-customer-dashboard'].forEach(id => {
+                if(document.getElementById(id)) document.getElementById(id).style.display = 'none';
+            });
+            if(document.getElementById(viewId)) document.getElementById(viewId).style.display = 'block';
         }
 
         function logoutPortal() {
             switchPortalView('portal-login-view');
-            if(dbUnsubscribeTransaksi) {
-                dbUnsubscribeTransaksi();
-                dbUnsubscribeTransaksi = null;
-            }
-            if(dbUnsubscribeSubscribers) {
-                dbUnsubscribeSubscribers();
-                dbUnsubscribeSubscribers = null;
-            }
-            document.getElementById('instansi-password').value = '';
-            document.getElementById('admin-portal-password').value = '';
+            if(dbUnsubscribeTransaksi) { dbUnsubscribeTransaksi(); dbUnsubscribeTransaksi = null; }
+            if(document.getElementById('instansi-password')) document.getElementById('instansi-password').value = '';
+            if(document.getElementById('admin-portal-password')) document.getElementById('admin-portal-password').value = '';
+            clearCart();
         }
 
+        // POS
+        let posCart = [];
+        window.addToCart = function() {
+            const nameInput = document.getElementById('cart-item-name');
+            const priceInput = document.getElementById('cart-item-price');
+            const name = nameInput.value.trim(); const price = parseInt(priceInput.value);
+            if(!name || isNaN(price) || price < 0) { alert("Masukkan nama barang dan harga yang valid!"); return; }
+            posCart.push({ name: name, price: price, qty: 1 });
+            nameInput.value = ''; priceInput.value = ''; updateCartUI();
+        }
 
-        // ==========================================
-        // FUNGSI NEWSLETTER / BERLANGGANAN
-        // ==========================================
+        window.updateCartQty = function(index, delta) {
+            if(posCart[index]) { posCart[index].qty += delta; if(posCart[index].qty < 1) posCart[index].qty = 1; updateCartUI(); }
+        }
 
-        async function subscribeNewsletter(e) {
-            e.preventDefault();
-            if(!currentUser) {
-                alert("Sistem sedang memuat atau terjadi kesalahan jaringan. Tunggu sebentar.");
-                return;
-            }
-            
-            const contactInput = document.getElementById('sub-contact').value;
-            const btn = e.target.querySelector('button');
-            btn.innerText = "Memproses...";
+        window.removeCartItem = function(index) { posCart.splice(index, 1); updateCartUI(); }
+        window.clearCart = function() { posCart = []; if(document.getElementById('cart-tax')) document.getElementById('cart-tax').value = '0'; if(document.getElementById('trans-instansi')) document.getElementById('trans-instansi').value = ''; updateCartUI(); }
 
-            try {
-                const subRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'subscribers');
-                await window.addDoc(subRef, {
-                    kontak: contactInput,
-                    tanggal: new Date().toISOString()
+        window.updateCartUI = function() {
+            const container = document.getElementById('cart-list-container');
+            if(!container) return;
+            container.innerHTML = ''; let subtotal = 0;
+            if(posCart.length === 0) { container.innerHTML = '<div style="padding: 20px; text-align: center; color: #888;">Keranjang kosong. Tambahkan item di atas.</div>'; } 
+            else {
+                posCart.forEach((item, index) => {
+                    const itemTotal = item.price * item.qty; subtotal += itemTotal;
+                    const row = document.createElement('div'); row.className = 'cart-item';
+                    row.innerHTML = `<div class="item-info"><div class="item-name">${item.name}</div><div class="item-price-small">${formatRupiah(item.price)} / pcs</div></div><div class="qty-controls"><button class="qty-btn" onclick="updateCartQty(${index}, -1)">-</button><span>${item.qty}</span><button class="qty-btn" onclick="updateCartQty(${index}, 1)">+</button></div><div class="item-subtotal">${formatRupiah(itemTotal)}</div><button class="item-delete" onclick="removeCartItem(${index})"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>`;
+                    container.appendChild(row);
                 });
-                
-                alert("Terima kasih! Anda telah berhasil berlangganan info & promo D'JANGKOS.");
-                document.getElementById('subscribe-form').reset();
-                btn.innerText = "Berlangganan";
-            } catch(err) {
-                console.error("Error saving subscriber:", err);
-                alert("Gagal berlangganan. Silakan periksa koneksi Anda.");
-                btn.innerText = "Berlangganan";
             }
+            const taxInput = parseInt(document.getElementById('cart-tax')?.value) || 0;
+            const grandTotal = subtotal + taxInput;
+            if(document.getElementById('cart-grand-total')) document.getElementById('cart-grand-total').innerText = formatRupiah(grandTotal);
         }
 
+        window.processCart = async function(status) {
+            if(!currentUser) return;
+            if(posCart.length === 0) { alert("Keranjang masih kosong!"); return; }
+            const instId = document.getElementById('trans-instansi').value;
+            if(!instId) { alert("Pilih Pelanggan / Instansi terlebih dahulu!"); return; }
+            const taxInput = parseInt(document.getElementById('cart-tax').value) || 0;
+            let subtotal = 0; posCart.forEach(i => subtotal += (i.price * i.qty));
+            const dateIso = new Date().toISOString();
+            const summaryString = posCart.map(i => `${i.qty}x ${i.name}`).join(', ');
+            const trxId = "TRX" + Date.now().toString().slice(-5);
+            try {
+                const transRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'transaksi');
+                await window.addDoc(transRef, { trxId: trxId, instansiId: instId, tanggal: dateIso, item: summaryString, cart: posCart, total: subtotal, pajak: taxInput, status: status, createdAt: dateIso });
+                clearCart();
+                if(status === 'LUNAS') {
+                    setTimeout(() => {
+                        const trxs = Object.values(window.transactionsMap).filter(t => t.instansiId === instId).sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+                        if(trxs.length > 0) openReceiptModal(trxs[0].id);
+                    }, 500);
+                } else { alert("Tagihan Hutang berhasil dicatat!"); }
+            } catch(e) { console.error(e); alert("Gagal mencatat transaksi."); }
+        }
 
-        // --- FUNGSI PELANGGAN / INSTANSI ---
-
-        function loginInstansi() {
+        window.loginInstansi = function() {
             const instId = document.getElementById('instansi-select').value;
             const pass = document.getElementById('instansi-password').value;
-
-            if(!instId || !pass) {
-                alert("Pilih nama instansi dan masukkan sandi!");
-                return;
-            }
-
+            if(!instId || !pass) { alert("Pilih nama instansi dan masukkan sandi!"); return; }
             const instData = instansiDataMap[instId];
             if(instData && instData.password === pass) {
-                // Login Berhasil
                 document.getElementById('cust-name-display').innerText = instData.nama;
                 switchPortalView('portal-customer-dashboard');
                 listenToCustomerTransactions(instId);
-            } else {
-                alert("Kata sandi salah atau tidak cocok!");
-            }
+            } else { alert("Kata sandi salah atau tidak cocok!"); }
         }
 
         function listenToCustomerTransactions(instId) {
             if(!currentUser) return;
             const transRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'transaksi');
-            
             if(dbUnsubscribeTransaksi) dbUnsubscribeTransaksi();
-
             dbUnsubscribeTransaksi = window.onSnapshot(transRef, (snapshot) => {
                 const tbody = document.getElementById('cust-table-body');
-                tbody.innerHTML = '';
-                let totalHutang = 0;
-
-                // Urutkan manual karena tidak boleh pakai orderBy Firestore
-                let transList = [];
+                tbody.innerHTML = ''; let totalHutang = 0; let transList = [];
                 snapshot.forEach(doc => {
-                    const data = doc.data();
-                    if(data.instansiId === instId) { // Filter manual
-                        transList.push({id: doc.id, ...data});
-                    }
+                    const data = doc.data(); window.transactionsMap[doc.id] = {id: doc.id, ...data}; 
+                    if(data.instansiId === instId) { transList.push({id: doc.id, ...data}); }
                 });
-
-                // Urutkan tanggal terbaru di atas
                 transList.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
-
-                if(transList.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Belum ada riwayat transaksi.</td></tr>';
-                }
-
+                if(transList.length === 0) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Belum ada riwayat transaksi.</td></tr>'; }
                 transList.forEach(data => {
-                    const tr = document.createElement('tr');
-                    const grandTotal = parseInt(data.total) + parseInt(data.pajak);
-                    
-                    if(data.status === 'HUTANG') {
-                        totalHutang += grandTotal;
-                    }
-
-                    tr.innerHTML = `
-                        <td>${data.tanggal}</td>
-                        <td>${data.item}</td>
-                        <td>${formatRupiah(data.total)}</td>
-                        <td>${formatRupiah(data.pajak)}</td>
-                        <td style="font-weight:bold;">${formatRupiah(grandTotal)}</td>
-                        <td><span class="status-badge ${data.status === 'LUNAS' ? 'status-lunas' : 'status-hutang'}">${data.status}</span></td>
-                    `;
+                    const tr = document.createElement('tr'); const grandTotal = parseInt(data.total) + parseInt(data.pajak);
+                    if(data.status === 'HUTANG') { totalHutang += grandTotal; }
+                    const tglSimple = new Date(data.tanggal).toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'});
+                    tr.innerHTML = `<td>${tglSimple}</td><td style="font-weight:bold;">${formatRupiah(grandTotal)}</td><td><span class="status-badge ${data.status === 'LUNAS' ? 'status-lunas' : 'status-hutang'}">${data.status}</span></td><td><button class="btn-sm" style="background:var(--tosca-start); color:white;" onclick="openReceiptModal('${data.id}')">Lihat Nota</button></td>`;
                     tbody.appendChild(tr);
                 });
-
                 document.getElementById('cust-total-hutang').innerText = formatRupiah(totalHutang);
-
-            }, (error) => {
-                console.error("Gagal load transaksi customer", error);
             });
         }
 
-
-        // --- FUNGSI ADMIN PORTAL ---
-
-        function loginAdminPortal() {
+        window.loginAdminPortal = function() {
             const pass = document.getElementById('admin-portal-password').value;
-            // Password sederhana untuk admin portal (berbeda dari edit UI)
             if(pass === "djangkosbos") {
-                switchPortalView('portal-admin-dashboard');
-                listenToAllTransactions();
-                listenToSubscribersList(); // Buka data subscribers
-            } else {
-                alert("Password Admin Salah!");
-            }
+                switchPortalView('portal-admin-dashboard'); listenToAllTransactions();
+            } else { alert("Password Admin Salah!"); }
         }
 
-        async function addInstansi() {
+        window.addInstansi = async function() {
             if(!currentUser) { alert("Sistem belum siap. Tunggu sebentar."); return; }
             const nama = document.getElementById('new-inst-name').value;
             const pass = document.getElementById('new-inst-pass').value;
-
             if(!nama || !pass) { alert("Nama dan sandi wajib diisi!"); return; }
-
             try {
-                const btn = event.target;
-                btn.innerText = "Menyimpan...";
+                const btn = event.target; btn.innerText = "Menyimpan...";
                 const instansiRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'instansi');
-                await window.addDoc(instansiRef, {
-                    nama: nama,
-                    password: pass,
-                    createdAt: new Date().toISOString()
-                });
-                document.getElementById('new-inst-name').value = '';
-                document.getElementById('new-inst-pass').value = '';
-                btn.innerText = "Tersimpan ✔";
-                setTimeout(() => btn.innerText = "Simpan Instansi", 2000);
-            } catch(e) {
-                console.error(e);
-                alert("Gagal menambah data.");
-            }
-        }
-
-        async function addTransaksi() {
-            if(!currentUser) return;
-            const instId = document.getElementById('trans-instansi').value;
-            const tgl = document.getElementById('trans-date').value;
-            const item = document.getElementById('trans-item').value;
-            const total = document.getElementById('trans-total').value;
-            const tax = document.getElementById('trans-tax').value || 0;
-            const status = document.getElementById('trans-status').value;
-
-            if(!instId || !tgl || !item || !total) {
-                alert("Lengkapi semua form transaksi!"); return;
-            }
-
-            try {
-                const btn = event.target;
-                btn.innerText = "Mencatat...";
-                const transRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'transaksi');
-                await window.addDoc(transRef, {
-                    instansiId: instId,
-                    tanggal: tgl,
-                    item: item,
-                    total: parseInt(total),
-                    pajak: parseInt(tax),
-                    status: status,
-                    createdAt: new Date().toISOString()
-                });
-                
-                document.getElementById('trans-item').value = '';
-                document.getElementById('trans-total').value = '';
-                document.getElementById('trans-tax').value = '0';
-                
-                btn.innerText = "Tercatat ✔";
-                setTimeout(() => btn.innerText = "Catat Transaksi", 2000);
-            } catch(e) {
-                console.error(e);
-                alert("Gagal mencatat transaksi.");
-            }
+                await window.addDoc(instansiRef, { nama: nama, password: pass, createdAt: new Date().toISOString() });
+                document.getElementById('new-inst-name').value = ''; document.getElementById('new-inst-pass').value = '';
+                btn.innerText = "Tersimpan ✔"; setTimeout(() => btn.innerText = "Simpan Instansi", 2000);
+            } catch(e) { console.error(e); alert("Gagal menambah data."); }
         }
 
         function listenToAllTransactions() {
             if(!currentUser) return;
             const transRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'transaksi');
-            
             if(dbUnsubscribeTransaksi) dbUnsubscribeTransaksi();
-
             dbUnsubscribeTransaksi = window.onSnapshot(transRef, (snapshot) => {
                 const tbody = document.getElementById('admin-table-body');
-                tbody.innerHTML = '';
-                
-                let transList = [];
-                snapshot.forEach(doc => {
-                    transList.push({id: doc.id, ...doc.data()});
-                });
-
+                tbody.innerHTML = ''; let transList = [];
+                snapshot.forEach(doc => { const data = doc.data(); window.transactionsMap[doc.id] = {id: doc.id, ...data}; transList.push({id: doc.id, ...data}); });
                 transList.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
-
                 transList.forEach(data => {
                     const instName = instansiDataMap[data.instansiId] ? instansiDataMap[data.instansiId].nama : "Instansi Dihapus";
-                    const tr = document.createElement('tr');
-                    
-                    tr.innerHTML = `
-                        <td>${data.tanggal}</td>
-                        <td>${instName}</td>
-                        <td>${data.item}</td>
-                        <td>${formatRupiah(data.total)}</td>
-                        <td>${formatRupiah(data.pajak)}</td>
-                        <td>${formatRupiah(parseInt(data.total) + parseInt(data.pajak))}</td>
-                        <td>
-                            <button class="btn-sm ${data.status === 'LUNAS' ? 'status-lunas' : 'status-hutang'}" onclick="toggleStatus('${data.id}', '${data.status}')" title="Klik untuk ubah status">${data.status}</button>
-                        </td>
-                        <td>
-                            <button class="btn-sm" style="background:#ff4757; color:white; border:none; cursor:pointer;" onclick="deleteTransaksi('${data.id}')">Hapus</button>
-                        </td>
-                    `;
+                    const tr = document.createElement('tr'); const grandTotal = parseInt(data.total) + parseInt(data.pajak);
+                    const tglSimple = new Date(data.tanggal).toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'});
+                    tr.innerHTML = `<td>${tglSimple}</td><td>${instName}</td><td style="font-size:0.8rem;">${data.item.length > 30 ? data.item.substring(0,30)+'...' : data.item}</td><td style="font-weight:bold;">${formatRupiah(grandTotal)}</td><td><button class="btn-sm ${data.status === 'LUNAS' ? 'status-lunas' : 'status-hutang'}" onclick="toggleStatus('${data.id}', '${data.status}')" title="Klik untuk ubah status">${data.status}</button></td><td style="white-space:nowrap;"><button class="btn-sm" style="background:var(--tosca-start); color:white;" onclick="openReceiptModal('${data.id}')">Nota</button><button class="btn-sm" style="background:#ff4757; color:white; padding:4px 8px;" onclick="deleteTransaksi('${data.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button></td>`;
                     tbody.appendChild(tr);
                 });
-            }, (error) => {
-                console.error("Gagal load semua transaksi", error);
             });
         }
 
-        async function toggleStatus(transId, currentStatus) {
+        window.toggleStatus = async function(transId, currentStatus) {
             if(!currentUser) return;
             const newStatus = currentStatus === 'HUTANG' ? 'LUNAS' : 'HUTANG';
             try {
                 const docRef = window.doc(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'transaksi', transId);
                 await window.updateDoc(docRef, { status: newStatus });
-            } catch(e) {
-                console.error("Gagal ubah status", e);
-            }
+            } catch(e) { console.error("Gagal ubah status", e); }
         }
 
-        async function deleteTransaksi(transId) {
+        window.deleteTransaksi = async function(transId) {
             if(!currentUser) return;
             if(confirm("Yakin ingin menghapus data transaksi ini permanen?")) {
                 try {
                     const docRef = window.doc(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'transaksi', transId);
                     await window.deleteDoc(docRef);
-                } catch(e) {
-                    console.error("Gagal hapus data", e);
-                }
+                } catch(e) { console.error("Gagal hapus data", e); }
             }
         }
 
-        // Tampilkan Data Kontak Langganan (Newsletter) di Dashboard Admin
-        function listenToSubscribersList() {
-            if(!currentUser) return;
-            const subRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'subscribers');
-            
-            if(dbUnsubscribeSubscribers) dbUnsubscribeSubscribers();
+        let currentActiveReceipt = null;
 
-            dbUnsubscribeSubscribers = window.onSnapshot(subRef, (snapshot) => {
-                const tbody = document.getElementById('admin-subscribers-body');
-                tbody.innerHTML = '';
-                
-                let subList = [];
-                snapshot.forEach(doc => {
-                    subList.push({id: doc.id, ...doc.data()});
-                });
-
-                // Urutkan pendaftar terbaru di atas
-                subList.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
-
-                if(subList.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="2" style="text-align:center;">Belum ada kontak yang berlangganan.</td></tr>';
-                }
-
-                subList.forEach(data => {
-                    // Format tampilan tanggal
-                    const tgl = new Date(data.tanggal).toLocaleString('id-ID', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' });
-                    
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${tgl}</td>
-                        <td style="font-weight:bold; color:var(--accent-yellow); letter-spacing:1px;">${data.kontak}</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            }, (error) => {
-                console.error("Gagal memuat pelanggan newsletter", error);
+        window.openReceiptModal = function(transId) {
+            const data = window.transactionsMap[transId];
+            if(!data) return;
+            currentActiveReceipt = data;
+            const header = document.getElementById('rcpt-header'); const statusTxt = document.getElementById('rcpt-status');
+            if(data.status === 'LUNAS') { header.className = 'receipt-header header-lunas'; statusTxt.innerText = 'LUNAS'; } 
+            else { header.className = 'receipt-header header-hutang'; statusTxt.innerText = 'Menunggu Pembayaran'; }
+            document.getElementById('rcpt-date').innerText = formatDateReadable(data.tanggal);
+            const grandTotal = parseInt(data.total) + parseInt(data.pajak);
+            document.getElementById('rcpt-total').innerText = formatRupiah(grandTotal);
+            document.getElementById('rcpt-id').innerText = data.trxId || ("#TRX" + transId.substring(0,6).toUpperCase());
+            document.getElementById('rcpt-customer').innerText = instansiDataMap[data.instansiId] ? instansiDataMap[data.instansiId].nama : "Instansi";
+            document.getElementById('rcpt-tax').innerText = formatRupiah(data.pajak);
+            const itemsContainer = document.getElementById('rcpt-items'); itemsContainer.innerHTML = '';
+            const cartItems = data.cart || [{name: data.item, qty: 1, price: data.total}];
+            cartItems.forEach(item => {
+                const sub = item.qty * item.price; const row = document.createElement('div'); row.className = 'r-item';
+                row.innerHTML = `<div class="r-item-left"><div class="r-item-name">${item.name}</div><div class="r-item-qty">${item.qty} x ${formatRupiah(item.price)}</div></div><div class="r-item-sub">${formatRupiah(sub)}</div>`;
+                itemsContainer.appendChild(row);
             });
+            document.getElementById('receipt-modal').classList.add('active');
+            history.pushState({ receiptOpen: true }, "", "#nota");
+        }
+
+        window.closeReceiptModal = function() {
+            document.getElementById('receipt-modal').classList.remove('active');
+            currentActiveReceipt = null;
+        }
+
+        window.printReceipt = function() {
+            document.body.classList.add('is-printing-receipt'); window.print();
+            setTimeout(() => { document.body.classList.remove('is-printing-receipt'); }, 500);
+        }
+
+        window.shareReceiptWA = function() {
+            if(!currentActiveReceipt) return;
+            const data = currentActiveReceipt;
+            const instName = instansiDataMap[data.instansiId] ? instansiDataMap[data.instansiId].nama : "";
+            const grandTotal = formatRupiah(parseInt(data.total) + parseInt(data.pajak));
+            let msg = `*NOTA TAGIHAN D'JANGKOS*\n--------------------------------\nID Transaksi: ${data.trxId || data.id.substring(0,6)}\nTanggal: ${new Date(data.tanggal).toLocaleDateString('id-ID')}\nPelanggan: ${instName}\nStatus: *${data.status}*\n--------------------------------\nTotal Tagihan: *${grandTotal}*\n\nCek detail tagihan di website kami:\nwww.djangkos.com\n\nTerima kasih!`;
+            const encoded = encodeURIComponent(msg); window.open(`https://wa.me/?text=${encoded}`, '_blank');
         }
 
     </script>
