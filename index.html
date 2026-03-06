@@ -18,7 +18,7 @@
         import { getFirestore, collection, doc, setDoc, getDocs, addDoc, onSnapshot, query, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Konfigurasi Firebase Asli Milik Abang
-        const firebaseConfig = {
+        const userConfig = {
             apiKey: "AIzaSyDZ3CiCrMX9QpOtvxmW6tonR-KesbatefY", 
             authDomain: "djangkos-firebase.firebaseapp.com",
             projectId: "djangkos-firebase",
@@ -27,12 +27,13 @@
             appId: "1:730858102189:web:79d22e6b283d6767aed524"
         };
         
-        // Inisialisasi Langsung
-        window.firebaseApp = initializeApp(firebaseConfig);
+        // Deteksi Pintar
+        const isCanvasEnv = window.location.hostname.includes('.goog') || window.location.hostname.includes('localhost') || window.location.hostname === '';
+        const finalConfig = isCanvasEnv && typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : userConfig;
+
+        window.firebaseApp = initializeApp(finalConfig);
         window.firebaseDb = getFirestore(window.firebaseApp);
-        
-        // App ID Konstan untuk path database
-        window.appId = 'djangkos-app-id';
+        window.appId = typeof __app_id !== 'undefined' ? __app_id : 'djangkos-app-id';
         
         // Expose fungsi database ke global
         window.collection = collection;
@@ -45,7 +46,7 @@
         window.updateDoc = updateDoc;
         window.deleteDoc = deleteDoc;
 
-        // Load data segera saat halaman dimuat
+        // Load data segera
         window.addEventListener('DOMContentLoaded', () => {
             listenToInstansiList();
         });
@@ -197,7 +198,7 @@
         
         .admin-grid-layout { display: grid; grid-template-columns: 1fr 2.5fr; gap: 30px; }
 
-        /* POS Cart Style (Desktop) */
+        /* POS Cart Style */
         .pos-container { background: #fff; color: #333; border-radius: var(--radius-md); overflow: hidden; font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);}
         .pos-header { background: #f8f9fa; padding: 15px 25px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
         .pos-header h4 { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 1.1rem; color: #ff8a00; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;}
@@ -315,6 +316,28 @@
             .receipt-signatures { display: flex; justify-content: space-between; margin-top: 30px; text-align: center; font-size: 0.7rem; color: black !important; padding: 0 5px; }
         }
 
+        /* ==================== STATS & FOOTER ==================== */
+        .stats-section { padding: 60px 0 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 50px; }
+        .stats-section h2 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; color: var(--accent-yellow); font-weight: 800; margin-bottom: 30px; letter-spacing: 2px;}
+        .footer-cta { margin-top: 20px; padding: 40px 20px; background: rgba(255, 255, 255, 0.02); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: var(--shadow-md);}
+        .footer-bottom { text-align: center; padding: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.4); background: #041228; }
+
+        /* ==================== ADMIN EDIT MODE ==================== */
+        /* Tombol Gerigi Biru Mencolok agar selalu terlihat */
+        .admin-toggle-btn { position: fixed; bottom: 30px; left: 30px; width: 55px; height: 55px; background: var(--primary-blue); border-radius: 50%; display: flex !important; align-items: center; justify-content: center; cursor: pointer; z-index: 2147483647; border: 3px solid var(--white); transition: var(--transition); box-shadow: 0 5px 20px rgba(0,0,0,0.8); }
+        .admin-toggle-btn:hover { background: var(--accent-yellow); transform: rotate(90deg); border-color: #000; }
+        .admin-toggle-btn svg { width: 28px; height: 28px; stroke: #fff; }
+        .admin-toggle-btn:hover svg { stroke: #000; }
+        
+        .admin-panel { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 15px 25px; border-radius: 50px; z-index: 2147483647; display: none; align-items: center; gap: 10px; box-shadow: var(--shadow-lg); flex-wrap: wrap; justify-content: center; width: 95%; max-width: 750px; }
+        .admin-panel button { background: var(--primary-blue); color: #fff; border: none; padding: 8px 15px; border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 0.85rem; transition: 0.2s;}
+        .admin-panel button:hover { opacity: 0.9; transform: translateY(-2px); }
+        .admin-panel button.exit-btn { background: #ff4757; }
+        body.edit-mode .edit-txt { outline: 2px dashed var(--accent-yellow); padding: 2px; border-radius: 4px; background: rgba(255, 255, 255, 0.1); min-width: 20px; display: inline-block;}
+        body.edit-mode .edit-txt:focus { background: white; color: black; outline: 2px solid var(--primary-blue); }
+        body.edit-mode .edit-img { outline: 3px dashed var(--accent-yellow); cursor: pointer; opacity: 0.8; }
+        body.edit-mode .edit-img:hover { opacity: 1; filter: brightness(1.2); }
+
         /* ==================== FLOATING WHATSAPP BUTTON ==================== */
         .floating-wa-container { position: fixed; bottom: 30px; right: 30px; z-index: 9998; display: flex; align-items: center; }
         .floating-wa { width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.4); transition: var(--transition); text-decoration: none; animation: pulse-wa 2s infinite; position: relative;}
@@ -330,28 +353,6 @@
         }
         .floating-wa:hover .wa-tooltip { opacity: 1; visibility: visible; transform: translateY(-50%) translateX(0); }
         @keyframes pulse-wa { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
-
-        /* ==================== STATS & FOOTER ==================== */
-        .stats-section { padding: 60px 0 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 50px; }
-        .stats-section h2 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; color: var(--accent-yellow); font-weight: 800; margin-bottom: 30px; letter-spacing: 2px;}
-        .footer-cta { margin-top: 20px; padding: 40px 20px; background: rgba(255, 255, 255, 0.02); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: var(--shadow-md);}
-        .footer-bottom { text-align: center; padding: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.4); background: #041228; }
-
-        /* ==================== ADMIN EDIT MODE ==================== */
-        /* PERBAIKAN: Tombol Gerigi Biru Mencolok agar selalu terlihat */
-        .admin-toggle-btn { position: fixed; bottom: 30px; left: 30px; width: 55px; height: 55px; background: var(--primary-blue); border-radius: 50%; display: flex !important; align-items: center; justify-content: center; cursor: pointer; z-index: 2147483647; border: 3px solid var(--white); transition: var(--transition); box-shadow: 0 5px 20px rgba(0,0,0,0.8); }
-        .admin-toggle-btn:hover { background: var(--accent-yellow); transform: rotate(90deg); border-color: #000; }
-        .admin-toggle-btn svg { width: 28px; height: 28px; stroke: #fff; }
-        .admin-toggle-btn:hover svg { stroke: #000; }
-        
-        .admin-panel { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 15px 25px; border-radius: 50px; z-index: 2147483647; display: none; align-items: center; gap: 10px; box-shadow: var(--shadow-lg); flex-wrap: wrap; justify-content: center; width: 95%; max-width: 750px; }
-        .admin-panel button { background: var(--primary-blue); color: #fff; border: none; padding: 8px 15px; border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 0.85rem; transition: 0.2s;}
-        .admin-panel button:hover { opacity: 0.9; transform: translateY(-2px); }
-        .admin-panel button.exit-btn { background: #ff4757; }
-        body.edit-mode .edit-txt { outline: 2px dashed var(--accent-yellow); padding: 2px; border-radius: 4px; background: rgba(255, 255, 255, 0.1); min-width: 20px; display: inline-block;}
-        body.edit-mode .edit-txt:focus { background: white; color: black; outline: 2px solid var(--primary-blue); }
-        body.edit-mode .edit-img { outline: 3px dashed var(--accent-yellow); cursor: pointer; opacity: 0.8; }
-        body.edit-mode .edit-img:hover { opacity: 1; filter: brightness(1.2); }
 
         /* ==================== RESPONSIVE DESIGN ==================== */
         @media (max-width: 992px) {
@@ -535,6 +536,10 @@
                 <h3 class="edit-txt" data-id="alamat-title" style="color: var(--white); font-size: 1.2rem; margin-bottom: 5px;">Alamat Kami:</h3>
                 <p class="edit-txt" data-id="footer-address" style="color: var(--text-light); font-size: 1rem; line-height: 1.6; max-width: 600px; margin: 0 auto 20px;">
                     Jalan Raya Ancak-Kopang, Karang Bajo, Kecamatan Bayan, Kabupaten Lombok Utara, Nusa Tenggara Barat. Kode Pos 83354
+                </p>
+                <!-- Info Kontak Tambahan (Email) -->
+                <p style="color: var(--accent-yellow); font-size: 1rem; font-weight: 600; margin-bottom: 20px;">
+                    ✉️ <a href="mailto:djangkos@gmail.com">djangkos@gmail.com</a>
                 </p>
                 
                 <a href="https://maps.app.goo.gl/tx4LyqNEV66zyQSt5" target="_blank" class="btn btn-outline edit-txt" data-id="btn-map" style="margin-bottom: 40px; background: rgba(255,255,255,0.05);">Buka di Google Maps</a>
@@ -881,6 +886,16 @@
         <button onclick="editMasterPass()" style="background: #333;">Ubah Sandi Master</button>
         <button id="save-btn">Simpan Perubahan Teks/Foto</button>
         <button id="exit-btn" class="exit-btn">Keluar</button>
+    </div>
+
+    <!-- FLOATING WHATSAPP BUTTON -->
+    <div class="floating-wa-container">
+        <a href="https://wa.me/6285935389691" target="_blank" class="floating-wa" aria-label="Chat WhatsApp">
+            <svg viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            <div class="wa-tooltip">Punya Pertanyaan?</div>
+        </a>
     </div>
 
     <input type="file" id="image-upload" accept="image/*" style="display: none;">
