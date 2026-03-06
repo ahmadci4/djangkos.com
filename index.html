@@ -17,9 +17,9 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, doc, setDoc, getDocs, addDoc, onSnapshot, query, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Konfigurasi Firebase Asli Milik Abang
-        const userConfig = {
-            apiKey: "AIzaSyDZ3CiCrMX9Qp0tvxmW6tonR-KesbatefY", 
+        // Konfigurasi Firebase Asli Milik Abang (HARUS SESUAI DENGAN FIREBASE)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZ3CiCrMX9QpOtvxmW6tonR-KesbatefY", // Pastikan 'O' besar, bukan angka nol '0'
             authDomain: "djangkos-firebase.firebaseapp.com",
             projectId: "djangkos-firebase",
             storageBucket: "djangkos-firebase.firebasestorage.app",
@@ -27,13 +27,12 @@
             appId: "1:730858102189:web:79d22e6b283d6767aed524"
         };
         
-        // Deteksi Pintar
-        const isCanvasEnv = window.location.hostname.includes('.goog') || window.location.hostname.includes('localhost') || window.location.hostname === '';
-        const finalConfig = isCanvasEnv && typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : userConfig;
-
-        window.firebaseApp = initializeApp(finalConfig);
+        // Inisialisasi Langsung
+        window.firebaseApp = initializeApp(firebaseConfig);
         window.firebaseDb = getFirestore(window.firebaseApp);
-        window.appId = typeof __app_id !== 'undefined' ? __app_id : 'djangkos-app-id';
+        
+        // App ID Konstan untuk path database
+        window.appId = 'djangkos-app-id';
         
         // Expose fungsi database ke global
         window.collection = collection;
@@ -46,7 +45,7 @@
         window.updateDoc = updateDoc;
         window.deleteDoc = deleteDoc;
 
-        // Load data segera
+        // Load data segera saat halaman dimuat
         window.addEventListener('DOMContentLoaded', () => {
             listenToInstansiList();
         });
@@ -199,7 +198,7 @@
         
         .admin-grid-layout { display: grid; grid-template-columns: 1fr 2.5fr; gap: 30px; }
 
-        /* POS Cart Style */
+        /* POS Cart Style (Desktop) */
         .pos-container { background: #fff; color: #333; border-radius: var(--radius-md); overflow: hidden; font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);}
         .pos-header { background: #f8f9fa; padding: 15px 25px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
         .pos-header h4 { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 1.1rem; color: #ff8a00; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;}
@@ -345,7 +344,6 @@
         .newsletter-input-group input:focus { border-color: var(--accent-yellow); }
 
         /* ==================== ADMIN EDIT MODE ==================== */
-        /* PERBAIKAN Z-INDEX AGAR TOMBOL GERIGI SELALU MUNCUL */
         .admin-toggle-btn { position: fixed; bottom: 30px; left: 30px; width: 45px; height: 45px; background: rgba(0,0,0,0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2147483647; border: 1px solid rgba(255,255,255,0.2); transition: var(--transition); }
         .admin-toggle-btn:hover { background: var(--white); transform: rotate(90deg); }
         .admin-toggle-btn svg { width: 24px; height: 24px; stroke: #ccc; }
