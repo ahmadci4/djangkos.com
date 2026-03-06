@@ -18,22 +18,42 @@
         import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDocs, addDoc, onSnapshot, query, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Konfigurasi Firebase Asli Milik Abang
+        // ==============================================================================
+        // KONFIGURASI FIREBASE DEFAULT UNTUK CANVAS (Mencegah Error di Preview)
+        // ==============================================================================
+        // Fallback untuk environment Canvas agar preview tidak crash
+        const canvasFirebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            // Ini config dummy, tidak akan berfungsi untuk save data beneran.
+            // Saat di Github/Server Abang, config asli (userConfig) di bawah yang harus dipakai.
+            apiKey: "dummy-api-key", 
+            authDomain: "dummy.firebaseapp.com",
+            projectId: "dummy-project",
+            storageBucket: "dummy.appspot.com",
+            messagingSenderId: "12345",
+            appId: "1:123:web:abc"
+        };
+
+        // Konfigurasi Firebase Asli Milik Abang (Sesuai Screenshot)
         const userConfig = {
-            apiKey: "AIzaSyDZ3CiCrMX9QpOtvxmW6tonR-KesbatefY",
+            apiKey: "AIzaSyDZ3CiCrMX9QpOtvxmW6tonR-KesbatefY", 
             authDomain: "djangkos-firebase.firebaseapp.com",
             projectId: "djangkos-firebase",
             storageBucket: "djangkos-firebase.firebasestorage.app",
             messagingSenderId: "730858102189",
             appId: "1:730858102189:web:79d22e6b283d6767aed524"
         };
+        
+        // Cek jika berjalan di environment Canvas/Preview
+        const isCanvasEnv = window.location.hostname.includes('.goog') || window.location.hostname.includes('localhost') || window.location.hostname === '';
+        
+        // Gunakan config Canvas jika di preview, jika tidak (di Github) pakai config Abang
+        const finalConfig = isCanvasEnv && typeof __firebase_config !== 'undefined' ? canvasFirebaseConfig : userConfig;
 
-        // Deteksi Pintar: Gunakan Config Canvas saat di Preview, gunakan Config Abang saat di djangkos.com
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : userConfig;
-
-        window.firebaseApp = initializeApp(firebaseConfig);
+        window.firebaseApp = initializeApp(finalConfig);
         window.firebaseAuth = getAuth(window.firebaseApp);
         window.firebaseDb = getFirestore(window.firebaseApp);
+        
+        // Set App ID untuk data path Firebase (Sangat penting agar sesuai dengan aturan Canvas/Project)
         window.appId = typeof __app_id !== 'undefined' ? __app_id : 'djangkos-app-id';
         
         window.signInAnonymously = signInAnonymously;
@@ -134,6 +154,14 @@
         .hero p.desc { font-size: 1.1rem; margin-bottom: 40px; color: var(--text-light); max-width: 700px; margin-left: auto; margin-right: auto; text-shadow: 0 2px 4px rgba(0,0,0,0.8); font-weight: 500;}
         .hero-btns { display: flex; gap: 20px; justify-content: center; }
 
+        /* BANNER PROMO POP-UP */
+        #promo-popup-modal { z-index: 10001; }
+        #promo-popup-modal .modal-content { max-width: 500px; background: transparent; border: none; box-shadow: none; overflow: visible; padding: 15px;}
+        #promo-popup-modal .modal-close { right: 0; top: 0; background: #ff4757; box-shadow: 0 4px 10px rgba(0,0,0,0.5); z-index: 20;}
+        #promo-img-display { width: 100%; border-radius: 12px; box-shadow: 0 15px 30px rgba(0,0,0,0.6); object-fit: cover; }
+        #promo-section { padding: 40px 0 0 0; position: relative; z-index: 5; text-align: center; }
+        #promo-img { max-width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
+
         /* ==================== EDUKASI (SIPLAH & INAPROC) ==================== */
         .glass-box { background: rgba(10, 46, 99, 0.6); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding: 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
         .edukasi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: stretch; }
@@ -192,7 +220,6 @@
         .form-control { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: var(--white); font-family: inherit; }
         .form-control:focus { outline: none; border-color: var(--accent-yellow); }
         
-        /* Grid Admin Layouts */
         .admin-grid-layout { display: grid; grid-template-columns: 1fr 2.5fr; gap: 30px; }
 
         /* POS Cart Style */
@@ -334,7 +361,6 @@
             .about-img { order: -1; }
             .ring-1, .ring-2, .ring-3 { display: none; } 
         }
-
         @media (max-width: 768px) {
             .nav-links { position: absolute; top: 80px; left: -100%; width: 100%; background: var(--bg-main); flex-direction: column; align-items: center; padding: 30px 0; border-bottom: 1px solid rgba(255,255,255,0.1); transition: var(--transition); }
             .nav-links.active { left: 0; }
@@ -348,7 +374,7 @@
             .dana-title { font-size: 0.7rem; line-height: 1.2; }
             .newsletter-input-group { flex-direction: column; }
             
-            /* Responsive Admin Grid Fix (Agar tidak gepeng di HP) */
+            /* Responsive Admin Grid Fix */
             .admin-grid-layout { display: flex !important; flex-direction: column !important; gap: 20px; }
             .pos-footer-inputs { flex-direction: column; align-items: stretch; }
             .pos-footer-inputs > div { width: 100%; min-width: 100%; }
@@ -550,7 +576,7 @@
         </div>
     </div>
 
-    <!-- STORAGE LAYANAN (Dinamis tanpa tombol pesan) -->
+    <!-- STORAGE LAYANAN -->
     <div id="service-data-storage" style="display: none;">
         <!-- CAT 1 -->
         <div id="cat-1" class="cat-data-container">
@@ -924,8 +950,12 @@
         window.subscribeNewsletter = async function(e) {
             e.preventDefault();
             if(!currentUser) {
-                alert("Sistem sedang memuat atau terjadi kesalahan jaringan. Tunggu sebentar.");
-                return;
+                try {
+                    await window.signInAnonymously(window.firebaseAuth);
+                    currentUser = window.firebaseAuth.currentUser;
+                } catch(err) {
+                    alert("Koneksi gagal ke Firebase. Silakan coba lagi nanti."); return;
+                }
             }
             const contactInput = document.getElementById('sub-contact').value;
             const btn = e.target.querySelector('button');
@@ -1263,7 +1293,17 @@
         }
 
         window.processCart = async function(status) {
-            if(!currentUser) { alert("Sistem sedang menghubungi database. Coba tekan tombol lagi dalam beberapa detik."); return; }
+            if(!currentUser) {
+                // Paksa relogin jika terputus
+                try {
+                    await window.signInAnonymously(window.firebaseAuth);
+                    currentUser = window.firebaseAuth.currentUser;
+                } catch(e) {
+                    alert("Error Firebase Auth: " + e.message + "\n\nPastikan API Key benar dan Mode Anonim diaktifkan.");
+                    return;
+                }
+            }
+
             if(posCart.length === 0) { alert("Keranjang masih kosong!"); return; }
             
             const instId = document.getElementById('pos-instansi').value;
@@ -1294,7 +1334,7 @@
                 } else { 
                     alert("Tagihan HUTANG berhasil dicatat!"); 
                 }
-            } catch(e) { console.error(e); alert("Gagal mencatat transaksi."); }
+            } catch(e) { console.error(e); alert("Gagal mencatat transaksi: " + e.message); }
         }
 
         window.loginInstansi = function() {
@@ -1343,7 +1383,16 @@
         }
 
         window.addInstansi = async function() {
-            if(!currentUser) { alert("Sistem sedang menghubungi database. Coba tekan tombol lagi dalam beberapa detik."); return; }
+            if(!currentUser) {
+                try {
+                    await window.signInAnonymously(window.firebaseAuth);
+                    currentUser = window.firebaseAuth.currentUser;
+                } catch(e) {
+                    alert("Koneksi ditolak Firebase: " + e.message + "\n\nPastikan API Key benar dan Mode Anonim diaktifkan di Console.");
+                    return;
+                }
+            }
+
             const nama = document.getElementById('new-inst-name').value;
             const pass = document.getElementById('new-inst-pass').value;
             if(!nama || !pass) { alert("Nama dan sandi wajib diisi!"); return; }
@@ -1353,7 +1402,7 @@
                 await window.addDoc(instansiRef, { nama: nama, password: pass, createdAt: new Date().toISOString() });
                 document.getElementById('new-inst-name').value = ''; document.getElementById('new-inst-pass').value = '';
                 btn.innerText = "Tersimpan ✔"; setTimeout(() => btn.innerText = "Simpan Instansi", 2000);
-            } catch(e) { console.error(e); alert("Gagal menambah data."); }
+            } catch(e) { console.error(e); alert("Gagal menambah data: " + e.message); }
         }
 
         window.editInstansiPassword = async function(instId) {
