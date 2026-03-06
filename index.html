@@ -18,10 +18,24 @@
         import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDocs, addDoc, onSnapshot, query, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        window.firebaseApp = initializeApp(typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {});
+        // Konfigurasi Firebase Asli Milik Abang
+        const userConfig = {
+            apiKey: "AIzaSyDZ3CiCrMX9QpOtvxmW6tonR-KesbatefY",
+            authDomain: "djangkos-firebase.firebaseapp.com",
+            projectId: "djangkos-firebase",
+            storageBucket: "djangkos-firebase.firebasestorage.app",
+            messagingSenderId: "730858102189",
+            appId: "1:730858102189:web:79d22e6b283d6767aed524"
+        };
+
+        // Deteksi Pintar: Gunakan Config Canvas saat di Preview, gunakan Config Abang saat di djangkos.com
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : userConfig;
+
+        window.firebaseApp = initializeApp(firebaseConfig);
         window.firebaseAuth = getAuth(window.firebaseApp);
         window.firebaseDb = getFirestore(window.firebaseApp);
         window.appId = typeof __app_id !== 'undefined' ? __app_id : 'djangkos-app-id';
+        
         window.signInAnonymously = signInAnonymously;
         window.signInWithCustomToken = signInWithCustomToken;
         window.onAuthStateChanged = onAuthStateChanged;
@@ -129,7 +143,7 @@
         .edu-card h3 { color: var(--accent-yellow); font-size: 1.5rem; margin-bottom: 15px; }
         .edu-card p { color: var(--text-light); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px; }
 
-        /* ==================== KATALOG/LAYANAN (DANA APP STYLE GRID) ==================== */
+        /* ==================== KATALOG/LAYANAN ==================== */
         .dana-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; justify-content: center; }
         .dana-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: 25px 15px; text-align: center; cursor: pointer; transition: var(--transition); display: flex; flex-direction: column; align-items: center; box-shadow: var(--shadow-sm); }
         .dana-card:hover { transform: translateY(-8px); border-color: var(--accent-yellow); box-shadow: 0 10px 20px rgba(0,0,0,0.5), 0 0 15px rgba(250, 204, 21, 0.2); }
@@ -201,7 +215,7 @@
         .qty-input { width: 50px; text-align: center; border: 1px solid #ddd; border-radius: 4px; padding: 4px; font-weight: bold; outline: none; -moz-appearance: textfield;}
         .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         .qty-input:focus { border-color: var(--primary-blue); }
-        .qty-btn { width: 25px; height: 25px; border-radius: 50%; border: 1px solid #ddd; background: #fff; cursor: pointer; font-weight: bold; color: #555; }
+        .qty-btn { width: 25px; height: 25px; border-radius: 50%; border: 1px solid #ddd; background: #fff; cursor: pointer; font-weight: bold; color: #555; display:flex; align-items:center; justify-content:center;}
         .item-subtotal { flex: 1; text-align: right; font-weight: 700; color: #333; }
         .item-delete { color: #ff4757; cursor: pointer; border: none; background: none; font-size: 1.2rem; margin-left: 15px; }
 
@@ -268,7 +282,6 @@
             body.is-printing-receipt #receipt-modal { position: absolute; left: 0; top: 0; width: 100%; background: white !important; }
             .receipt-actions, .modal-close { display: none !important; }
             .receipt-card { box-shadow: none; max-width: 100%; border-radius: 0; margin: 0; }
-            /* Show Signatures only on print */
             .receipt-signatures { display: flex; justify-content: space-between; margin-top: 50px; text-align: center; font-size: 0.85rem; color: #333; padding: 0 20px; }
         }
 
@@ -277,12 +290,12 @@
         .floating-wa:hover { transform: scale(1.1); background: #128C7E; }
         .floating-wa svg { width: 35px; height: 35px; fill: white; }
         
-        /* FIX TOOLTIP WA (Mencegah teks memanjang kebawah) */
+        /* FIX TOOLTIP WA */
         .wa-tooltip { 
             position: absolute; right: 75px; top: 50%; transform: translateY(-50%) translateX(10px); 
             background: var(--white); color: var(--bg-main); padding: 10px 20px; 
             border-radius: 20px 20px 0 20px; font-size: 0.9rem; font-weight: 600; 
-            white-space: nowrap; min-width: max-content; box-shadow: var(--shadow-md); 
+            white-space: nowrap; width: max-content; box-shadow: var(--shadow-md); 
             opacity: 0; visibility: hidden; transition: var(--transition); pointer-events: none; 
         }
         .floating-wa:hover .wa-tooltip { opacity: 1; visibility: visible; transform: translateY(-50%) translateX(0); }
@@ -335,7 +348,7 @@
             .dana-title { font-size: 0.7rem; line-height: 1.2; }
             .newsletter-input-group { flex-direction: column; }
             
-            /* Responsive Admin Grid (Memperbaiki tampilan gepeng di HP) */
+            /* Responsive Admin Grid Fix (Agar tidak gepeng di HP) */
             .admin-grid-layout { display: flex !important; flex-direction: column !important; gap: 20px; }
             .pos-footer-inputs { flex-direction: column; align-items: stretch; }
             .pos-footer-inputs > div { width: 100%; min-width: 100%; }
@@ -842,17 +855,17 @@
         function openServiceModal(catId) {
             const modalBody = document.getElementById('modal-dynamic-content');
             const catElement = document.getElementById(catId);
-            if(catElement) {
+            if(catElement && modalBody) {
                 modalBody.appendChild(catElement);
                 history.pushState({ modalOpen: true, cat: catId }, "", "#layanan-detail");
-                document.getElementById('service-modal').classList.add('active');
+                document.getElementById('service-modal')?.classList.add('active');
             }
         }
 
         function closeServiceModalOnly() {
             const modalBody = document.getElementById('modal-dynamic-content');
             const storage = document.getElementById('service-data-storage');
-            while(modalBody?.firstChild) { storage.appendChild(modalBody.firstChild); }
+            while(modalBody?.firstChild) { storage?.appendChild(modalBody.firstChild); }
             document.getElementById('service-modal')?.classList.remove('active');
         }
 
@@ -874,7 +887,7 @@
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('nav-links');
         if(hamburger) {
-            hamburger.addEventListener('click', () => { navLinks.classList.toggle('active'); });
+            hamburger.addEventListener('click', () => { navLinks?.classList.toggle('active'); });
         }
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => { navLinks?.classList.remove('active'); });
@@ -916,15 +929,15 @@
             }
             const contactInput = document.getElementById('sub-contact').value;
             const btn = e.target.querySelector('button');
-            btn.innerText = "Memproses...";
+            if(btn) btn.innerText = "Memproses...";
             try {
                 const subRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'subscribers');
                 await window.addDoc(subRef, { kontak: contactInput, tanggal: new Date().toISOString() });
                 alert("Terima kasih! Anda telah berhasil berlangganan info promo kami.");
-                document.getElementById('subscribe-form').reset();
-                btn.innerText = "Berlangganan";
+                document.getElementById('subscribe-form')?.reset();
+                if(btn) btn.innerText = "Berlangganan";
             } catch(err) {
-                console.error(err); alert("Gagal berlangganan. Silakan coba lagi."); btn.innerText = "Berlangganan";
+                console.error(err); alert("Gagal berlangganan. Silakan coba lagi."); if(btn) btn.innerText = "Berlangganan";
             }
         }
 
@@ -1017,7 +1030,7 @@
                 if (url && url.trim() !== "") {
                     currentEditingImage.src = url.trim();
                 } else if (url === "") { 
-                    imageUpload.click(); 
+                    imageUpload?.click(); 
                 }
             }
         }
@@ -1109,16 +1122,20 @@
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     await window.signInWithCustomToken(window.firebaseAuth, __initial_auth_token);
-                } else { await window.signInAnonymously(window.firebaseAuth); }
+                } else if (typeof window.signInAnonymously !== 'undefined') {
+                    await window.signInAnonymously(window.firebaseAuth); 
+                }
             } catch (error) { console.error("Auth Error:", error); }
         };
 
         window.addEventListener('DOMContentLoaded', () => {
             initFirebaseAuth();
-            window.onAuthStateChanged(window.firebaseAuth, (user) => {
-                currentUser = user;
-                if (user) { listenToInstansiList(); }
-            });
+            if(window.onAuthStateChanged) {
+                window.onAuthStateChanged(window.firebaseAuth, (user) => {
+                    currentUser = user;
+                    if (user) { listenToInstansiList(); }
+                });
+            }
         });
 
         function listenToInstansiList() {
@@ -1246,7 +1263,7 @@
         }
 
         window.processCart = async function(status) {
-            if(!currentUser) { alert("Menghubungkan ke database... Coba beberapa saat lagi."); return; }
+            if(!currentUser) { alert("Sistem sedang menghubungi database. Coba tekan tombol lagi dalam beberapa detik."); return; }
             if(posCart.length === 0) { alert("Keranjang masih kosong!"); return; }
             
             const instId = document.getElementById('pos-instansi').value;
