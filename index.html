@@ -12,10 +12,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Firebase SDKs -->
+    <!-- Firebase SDKs (VERSI TANPA AUTHENTICATION) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDocs, addDoc, onSnapshot, query, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Konfigurasi Firebase Asli Milik Abang
@@ -28,18 +27,15 @@
             appId: "1:730858102189:web:79d22e6b283d6767aed524"
         };
         
+        // Deteksi Pintar
         const isCanvasEnv = window.location.hostname.includes('.goog') || window.location.hostname.includes('localhost') || window.location.hostname === '';
         const finalConfig = isCanvasEnv && typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : userConfig;
 
         window.firebaseApp = initializeApp(finalConfig);
-        window.firebaseAuth = getAuth(window.firebaseApp);
         window.firebaseDb = getFirestore(window.firebaseApp);
-        
         window.appId = typeof __app_id !== 'undefined' ? __app_id : 'djangkos-app-id';
         
-        window.signInAnonymously = signInAnonymously;
-        window.signInWithCustomToken = signInWithCustomToken;
-        window.onAuthStateChanged = onAuthStateChanged;
+        // Expose fungsi database ke global
         window.collection = collection;
         window.doc = doc;
         window.setDoc = setDoc;
@@ -49,6 +45,11 @@
         window.query = query;
         window.updateDoc = updateDoc;
         window.deleteDoc = deleteDoc;
+
+        // Load data segera
+        window.addEventListener('DOMContentLoaded', () => {
+            listenToInstansiList();
+        });
     </script>
 
     <style>
@@ -198,7 +199,7 @@
         
         .admin-grid-layout { display: grid; grid-template-columns: 1fr 2.5fr; gap: 30px; }
 
-        /* POS Cart Style (Desktop) */
+        /* POS Cart Style */
         .pos-container { background: #fff; color: #333; border-radius: var(--radius-md); overflow: hidden; font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);}
         .pos-header { background: #f8f9fa; padding: 15px 25px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
         .pos-header h4 { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 1.1rem; color: #ff8a00; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;}
@@ -247,7 +248,7 @@
         .status-hutang { background: rgba(255, 71, 87, 0.2); color: #ff4757; border: 1px solid #ff4757; }
         .btn-sm { padding: 6px 12px; font-size: 0.8rem; border-radius: 6px; margin-right: 5px; border: none; cursor: pointer; font-weight: 600; }
 
-        /* RECEIPT MODAL & THERMAL PRINT OPTIMIZATION */
+        /* RECEIPT MODAL */
         #receipt-modal { z-index: 10005; }
         .receipt-card { background: white; width: 100%; max-width: 400px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.3); font-family: 'Poppins', sans-serif; position: relative; margin: 20px auto; color: #333; }
         .receipt-header { padding: 30px 20px; text-align: center; color: white; position: relative; }
@@ -344,11 +345,13 @@
         .newsletter-input-group input:focus { border-color: var(--accent-yellow); }
 
         /* ==================== ADMIN EDIT MODE ==================== */
-        .admin-toggle-btn { position: fixed; bottom: 30px; left: 30px; width: 45px; height: 45px; background: rgba(0,0,0,0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 99999; border: 1px solid rgba(255,255,255,0.2); transition: var(--transition); }
+        /* PERBAIKAN Z-INDEX AGAR TOMBOL GERIGI SELALU MUNCUL */
+        .admin-toggle-btn { position: fixed; bottom: 30px; left: 30px; width: 45px; height: 45px; background: rgba(0,0,0,0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2147483647; border: 1px solid rgba(255,255,255,0.2); transition: var(--transition); }
         .admin-toggle-btn:hover { background: var(--white); transform: rotate(90deg); }
         .admin-toggle-btn svg { width: 24px; height: 24px; stroke: #ccc; }
         .admin-toggle-btn:hover svg { stroke: #000; }
-        .admin-panel { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 15px 25px; border-radius: 50px; z-index: 100000; display: none; align-items: center; gap: 10px; box-shadow: var(--shadow-lg); flex-wrap: wrap; justify-content: center; width: 95%; max-width: 750px; }
+        
+        .admin-panel { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 15px 25px; border-radius: 50px; z-index: 2147483647; display: none; align-items: center; gap: 10px; box-shadow: var(--shadow-lg); flex-wrap: wrap; justify-content: center; width: 95%; max-width: 750px; }
         .admin-panel button { background: var(--primary-blue); color: #fff; border: none; padding: 8px 15px; border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
         .admin-panel button.exit-btn { background: #ff4757; }
         body.edit-mode .edit-txt { outline: 2px dashed var(--accent-yellow); padding: 2px; border-radius: 4px; background: rgba(255, 255, 255, 0.1); min-width: 20px; display: inline-block;}
@@ -955,14 +958,6 @@
         // --- 5. NEWSLETTER SUBSCRIBER ---
         window.subscribeNewsletter = async function(e) {
             e.preventDefault();
-            if(!currentUser) {
-                try {
-                    await window.signInAnonymously(window.firebaseAuth);
-                    currentUser = window.firebaseAuth.currentUser;
-                } catch(err) {
-                    alert("Koneksi gagal ke Firebase. Silakan coba lagi nanti."); return;
-                }
-            }
             const contactInput = document.getElementById('sub-contact').value;
             const btn = e.target.querySelector('button');
             if(btn) btn.innerText = "Memproses...";
@@ -992,7 +987,6 @@
         let currentEditingImage = null;
 
         // Firebase Global State
-        let currentUser = null;
         let dbUnsubscribeInstansi = null;
         let dbUnsubscribeTransaksi = null;
         let instansiDataMap = {}; 
@@ -1140,7 +1134,7 @@
         }
 
         // ==========================================
-        // SISTEM PORTAL NOTA & KASIR (POS)
+        // SISTEM PORTAL NOTA & KASIR (POS) - NO AUTH VERSION
         // ==========================================
 
         function formatRupiah(angka) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka); }
@@ -1154,28 +1148,7 @@
             return `${dayName}, ${day} ${month} ${year} pukul ${hours}.${minutes}`;
         }
 
-        const initFirebaseAuth = async () => {
-            try {
-                if (typeof window.signInAnonymously !== 'undefined') {
-                    await window.signInAnonymously(window.firebaseAuth); 
-                }
-            } catch (error) { 
-                console.error("Auth Error (Initial):", error); 
-            }
-        };
-
-        window.addEventListener('DOMContentLoaded', () => {
-            initFirebaseAuth();
-            if(window.onAuthStateChanged) {
-                window.onAuthStateChanged(window.firebaseAuth, (user) => {
-                    currentUser = user;
-                    if (user) { listenToInstansiList(); }
-                });
-            }
-        });
-
-        function listenToInstansiList() {
-            if (!currentUser) return;
+        window.listenToInstansiList = function() {
             const instansiRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'instansi');
             if(dbUnsubscribeInstansi) dbUnsubscribeInstansi();
             
@@ -1209,6 +1182,8 @@
                         tableAdminList.appendChild(tr);
                     }
                 });
+            }, (error) => {
+                console.error("Gagal load instansi:", error);
             });
         }
 
@@ -1271,7 +1246,6 @@
             if(document.getElementById('pos-tax-type')) document.getElementById('pos-tax-type').value = '0'; 
             if(document.getElementById('pos-instansi')) document.getElementById('pos-instansi').value = ''; 
             
-            // Kembalikan text tombol ke mode Add
             const btnHutang = document.getElementById('btn-hutang-submit');
             const btnLunas = document.getElementById('btn-lunas-submit');
             if(btnHutang) btnHutang.innerText = "SIMPAN HUTANG";
@@ -1309,16 +1283,6 @@
         }
 
         window.processCart = async function(status) {
-            if(!currentUser) {
-                try {
-                    await window.signInAnonymously(window.firebaseAuth);
-                    currentUser = window.firebaseAuth.currentUser;
-                } catch(e) {
-                    alert("Koneksi Firebase Gagal!\n\nAlasan: " + e.message + "\n\nPastikan API Key di kodingan sudah persis sama dengan di Firebase.");
-                    return;
-                }
-            }
-
             if(posCart.length === 0) { alert("Keranjang masih kosong!"); return; }
             
             const instId = document.getElementById('pos-instansi').value;
@@ -1332,7 +1296,6 @@
             
             try {
                 if(window.editingTransId) {
-                    // Update Mode
                     const docRef = window.doc(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'transaksi', window.editingTransId);
                     await window.updateDoc(docRef, { 
                         instansiId: instId, 
@@ -1345,7 +1308,6 @@
                     });
                     alert("Transaksi berhasil di-update!");
                 } else {
-                    // Add Mode
                     const dateIso = new Date().toISOString();
                     const trxId = "TRX" + Date.now().toString().slice(-5);
                     const transRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'transaksi');
@@ -1357,8 +1319,8 @@
                     if(status !== 'LUNAS') alert("Tagihan HUTANG berhasil dicatat!"); 
                 }
                 
-                const savedInstId = instId; // Simpan untuk auto print nota
-                clearCart(); // Clear mengembalikan UI ke mode normal
+                const savedInstId = instId;
+                clearCart();
                 
                 if(status === 'LUNAS') {
                     setTimeout(() => {
@@ -1414,16 +1376,6 @@
         }
 
         window.addInstansi = async function() {
-            if(!currentUser) {
-                try {
-                    await window.signInAnonymously(window.firebaseAuth);
-                    currentUser = window.firebaseAuth.currentUser;
-                } catch(e) {
-                    alert("Koneksi ditolak Firebase!\n\nAlasan: " + e.message + "\n\nPastikan API Key di HTML sudah benar.");
-                    return;
-                }
-            }
-
             const nama = document.getElementById('new-inst-name').value;
             const pass = document.getElementById('new-inst-pass').value;
             if(!nama || !pass) { alert("Nama dan sandi wajib diisi!"); return; }
@@ -1462,7 +1414,6 @@
                     const tr = document.createElement('tr'); const grandTotal = parseInt(data.total) + parseInt(data.pajak);
                     const tglSimple = new Date(data.tanggal).toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'});
                     
-                    // Kolom Aksi dengan tambahan fitur Edit
                     tr.innerHTML = `
                         <td>${tglSimple}</td>
                         <td>${instName}</td>
@@ -1480,21 +1431,18 @@
             });
         }
         
-        // Fitur Edit Transaksi untuk Admin
         window.editTransaksi = function(id) {
             const data = window.transactionsMap[id];
             if(!data) return;
             
-            window.editingTransId = id; // Set ID yang sedang di-edit
+            window.editingTransId = id;
             
-            // Masukkan data barang ke keranjang
             if (data.cart && data.cart.length > 0) {
                 posCart = JSON.parse(JSON.stringify(data.cart)); 
             } else {
                 posCart = [{name: data.item, qty: 1, price: data.total}];
             }
             
-            // Set instansi dan pajak
             const instSelect = document.getElementById('pos-instansi');
             if(instSelect) instSelect.value = data.instansiId;
             
@@ -1503,7 +1451,6 @@
             
             updateCartUI();
             
-            // Ubah teks tombol Simpan
             const btnHutang = document.getElementById('btn-hutang-submit');
             const btnLunas = document.getElementById('btn-lunas-submit');
             if(btnHutang) btnHutang.innerText = "UPDATE (TETAP HUTANG)";
@@ -1511,7 +1458,6 @@
             
             alert("Mode Edit Aktif! Silakan ubah data di Keranjang Kasir lalu klik UPDATE.");
             
-            // Scroll layar ke atas mengarah ke keranjang kasir
             const modalContent = document.querySelector('.portal-modal-content');
             if(modalContent) modalContent.scrollTo({top: 0, behavior: 'smooth'});
         }
