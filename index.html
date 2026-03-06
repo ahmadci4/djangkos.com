@@ -28,7 +28,7 @@
         };
         
         const isCanvasEnv = window.location.hostname.includes('.goog') || window.location.hostname.includes('localhost') || window.location.hostname === '';
-        const finalConfig = isCanvasEnv && typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : userConfig;
+        const finalConfig = isCanvasEnv && typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : firebaseConfig;
 
         window.firebaseApp = initializeApp(finalConfig);
         window.firebaseDb = getFirestore(window.firebaseApp);
@@ -106,7 +106,7 @@
         .ring-1 { width: 500px; height: 500px; top: -100px; left: -150px; animation-delay: 0s; } .ring-2 { width: 400px; height: 400px; top: 40%; right: -100px; background: radial-gradient(circle, rgba(250, 204, 21, 0.08) 0%, transparent 70%); animation-delay: -5s; } .ring-3 { width: 600px; height: 600px; bottom: -200px; left: 20%; animation-delay: -10s; }
         @keyframes floatAnim { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, 40px) scale(1.1); } 100% { transform: translate(-20px, -20px) scale(0.9); } }
         /* ==================== REUSABLE COMPONENTS ==================== */
-        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; } .section-padding { padding: 80px 0; }
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 10;} .section-padding { padding: 80px 0; }
         .section-title { text-align: center; margin-bottom: 50px; } .section-title h2 { font-size: 2.5rem; color: var(--white); margin-bottom: 10px; position: relative; display: inline-block; font-weight: 800; } .section-title h2::after { content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 60px; height: 4px; background: var(--accent-yellow); border-radius: 2px; } .section-title p { color: var(--text-light); }
         .btn { display: inline-block; padding: 12px 28px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: var(--transition); text-align: center; border: none; }
         .btn-primary { background: var(--accent-yellow); color: #000; box-shadow: 0 4px 15px rgba(250, 204, 21, 0.3); } .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(250, 204, 21, 0.5); background: #fff; }
@@ -119,9 +119,9 @@
         .nav-links { display: flex; gap: 30px; } .nav-links a { font-weight: 500; color: var(--text-light); transition: var(--transition); position: relative; } .nav-links a:hover { color: var(--white); } .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: var(--accent-yellow); transition: var(--transition); } .nav-links a:hover::after { width: 100%; }
         .hamburger { display: none; cursor: pointer; background: none; border: none; } .hamburger svg { width: 30px; height: 30px; stroke: var(--white); }
         /* ==================== HERO SECTION (Background Bisa Diedit) ==================== */
-        .hero { min-height: 100vh; display: flex; align-items: center; position: relative; padding-top: 100px; z-index: 1; overflow: hidden;}
-        .hero-bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.45; z-index: -1; }
-        .hero-content { max-width: 900px; text-align: center; margin: 0 auto; position: relative; z-index: 2;}
+        .hero { min-height: 100vh; display: flex; align-items: center; position: relative; padding-top: 100px; overflow: hidden;}
+        .hero-bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.45; z-index: 0; }
+        .hero-content { max-width: 900px; text-align: center; margin: 0 auto; position: relative; z-index: 10;}
         .hero-subtitle { font-size: 1.2rem; letter-spacing: 2px; color: var(--text-light); margin-bottom: 5px; font-weight: 600; }
         .hero h1 { font-size: 4rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px; text-shadow: 0 10px 30px rgba(0,0,0,0.8); } .hero h1 .script-font { font-family: 'Dancing Script', cursive; color: var(--accent-yellow); font-size: 5rem; display: block; margin-top: -10px; margin-bottom: 10px; font-weight: 700; }
         .hero p.desc { font-size: 1.1rem; margin-bottom: 40px; color: var(--text-light); max-width: 700px; margin-left: auto; margin-right: auto; text-shadow: 0 2px 4px rgba(0,0,0,0.8); font-weight: 500;}
@@ -165,7 +165,9 @@
         .stats-section { padding: 60px 0 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 50px; }
         .footer-cta { max-width: 800px; margin: 20px auto; padding: 40px 20px; background: rgba(255, 255, 255, 0.02); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: var(--shadow-md);}
         .footer-bottom { text-align: center; padding: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.4); background: #041228; }
-        .notif-box { background: linear-gradient(135deg, rgba(28, 111, 230, 0.1) 0%, rgba(250, 204, 21, 0.05) 100%); border: 1px solid rgba(255,255,255,0.1); padding: 30px 20px; border-radius: var(--radius-lg); max-width: 800px; margin: 40px auto; box-shadow: var(--shadow-md); text-align: center;}
+        
+        /* Tombol Langganan Notif (DIPERBAIKI POSISINYA) */
+        .notif-box { position: relative; z-index: 100; background: linear-gradient(135deg, rgba(28, 111, 230, 0.1) 0%, rgba(250, 204, 21, 0.05) 100%); border: 1px solid rgba(255,255,255,0.1); padding: 30px 20px; border-radius: var(--radius-lg); max-width: 800px; margin: 40px auto; box-shadow: var(--shadow-md); text-align: center;}
 
         /* ==================== ADMIN EDIT MODE ==================== */
         .admin-toggle-btn { position: fixed; bottom: 30px; left: 30px; width: 55px; height: 55px; background: var(--primary-blue); border-radius: 50%; display: flex !important; align-items: center; justify-content: center; cursor: pointer; z-index: 2147483647; border: 3px solid var(--white); transition: var(--transition); box-shadow: 0 5px 20px rgba(0,0,0,0.8); }
