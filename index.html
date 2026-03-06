@@ -12,11 +12,26 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Firebase SDKs -->
+    <!-- ========================================== -->
+    <!-- ONESIGNAL PUSH NOTIFICATION SDK            -->
+    <!-- ========================================== -->
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(async function(OneSignal) {
+        await OneSignal.init({
+          appId: "7250435b-2ffc-44eb-a58d-401e05d803c2", // App ID OneSignal milik Abang
+          notifyButton: {
+            enable: true, // Menampilkan ikon lonceng merah di pojok kanan bawah web
+          },
+        });
+      });
+    </script>
+
+    <!-- Firebase SDKs (Hanya Database, Messaging Dihapus) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, doc, setDoc, getDocs, addDoc, onSnapshot, query, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-messaging.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDZ3CiCrMX9QpOtvxmW6tonR-KesbatefY", 
@@ -33,9 +48,6 @@
         window.firebaseApp = initializeApp(finalConfig);
         window.firebaseDb = getFirestore(window.firebaseApp);
         
-        try { window.firebaseMessaging = getMessaging(window.firebaseApp); } 
-        catch(e) { console.log("Messaging blm siap (HTTP/Incognito)"); }
-
         window.appId = 'djangkos-app-id';
         
         window.collection = collection; window.doc = doc; window.setDoc = setDoc;
@@ -44,59 +56,11 @@
 
         window.addEventListener('DOMContentLoaded', () => { listenToInstansiList(); });
 
-        window.aktifkanNotifikasi = async function() {
-            const btn = document.getElementById('btn-notif');
-            if(btn) btn.innerText = "Memproses Izin...";
-
-            if (!window.firebaseMessaging || !('serviceWorker' in navigator)) {
-                alert("Browser Anda tidak mendukung notifikasi atau Anda sedang membuka tab Samaran (Incognito).");
-                if(btn) btn.innerText = "🔔 Aktifkan Notifikasi Promo";
-                return;
-            }
-
-            try {
-                const permission = await Notification.requestPermission();
-                if (permission === 'granted') {
-                    const vapidKunci = "BP_j31WogptfWCxTG32xKvTOuVdAn1SuwkDZ9MtYOiLbWVi5gOZUEaMIcabr-GOJ3V6UBvLChLS4JnmQUTovBfY"; 
-                    
-                    console.log("Mendaftarkan Service Worker secara manual...");
-                    // Langkah tambahan wajib: Paksa browser mendaftarkan file pekerja latar belakang
-                    const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-
-                    console.log("Mendapatkan token Firebase...");
-                    const currentToken = await getToken(window.firebaseMessaging, { 
-                        vapidKey: vapidKunci,
-                        serviceWorkerRegistration: registration 
-                    });
-                    
-                    if (currentToken) {
-                        console.log("Token didapat:", currentToken);
-                        try {
-                            const tokensRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'fcm_tokens');
-                            await window.addDoc(tokensRef, { token: currentToken, tanggal_subscribe: new Date().toISOString(), user_agent: navigator.userAgent });
-                        } catch(e) { console.log("Gagal simpan token", e); }
-
-                        alert("Sip! Anda sudah berlangganan Notifikasi Promo D'JANGKOS.");
-                        document.getElementById('notif-subscribe-box').style.display = 'none';
-                    } else { 
-                        alert("Gagal mendapatkan token izin dari browser."); 
-                        if(btn) btn.innerText = "🔔 Aktifkan Notifikasi Promo";
-                    }
-                } else { 
-                    alert("Anda menolak memberikan Izin Notifikasi."); 
-                    if(btn) btn.innerText = "🔔 Aktifkan Notifikasi Promo";
-                }
-            } catch(err) {
-                console.error("Notifikasi Error: ", err);
-                // Menampilkan alasan error aslinya agar ketahuan jika gagal lagi
-                alert("Maaf, terjadi kesalahan:\n" + err.message + "\n\nPastikan URL website Anda berawalan 'https://' (bukan http://).");
-                if(btn) btn.innerText = "🔔 Aktifkan Notifikasi Promo";
-            }
-        }
-
-        if(window.firebaseMessaging) {
-            onMessage(window.firebaseMessaging, (payload) => {
-                alert(`📢 PENGUMUMAN D'JANGKOS!\n\n${payload.notification.title}\n${payload.notification.body}`);
+        // Fungsi Tombol Notif Manual via OneSignal
+        window.aktifkanNotifikasi = function() {
+            window.OneSignalDeferred.push(async function(OneSignal) {
+                await OneSignal.Slidedown.promptPush();
+                document.getElementById('notif-subscribe-box').style.display = 'none';
             });
         }
     </script>
@@ -175,7 +139,7 @@
         .footer-cta { max-width: 800px; margin: 20px auto; padding: 40px 20px; background: rgba(255, 255, 255, 0.02); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: var(--shadow-md);}
         .footer-bottom { text-align: center; padding: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.4); background: #041228; }
         
-        /* Tombol Langganan Notif (DIPERBAIKI POSISINYA) */
+        /* Tombol Langganan Notif */
         .notif-box { position: relative; z-index: 100; background: linear-gradient(135deg, rgba(28, 111, 230, 0.1) 0%, rgba(250, 204, 21, 0.05) 100%); border: 1px solid rgba(255,255,255,0.1); padding: 30px 20px; border-radius: var(--radius-lg); max-width: 800px; margin: 40px auto; box-shadow: var(--shadow-md); text-align: center;}
 
         /* ==================== ADMIN EDIT MODE ==================== */
@@ -351,7 +315,7 @@
                 </p>
             </div>
 
-            <!-- Form Berlangganan Notif Push (Diperbarui) -->
+            <!-- Form Berlangganan Notif Push OneSignal -->
             <div class="notif-box" id="notif-subscribe-box">
                 <h3 class="edit-txt" data-id="notif-title" style="color: var(--accent-yellow); font-size: 1.5rem; margin-bottom: 10px;">Dapatkan Info Promo Eksklusif!</h3>
                 <p class="edit-txt" data-id="notif-desc" style="color: var(--text-light); font-size: 0.95rem; margin-bottom: 20px;">Aktifkan notifikasi di browser Anda untuk mendapat pemberitahuan saat ada promo cetak atau layanan baru langsung di layar HP/Laptop Anda.</p>
