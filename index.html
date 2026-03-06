@@ -125,9 +125,11 @@
         .hamburger { display: none; cursor: pointer; background: none; border: none; }
         .hamburger svg { width: 30px; height: 30px; stroke: var(--white); }
 
-        /* ==================== HERO SECTION ==================== */
-        .hero { min-height: 100vh; display: flex; align-items: center; position: relative; padding-top: 100px; z-index: 1; }
-        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('images/potocopy.jpg') center/cover no-repeat; opacity: 0.45; z-index: -1; }
+        /* ==================== HERO SECTION (Background Bisa Diedit) ==================== */
+        .hero { min-height: 100vh; display: flex; align-items: center; position: relative; padding-top: 100px; z-index: 1; overflow: hidden;}
+        /* Layer untuk menampung gambar background agar bisa diedit */
+        .hero-bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.45; z-index: -1; }
+        
         .hero-content { max-width: 900px; text-align: center; margin: 0 auto; position: relative; z-index: 2;}
         .hero-subtitle { font-size: 1.2rem; letter-spacing: 2px; color: var(--text-light); margin-bottom: 5px; font-weight: 600; }
         .hero h1 { font-size: 4rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px; text-shadow: 0 10px 30px rgba(0,0,0,0.8); }
@@ -140,8 +142,6 @@
         #promo-popup-modal .modal-content { max-width: 500px; background: transparent; border: none; box-shadow: none; overflow: visible; padding: 15px;}
         #promo-popup-modal .modal-close { right: 0; top: 0; background: #ff4757; box-shadow: 0 4px 10px rgba(0,0,0,0.5); z-index: 20;}
         #promo-img-display { width: 100%; border-radius: 12px; box-shadow: 0 15px 30px rgba(0,0,0,0.6); object-fit: cover; }
-        #promo-section { padding: 40px 0 0 0; position: relative; z-index: 5; text-align: center; }
-        #promo-img { max-width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
 
         /* ==================== EDUKASI ==================== */
         .glass-box { background: rgba(10, 46, 99, 0.6); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding: 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
@@ -198,7 +198,7 @@
         
         .admin-grid-layout { display: grid; grid-template-columns: 1fr 2.5fr; gap: 30px; }
 
-        /* POS Cart Style */
+        /* POS Cart Style (Desktop) */
         .pos-container { background: #fff; color: #333; border-radius: var(--radius-md); overflow: hidden; font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);}
         .pos-header { background: #f8f9fa; padding: 15px 25px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
         .pos-header h4 { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 1.1rem; color: #ff8a00; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;}
@@ -416,8 +416,9 @@
         </div>
     </header>
 
-    <!-- 2. HERO SECTION -->
+    <!-- 2. HERO SECTION (Background Bisa Diedit) -->
     <section id="beranda" class="hero">
+        <img src="images/potocopy.jpg" class="hero-bg-layer edit-img" data-id="main-hero-bg" onerror="this.src='https://images.unsplash.com/photo-1563298723-dcfebaa392e3?auto=format&fit=crop&q=80'">
         <div class="container">
             <div class="hero-content reveal">
                 <p class="hero-subtitle edit-txt" data-id="hero-pre">D'JANGKOS COPIER</p>
@@ -979,8 +980,6 @@
         const imageUpload = document.getElementById('image-upload');
         const promoUploadInput = document.getElementById('promo-upload');
         const promoImg = document.getElementById('promo-img');
-        const deletePromoBtn = document.getElementById('delete-promo-btn');
-        const promoSection = document.getElementById('promo-section');
         
         let isEditMode = false;
         let currentEditingImage = null;
@@ -1055,7 +1054,7 @@
         function imageClickHandler(e) {
             if(isEditMode && e.target !== promoImg) { 
                 currentEditingImage = e.target; 
-                const url = prompt("Masukkan Link/URL Gambar (contoh dari Google/Instagram).\nAtau KOSONGKAN lalu tekan OK untuk Upload file dari HP/Laptop:");
+                const url = prompt("CARA MENGGANTI FOTO:\n\n1. PASTE LINK FOTO LANGSUNG (Harus berakhiran .jpg atau .png). \n⚠️ Link Postingan Instagram / Facebook TIDAK BISA digunakan karena diblokir oleh mereka.\n\n2. ATAU: KOSONGKAN teks di bawah ini lalu tekan OK untuk MENGUPLOAD FOTO langsung dari HP/Laptop Anda:", currentEditingImage.src.startsWith('data:') ? "" : currentEditingImage.src);
                 if (url && url.trim() !== "") {
                     currentEditingImage.src = url.trim();
                 } else if (url === "") { 
@@ -1216,7 +1215,7 @@
 
         // ================= POS / KASIR KERANJANG =================
         let posCart = [];
-        window.editingTransId = null; // Menyimpan ID transaksi jika sedang diedit
+        window.editingTransId = null; 
 
         window.addToCart = function() {
             const nameInput = document.getElementById('cart-item-name');
