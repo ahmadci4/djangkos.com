@@ -18,8 +18,7 @@
         import { getFirestore, collection, doc, setDoc, getDocs, addDoc, onSnapshot, query, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-messaging.js";
 
-        // Konfigurasi Firebase Asli Milik Abang
-        const userConfig = {
+        const firebaseConfig = {
             apiKey: "AIzaSyDZ3CiCrMX9QpOtvxmW6tonR-KesbatefY", 
             authDomain: "djangkos-firebase.firebaseapp.com",
             projectId: "djangkos-firebase",
@@ -28,33 +27,23 @@
             appId: "1:730858102189:web:79d22e6b283d6767aed524"
         };
         
-        // Deteksi Pintar
         const isCanvasEnv = window.location.hostname.includes('.goog') || window.location.hostname.includes('localhost') || window.location.hostname === '';
         const finalConfig = isCanvasEnv && typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : userConfig;
 
         window.firebaseApp = initializeApp(finalConfig);
         window.firebaseDb = getFirestore(window.firebaseApp);
         
-        // Coba inisialisasi Messaging (Bisa gagal di HTTP/Incognito)
-        try {
-            window.firebaseMessaging = getMessaging(window.firebaseApp);
-        } catch(e) {
-            console.log("Messaging belum siap (Mungkin karena bukan HTTPS atau di Incognito)");
-        }
+        try { window.firebaseMessaging = getMessaging(window.firebaseApp); } 
+        catch(e) { console.log("Messaging blm siap (HTTP/Incognito)"); }
 
-        window.appId = typeof __app_id !== 'undefined' ? __app_id : 'djangkos-app-id';
+        window.appId = 'djangkos-app-id';
         
-        // Expose fungsi database ke global
         window.collection = collection; window.doc = doc; window.setDoc = setDoc;
         window.getDocs = getDocs; window.addDoc = addDoc; window.onSnapshot = onSnapshot;
         window.query = query; window.updateDoc = updateDoc; window.deleteDoc = deleteDoc;
 
-        // Load data segera saat halaman dimuat
         window.addEventListener('DOMContentLoaded', () => { listenToInstansiList(); });
 
-        // ==============================================================
-        // SISTEM PUSH NOTIFICATION
-        // ==============================================================
         window.aktifkanNotifikasi = async function() {
             const btn = document.getElementById('btn-notif');
             if(btn) btn.innerText = "Memproses Izin...";
@@ -66,33 +55,20 @@
             }
 
             try {
-                // Minta Izin ke Pengunjung
                 const permission = await Notification.requestPermission();
                 if (permission === 'granted') {
-                    
-                    // VAPID Key Abang yang sudah saya masukkan
                     const vapidKunci = "BP_j31WogptfWCxTG32xKvTOuVdAn1SuwkDZ9MtYOiLbWVi5gOZUEaMIcabr-GOJ3V6UBvLChLS4JnmQUTovBfY"; 
-
                     console.log("Mendapatkan token Firebase...");
                     const currentToken = await getToken(window.firebaseMessaging, { vapidKey: vapidKunci });
                     
                     if (currentToken) {
-                        console.log("Token berhasil didapat:", currentToken);
-                        
-                        // Simpan token ke Firestore agar Abang tahu siapa saja yang subscribe
+                        console.log("Token didapat:", currentToken);
                         try {
                             const tokensRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'fcm_tokens');
-                            await window.addDoc(tokensRef, { 
-                                token: currentToken, 
-                                tanggal_subscribe: new Date().toISOString(),
-                                user_agent: navigator.userAgent
-                            });
-                        } catch(e) {
-                            console.log("Gagal simpan token ke database (tapi notif tetap jalan):", e);
-                        }
+                            await window.addDoc(tokensRef, { token: currentToken, tanggal_subscribe: new Date().toISOString(), user_agent: navigator.userAgent });
+                        } catch(e) { console.log("Gagal simpan token", e); }
 
                         alert("Sip! Anda sudah berlangganan Notifikasi Promo D'JANGKOS.");
-                        // Sembunyikan kotak langganan karena sudah berhasil
                         document.getElementById('notif-subscribe-box').style.display = 'none';
                     } else { 
                         alert("Gagal mendapatkan token izin dari browser."); 
@@ -109,7 +85,6 @@
             }
         }
 
-        // Tangkap Notif jika pelanggan sedang buka website djangkos.com
         if(window.firebaseMessaging) {
             onMessage(window.firebaseMessaging, (payload) => {
                 alert(`📢 PENGUMUMAN D'JANGKOS!\n\n${payload.notification.title}\n${payload.notification.body}`);
@@ -119,16 +94,15 @@
 
     <style>
         /* ==================== CSS VARIABLES ==================== */
-        :root {
-            --primary-blue: #1C6FE6; --dark-blue: #0A2E63; --bg-main: #061A3A; --bg-card: linear-gradient(180deg, #114EA8 0%, #0B3370 100%); --tosca-start: #02aab0; --tosca-end: #00cdac; --accent-yellow: #FACC15; --text-dark: #ffffff; --text-light: #A5C8FD; --white: #ffffff; --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.3); --shadow-md: 0 10px 20px rgba(0, 0, 0, 0.4); --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.6); --radius-md: 12px; --radius-lg: 20px; --transition: all 0.3s ease;
-        }
+        :root { --primary-blue: #1C6FE6; --dark-blue: #0A2E63; --bg-main: #061A3A; --bg-card: linear-gradient(180deg, #114EA8 0%, #0B3370 100%); --tosca-start: #02aab0; --tosca-end: #00cdac; --accent-yellow: #FACC15; --text-dark: #ffffff; --text-light: #A5C8FD; --white: #ffffff; --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.3); --shadow-md: 0 10px 20px rgba(0, 0, 0, 0.4); --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.6); --radius-md: 12px; --radius-lg: 20px; --transition: all 0.3s ease; }
         /* ==================== RESET & TYPOGRAPHY ==================== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         html { scroll-behavior: smooth; }
         body { color: var(--text-dark); background-color: var(--bg-main); background-image: radial-gradient(circle at 50% 0%, #0A3775 0%, #061A3A 60%); background-attachment: fixed; line-height: 1.6; overflow-x: hidden; position: relative; }
         a { text-decoration: none; color: inherit; } ul { list-style: none; } img { max-width: 100%; height: auto; display: block; }
         /* ==================== ANIMASI LATAR BELAKANG SILUET ==================== */
-        .bg-rings { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -1; pointer-events: none; } .ring { position: absolute; border-radius: 50%; filter: blur(12px); background: radial-gradient(circle, rgba(28, 111, 230, 0.15) 0%, transparent 70%); animation: floatAnim 15s infinite alternate ease-in-out; }
+        .bg-rings { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -1; pointer-events: none; }
+        .ring { position: absolute; border-radius: 50%; filter: blur(12px); background: radial-gradient(circle, rgba(28, 111, 230, 0.15) 0%, transparent 70%); animation: floatAnim 15s infinite alternate ease-in-out; }
         .ring-1 { width: 500px; height: 500px; top: -100px; left: -150px; animation-delay: 0s; } .ring-2 { width: 400px; height: 400px; top: 40%; right: -100px; background: radial-gradient(circle, rgba(250, 204, 21, 0.08) 0%, transparent 70%); animation-delay: -5s; } .ring-3 { width: 600px; height: 600px; bottom: -200px; left: 20%; animation-delay: -10s; }
         @keyframes floatAnim { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, 40px) scale(1.1); } 100% { transform: translate(-20px, -20px) scale(0.9); } }
         /* ==================== REUSABLE COMPONENTS ==================== */
@@ -191,7 +165,6 @@
         .stats-section { padding: 60px 0 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 50px; }
         .footer-cta { max-width: 800px; margin: 20px auto; padding: 40px 20px; background: rgba(255, 255, 255, 0.02); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: var(--shadow-md);}
         .footer-bottom { text-align: center; padding: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.4); background: #041228; }
-        
         .notif-box { background: linear-gradient(135deg, rgba(28, 111, 230, 0.1) 0%, rgba(250, 204, 21, 0.05) 100%); border: 1px solid rgba(255,255,255,0.1); padding: 30px 20px; border-radius: var(--radius-lg); max-width: 800px; margin: 40px auto; box-shadow: var(--shadow-md); text-align: center;}
 
         /* ==================== ADMIN EDIT MODE ==================== */
@@ -381,7 +354,7 @@
                 <p class="edit-txt" data-id="footer-address" style="color: var(--text-light); font-size: 1rem; line-height: 1.6; max-width: 600px; margin: 0 auto 20px;">
                     Jalan Raya Ancak-Kopang, Karang Bajo, Kecamatan Bayan, Kabupaten Lombok Utara, Nusa Tenggara Barat. Kode Pos 83354
                 </p>
-                
+                <!-- Email Info -->
                 <p style="color: var(--accent-yellow); font-size: 1.1rem; font-weight: 600; margin-bottom: 25px;">
                     ✉️ <a href="mailto:djangkos@gmail.com">djangkos@gmail.com</a>
                 </p>
@@ -660,4 +633,705 @@
                 </div>
                 <div style="background: rgba(255, 71, 87, 0.1); border: 1px solid rgba(255, 71, 87, 0.3); padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center;">
                     <span style="display: block; font-size: 0.9rem; color: var(--text-light);">Total Hutang Belum Lunas:</span>
-                    <strong style="font-size: 2rem; color: #ff4757;" id="cust-total-hutang">Rp
+                    <strong style="font-size: 2rem; color: #ff4757;" id="cust-total-hutang">Rp 0</strong>
+                </div>
+                <div class="table-responsive">
+                    <table class="nota-table">
+                        <thead><tr><th>Tgl. Transaksi</th><th>Total Tagihan</th><th>Status</th><th>Aksi</th></tr></thead>
+                        <tbody id="cust-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL NOTA / RECEIPT -->
+    <div id="receipt-modal" class="modal-overlay">
+        <div class="receipt-card" id="receipt-card">
+            <button class="modal-close no-print" onclick="closeReceiptModal()" style="top:-15px; right:-15px;">&times;</button>
+            <div class="receipt-header" id="rcpt-header">
+                <div class="receipt-logo"><img src="images/logo-djangkos.jpg" onerror="this.src='https://via.placeholder.com/60?text=D'"></div>
+                <div class="receipt-status-text" id="rcpt-status">Menunggu Pembayaran</div>
+                <div class="receipt-date" id="rcpt-date">Kamis, 05 Maret 2026 pukul 14.23</div>
+            </div>
+            <div class="receipt-body">
+                <div class="receipt-total-box">
+                    <div class="receipt-total-label">TOTAL PEMBAYARAN</div>
+                    <div class="receipt-total-amount" id="rcpt-total">Rp 0</div>
+                </div>
+                <div class="receipt-divider"></div>
+                <div class="receipt-row"><span class="label">ID Transaksi</span><span class="val" id="rcpt-id">#000000</span></div>
+                <div class="receipt-row"><span class="label">Pelanggan</span><span class="val" id="rcpt-customer">NAMA INSTANSI</span></div>
+                <div class="receipt-divider"></div>
+                <div class="receipt-items" id="rcpt-items"></div>
+                <div class="receipt-divider"></div>
+                <div class="receipt-row" style="font-size: 0.8rem;"><span class="label" id="rcpt-tax-label">Pajak (0%)</span><span class="val" id="rcpt-tax">Rp 0</span></div>
+                
+                <!-- Signature Space specifically designed for Print/Save -->
+                <div class="receipt-signatures">
+                    <div style="flex: 1; padding: 0 10px;">
+                        <p style="margin-bottom: 50px;">Tanda Terima</p>
+                        <p style="border-bottom: 1px solid #333; display: inline-block; width: 100px;"></p>
+                    </div>
+                    <div style="flex: 1; padding: 0 10px;">
+                        <p style="margin-bottom: 50px;">Hormat Kami,</p>
+                        <p style="border-bottom: 1px solid #333; display: inline-block; width: 100px; margin-bottom: 5px; font-weight:bold;">D'JANGKOS</p>
+                    </div>
+                </div>
+
+                <div class="receipt-brand" style="margin-top: 30px;">
+                    <img src="images/logo-djangkos.jpg" onerror="this.style.display='none'" style="width:16px;height:16px;margin-right:5px; border-radius:50%;"> D'Jangkos Digital Printing
+                </div>
+            </div>
+            <div class="receipt-actions">
+                <button class="btn-wa" onclick="shareReceiptWA()">Share WA</button>
+                <button class="btn-simpan" onclick="printReceipt()">Simpan / Print</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HIDDEN ADMIN BUTTON & PANEL -->
+    <div class="admin-toggle-btn" id="admin-btn" title="Admin Setting">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div class="admin-panel" id="admin-panel">
+        <span><b>MODE EDIT</b></span>
+        <button onclick="managePromoPopup()" style="background: var(--tosca-start);">Atur Promo Pop-up</button>
+        <button onclick="editMasterPass()" style="background: #333;">Ubah Sandi Master</button>
+        <button id="save-btn">Simpan Perubahan Teks/Foto</button>
+        <button id="exit-btn" class="exit-btn">Keluar</button>
+    </div>
+
+    <!-- FLOATING WHATSAPP BUTTON -->
+    <div class="floating-wa-container">
+        <a href="https://wa.me/6285935389691" target="_blank" class="floating-wa" aria-label="Chat WhatsApp">
+            <svg viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            <div class="wa-tooltip">Punya Pertanyaan?</div>
+        </a>
+    </div>
+
+    <input type="file" id="image-upload" accept="image/*" style="display: none;">
+    <input type="file" id="promo-upload" accept="image/*" style="display: none;">
+
+    <script>
+        // --- 1. LOGIKA MODAL POPUP & HISTORY API ---
+        function openServiceModal(catId) {
+            const modalBody = document.getElementById('modal-dynamic-content');
+            const catElement = document.getElementById(catId);
+            if(catElement && modalBody) {
+                modalBody.appendChild(catElement);
+                history.pushState({ modalOpen: true, cat: catId }, "", "#layanan-detail");
+                document.getElementById('service-modal')?.classList.add('active');
+            }
+        }
+
+        function closeServiceModalOnly() {
+            const modalBody = document.getElementById('modal-dynamic-content');
+            const storage = document.getElementById('service-data-storage');
+            while(modalBody?.firstChild) { storage?.appendChild(modalBody.firstChild); }
+            document.getElementById('service-modal')?.classList.remove('active');
+        }
+
+        function triggerCloseModal() { history.back(); }
+
+        window.closePromo = function() { document.getElementById('promo-popup-modal')?.classList.remove('active'); }
+
+        window.addEventListener('popstate', (e) => {
+            if (document.getElementById('service-modal')?.classList.contains('active')) closeServiceModalOnly();
+            if (document.getElementById('portal-modal')?.classList.contains('active')) closePortalModal();
+            if (document.getElementById('receipt-modal')?.classList.contains('active')) closeReceiptModal();
+        });
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal-overlay') && event.target.id !== 'promo-popup-modal') { history.back(); }
+        }
+
+        // --- 2. Mobile Menu Toggle ---
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        if(hamburger) {
+            hamburger.addEventListener('click', () => { navLinks?.classList.toggle('active'); });
+        }
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => { navLinks?.classList.remove('active'); });
+        });
+
+        // --- 3. Sticky Navbar ---
+        const navbar = document.getElementById('navbar');
+        if(navbar) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.style.background = "rgba(6, 26, 58, 0.98)";
+                    navbar.style.boxShadow = "0 4px 20px rgba(0,0,0,0.5)";
+                } else {
+                    navbar.style.background = "rgba(6, 26, 58, 0.9)";
+                    navbar.style.boxShadow = "none";
+                }
+            });
+        }
+
+        // --- 4. Scroll Reveal Animation ---
+        const reveals = document.querySelectorAll('.reveal');
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            const elementVisible = 100;
+            reveals.forEach((reveal) => {
+                const elementTop = reveal.getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) { reveal.classList.add('active'); }
+            });
+        };
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+
+        // --- 5. ADMIN EDIT MODE & PROMO BANNER ---
+        const adminBtn = document.getElementById('admin-btn');
+        const adminPanel = document.getElementById('admin-panel');
+        const saveBtn = document.getElementById('save-btn');
+        const exitBtn = document.getElementById('exit-btn');
+        const imageUpload = document.getElementById('image-upload');
+        const promoUploadInput = document.getElementById('promo-upload');
+        const promoImg = document.getElementById('promo-img');
+        
+        let isEditMode = false;
+        let currentEditingImage = null;
+
+        // Firebase Global State
+        let dbUnsubscribeInstansi = null;
+        let dbUnsubscribeTransaksi = null;
+        let instansiDataMap = {}; 
+        window.transactionsMap = {};
+
+        const loadSavedData = () => {
+            const savedData = JSON.parse(localStorage.getItem('djangkosV7Content')) || {};
+            document.querySelectorAll('.edit-txt').forEach(el => {
+                const id = el.getAttribute('data-id');
+                if (savedData[id]) el.innerHTML = savedData[id];
+            });
+            document.querySelectorAll('.edit-img').forEach(el => {
+                const id = el.getAttribute('data-id');
+                if (savedData[id]) el.src = savedData[id];
+            });
+
+            // Tampilkan Promo Popup
+            const promoData = JSON.parse(localStorage.getItem('djangkosPromoData'));
+            if (promoData && promoData.img) {
+                const display = document.getElementById('promo-img-display');
+                const link = document.getElementById('promo-link');
+                if(display) display.src = promoData.img;
+                if(link) link.href = promoData.link || "#";
+                document.getElementById('promo-popup-modal')?.classList.add('active');
+            }
+        };
+
+        window.addEventListener('DOMContentLoaded', loadSavedData);
+
+        // FITUR UBAH SANDI MASTER
+        window.editMasterPass = function() {
+            const currentPass = localStorage.getItem('djangkosMasterPass') || 'djangkos@copier';
+            const newPass = prompt("Masukkan sandi Master / Admin Nota baru:", currentPass);
+            if (newPass && newPass.trim() !== "") {
+                localStorage.setItem('djangkosMasterPass', newPass.trim());
+                alert("Sandi Master berhasil diperbarui!");
+            }
+        };
+
+        if(adminBtn) {
+            adminBtn.addEventListener('click', () => {
+                if(!isEditMode) {
+                    const masterPass = localStorage.getItem('djangkosMasterPass') || 'djangkos@copier';
+                    const pass = prompt("Masukkan Sandi Master:");
+                    if (pass === masterPass) { enableEditMode(); } 
+                    else if (pass !== null) { alert("Sandi Master Salah!"); }
+                }
+            });
+        }
+
+        const enableEditMode = () => {
+            isEditMode = true; document.body.classList.add('edit-mode');
+            if(adminPanel) adminPanel.style.display = 'flex'; 
+            if(adminBtn) adminBtn.style.display = 'none';
+            document.querySelectorAll('.edit-txt').forEach(el => { el.setAttribute('contenteditable', 'true'); });
+            document.querySelectorAll('.edit-img').forEach(el => { el.addEventListener('click', imageClickHandler); });
+        };
+
+        const disableEditMode = () => {
+            isEditMode = false; document.body.classList.remove('edit-mode');
+            if(adminPanel) adminPanel.style.display = 'none'; 
+            if(adminBtn) adminBtn.style.display = 'flex';
+            document.querySelectorAll('.edit-txt').forEach(el => { el.removeAttribute('contenteditable'); });
+            document.querySelectorAll('.edit-img').forEach(el => { el.removeEventListener('click', imageClickHandler); });
+        };
+
+        function imageClickHandler(e) {
+            if(isEditMode && e.target !== promoImg) { 
+                currentEditingImage = e.target; 
+                const url = prompt("CARA MENGGANTI FOTO:\n\n1. PASTE LINK FOTO LANGSUNG (Harus berakhiran .jpg atau .png). \n⚠️ Link Postingan Instagram / Facebook TIDAK BISA digunakan karena diblokir oleh mereka.\n\n2. ATAU: KOSONGKAN teks di bawah ini lalu tekan OK untuk MENGUPLOAD FOTO langsung dari HP/Laptop Anda:", currentEditingImage.src.startsWith('data:') ? "" : currentEditingImage.src);
+                if (url && url.trim() !== "") {
+                    currentEditingImage.src = url.trim();
+                } else if (url === "") { 
+                    imageUpload?.click(); 
+                }
+            }
+        }
+
+        if(imageUpload) {
+            imageUpload.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file && currentEditingImage) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) { currentEditingImage.src = event.target.result; };
+                    reader.readAsDataURL(file);
+                }
+                this.value = '';
+            });
+        }
+
+        window.managePromoPopup = function() {
+            const opt = prompt("Ketik angka pilihan:\n[1] Masukkan URL/Link Gambar Promo\n[2] Upload File Gambar dari Perangkat\n[0] Matikan Pop-up Promo");
+            if (opt === '1') {
+                const url = prompt("Tempel (Paste) URL/Link gambar di sini:");
+                if (url) {
+                    const link = prompt("Masukkan URL tujuan saat gambar di-klik pengunjung (Opsional):", "https://");
+                    savePromoData(url, link || "#");
+                }
+            } else if (opt === '2') {
+                if(promoUploadInput) promoUploadInput.click();
+            } else if (opt === '0') {
+                localStorage.removeItem('djangkosPromoData');
+                alert("Banner Pop-up dinonaktifkan.");
+            }
+        };
+
+        if(promoUploadInput) {
+            promoUploadInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) { 
+                        const link = prompt("Masukkan URL tujuan saat gambar di-klik pengunjung (Opsional):", "https://");
+                        savePromoData(event.target.result, link || "#");
+                    };
+                    reader.readAsDataURL(file);
+                }
+                this.value = '';
+            });
+        }
+
+        function savePromoData(imgSrc, linkUrl) {
+            localStorage.setItem('djangkosPromoData', JSON.stringify({ img: imgSrc, link: linkUrl }));
+            alert("Banner Pop-up berhasil disimpan! Pengunjung akan melihatnya saat halaman dimuat ulang.");
+        }
+
+        if(saveBtn) {
+            saveBtn.addEventListener('click', () => {
+                const dataToSave = {};
+                document.querySelectorAll('.edit-txt').forEach(el => { dataToSave[el.getAttribute('data-id')] = el.innerHTML; });
+                document.querySelectorAll('.edit-img').forEach(el => { dataToSave[el.getAttribute('data-id')] = el.src; });
+                localStorage.setItem('djangkosV7Content', JSON.stringify(dataToSave));
+
+                const btnOriginalText = saveBtn.innerText;
+                saveBtn.innerText = "Tersimpan ✔";
+                saveBtn.style.background = "#0fd850";
+                setTimeout(() => { saveBtn.innerText = btnOriginalText; saveBtn.style.background = "var(--primary-blue)"; }, 2000);
+            });
+        }
+
+        if(exitBtn) {
+            exitBtn.addEventListener('click', () => {
+                if(confirm("Keluar dari Mode Edit? Pastikan Anda sudah menyimpan perubahan.")) disableEditMode();
+            });
+        }
+
+        // ==========================================
+        // SISTEM PORTAL NOTA & KASIR (POS)
+        // ==========================================
+
+        function formatRupiah(angka) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka); }
+        function formatDateReadable(isoString) {
+            const date = new Date(isoString);
+            const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+            const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+            const dayName = days[date.getDay()]; const day = String(date.getDate()).padStart(2, '0');
+            const month = months[date.getMonth()]; const year = date.getFullYear();
+            const hours = String(date.getHours()).padStart(2, '0'); const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${dayName}, ${day} ${month} ${year} pukul ${hours}.${minutes}`;
+        }
+
+        window.listenToInstansiList = function() {
+            const instansiRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'instansi');
+            if(dbUnsubscribeInstansi) dbUnsubscribeInstansi();
+            
+            dbUnsubscribeInstansi = window.onSnapshot(instansiRef, (snapshot) => {
+                const selectLogin = document.getElementById('instansi-select');
+                const selectPos = document.getElementById('pos-instansi');
+                const tableAdminList = document.getElementById('admin-instansi-list');
+                
+                if(selectLogin) selectLogin.innerHTML = '<option value="">-- Pilih Instansi Anda --</option>';
+                if(selectPos) selectPos.innerHTML = '<option value="">-- Pilih Pelanggan --</option>';
+                if(tableAdminList) tableAdminList.innerHTML = '';
+                instansiDataMap = {};
+
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    instansiDataMap[doc.id] = data; 
+                    
+                    const optLogin = document.createElement('option'); optLogin.value = doc.id; optLogin.textContent = data.nama;
+                    if(selectLogin) selectLogin.appendChild(optLogin);
+                    
+                    const optPos = document.createElement('option'); optPos.value = doc.id; optPos.textContent = data.nama;
+                    if(selectPos) selectPos.appendChild(optPos);
+
+                    if(tableAdminList) {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${data.nama}</td>
+                            <td>${data.password}</td>
+                            <td><button onclick="editInstansiPassword('${doc.id}')" style="background:var(--accent-yellow); border:none; border-radius:4px; padding:2px 8px; font-weight:bold; cursor:pointer;">Edit Sandi</button></td>
+                        `;
+                        tableAdminList.appendChild(tr);
+                    }
+                });
+            }, (error) => {
+                console.error("Gagal load instansi:", error);
+            });
+        }
+
+        window.openPortalModal = function() {
+            document.getElementById('portal-modal')?.classList.add('active');
+            history.pushState({ portalOpen: true }, "", "#portal-nota");
+            switchPortalView('portal-login-view');
+        }
+
+        window.closePortalModal = function() {
+            document.getElementById('portal-modal')?.classList.remove('active');
+            if(dbUnsubscribeTransaksi) { dbUnsubscribeTransaksi(); dbUnsubscribeTransaksi = null; }
+        }
+
+        window.switchPortalView = function(viewId) {
+            ['portal-login-view', 'portal-admin-login', 'portal-admin-dashboard', 'portal-customer-dashboard'].forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.style.display = 'none';
+            });
+            const target = document.getElementById(viewId);
+            if(target) target.style.display = 'block';
+        }
+
+        window.logoutPortal = function() {
+            switchPortalView('portal-login-view');
+            if(dbUnsubscribeTransaksi) { dbUnsubscribeTransaksi(); dbUnsubscribeTransaksi = null; }
+            if(document.getElementById('instansi-password')) document.getElementById('instansi-password').value = '';
+            if(document.getElementById('admin-portal-password')) document.getElementById('admin-portal-password').value = '';
+            clearCart();
+        }
+
+        // ================= POS / KASIR KERANJANG =================
+        let posCart = [];
+        window.editingTransId = null; 
+
+        window.addToCart = function() {
+            const nameInput = document.getElementById('cart-item-name');
+            const priceInput = document.getElementById('cart-item-price');
+            const name = nameInput.value.trim(); const price = parseInt(priceInput.value);
+            if(!name || isNaN(price) || price < 0) { alert("Masukkan nama barang dan harga yang valid!"); return; }
+            posCart.push({ name: name, price: price, qty: 1 });
+            nameInput.value = ''; priceInput.value = ''; updateCartUI();
+        }
+
+        window.updateCartQty = function(index, delta) {
+            if(posCart[index]) { posCart[index].qty += delta; if(posCart[index].qty < 1) posCart[index].qty = 1; updateCartUI(); }
+        }
+
+        window.updateCartQtyDirect = function(index, val) {
+            let newVal = parseInt(val);
+            if (isNaN(newVal) || newVal < 1) newVal = 1;
+            if(posCart[index]) { posCart[index].qty = newVal; updateCartUI(); }
+        }
+
+        window.removeCartItem = function(index) { posCart.splice(index, 1); updateCartUI(); }
+        
+        window.clearCart = function() { 
+            posCart = []; 
+            window.editingTransId = null;
+            if(document.getElementById('pos-tax-type')) document.getElementById('pos-tax-type').value = '0'; 
+            if(document.getElementById('pos-instansi')) document.getElementById('pos-instansi').value = ''; 
+            
+            const btnHutang = document.getElementById('btn-hutang-submit');
+            const btnLunas = document.getElementById('btn-lunas-submit');
+            if(btnHutang) btnHutang.innerText = "SIMPAN HUTANG";
+            if(btnLunas) btnLunas.innerText = "LUNAS & CETAK NOTA";
+            
+            updateCartUI(); 
+        }
+
+        window.updateCartUI = function() {
+            const container = document.getElementById('cart-list-container');
+            if(!container) return;
+            container.innerHTML = ''; let subtotal = 0;
+            if(posCart.length === 0) { container.innerHTML = '<div style="padding: 20px; text-align: center; color: #888;">Keranjang kosong. Tambahkan item di atas.</div>'; } 
+            else {
+                posCart.forEach((item, index) => {
+                    const itemTotal = item.price * item.qty; subtotal += itemTotal;
+                    const row = document.createElement('div'); row.className = 'cart-item';
+                    row.innerHTML = `<div class="item-info"><div class="item-name">${item.name}</div><div class="item-price-small">${formatRupiah(item.price)} / pcs</div></div>
+                        <div class="qty-controls">
+                            <button class="qty-btn" onclick="updateCartQty(${index}, -1)">-</button>
+                            <input type="number" class="qty-input" value="${item.qty}" min="1" onchange="updateCartQtyDirect(${index}, this.value)">
+                            <button class="qty-btn" onclick="updateCartQty(${index}, 1)">+</button>
+                        </div>
+                        <div class="item-subtotal">${formatRupiah(itemTotal)}</div>
+                        <button class="item-delete" onclick="removeCartItem(${index})"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>`;
+                    container.appendChild(row);
+                });
+            }
+            
+            const taxRate = parseFloat(document.getElementById('pos-tax-type')?.value) || 0;
+            const taxAmount = subtotal * (taxRate / 100);
+            const grandTotal = subtotal + taxAmount;
+            
+            if(document.getElementById('cart-grand-total')) document.getElementById('cart-grand-total').innerText = formatRupiah(grandTotal);
+        }
+
+        window.processCart = async function(status) {
+            if(posCart.length === 0) { alert("Keranjang masih kosong!"); return; }
+            
+            const instId = document.getElementById('pos-instansi').value;
+            if(!instId) { alert("Pilih Pelanggan / Instansi di bagian bawah keranjang terlebih dahulu!"); return; }
+            
+            let subtotal = 0; posCart.forEach(i => subtotal += (i.price * i.qty));
+            const taxRate = parseFloat(document.getElementById('pos-tax-type').value) || 0;
+            const taxAmount = subtotal * (taxRate / 100);
+            
+            const summaryString = posCart.map(i => `${i.qty}x ${i.name}`).join(', ');
+            
+            try {
+                if(window.editingTransId) {
+                    const docRef = window.doc(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'transaksi', window.editingTransId);
+                    await window.updateDoc(docRef, { 
+                        instansiId: instId, 
+                        item: summaryString, 
+                        cart: posCart, 
+                        total: subtotal, 
+                        pajak: taxAmount, 
+                        taxRate: taxRate, 
+                        status: status 
+                    });
+                    alert("Transaksi berhasil di-update!");
+                } else {
+                    const dateIso = new Date().toISOString();
+                    const trxId = "TRX" + Date.now().toString().slice(-5);
+                    const transRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'transaksi');
+                    await window.addDoc(transRef, { 
+                        trxId: trxId, instansiId: instId, tanggal: dateIso, 
+                        item: summaryString, cart: posCart, total: subtotal, 
+                        pajak: taxAmount, taxRate: taxRate, status: status, createdAt: dateIso 
+                    });
+                    if(status !== 'LUNAS') alert("Tagihan HUTANG berhasil dicatat!"); 
+                }
+                
+                const savedInstId = instId;
+                clearCart();
+                
+                if(status === 'LUNAS') {
+                    setTimeout(() => {
+                        const trxs = Object.values(window.transactionsMap).filter(t => t.instansiId === savedInstId).sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+                        if(trxs.length > 0) openReceiptModal(trxs[0].id);
+                    }, 800);
+                }
+            } catch(e) { console.error(e); alert("Gagal menyimpan transaksi: " + e.message); }
+        }
+
+        window.loginInstansi = function() {
+            const instId = document.getElementById('instansi-select').value;
+            const pass = document.getElementById('instansi-password').value;
+            if(!instId || !pass) { alert("Pilih nama instansi dan masukkan sandi!"); return; }
+            const instData = instansiDataMap[instId];
+            if(instData && instData.password === pass) {
+                document.getElementById('cust-name-display').innerText = instData.nama;
+                switchPortalView('portal-customer-dashboard');
+                listenToCustomerTransactions(instId);
+            } else { alert("Kata sandi salah atau tidak cocok!"); }
+        }
+
+        window.listenToCustomerTransactions = function(instId) {
+            const transRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'transaksi');
+            if(dbUnsubscribeTransaksi) dbUnsubscribeTransaksi();
+            dbUnsubscribeTransaksi = window.onSnapshot(transRef, (snapshot) => {
+                const tbody = document.getElementById('cust-table-body');
+                if(tbody) tbody.innerHTML = ''; 
+                let totalHutang = 0; let transList = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data(); window.transactionsMap[doc.id] = {id: doc.id, ...data}; 
+                    if(data.instansiId === instId) { transList.push({id: doc.id, ...data}); }
+                });
+                transList.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+                if(transList.length === 0 && tbody) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Belum ada riwayat transaksi.</td></tr>'; }
+                transList.forEach(data => {
+                    const tr = document.createElement('tr'); const grandTotal = parseInt(data.total) + parseInt(data.pajak);
+                    if(data.status === 'HUTANG') { totalHutang += grandTotal; }
+                    const tglSimple = new Date(data.tanggal).toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'});
+                    tr.innerHTML = `<td>${tglSimple}</td><td style="font-weight:bold;">${formatRupiah(grandTotal)}</td><td><span class="status-badge ${data.status === 'LUNAS' ? 'status-lunas' : 'status-hutang'}">${data.status}</span></td><td><button class="btn-sm" style="background:var(--tosca-start); color:white;" onclick="openReceiptModal('${data.id}')">Lihat Nota</button></td>`;
+                    if(tbody) tbody.appendChild(tr);
+                });
+                if(document.getElementById('cust-total-hutang')) document.getElementById('cust-total-hutang').innerText = formatRupiah(totalHutang);
+            });
+        }
+
+        window.loginAdminPortal = function() {
+            const pass = document.getElementById('admin-portal-password').value;
+            const masterPass = localStorage.getItem('djangkosMasterPass') || 'djangkos@copier';
+            if(pass === masterPass) {
+                switchPortalView('portal-admin-dashboard'); listenToAllTransactions();
+            } else { alert("Password Admin Salah!"); }
+        }
+
+        window.addInstansi = async function() {
+            const nama = document.getElementById('new-inst-name').value;
+            const pass = document.getElementById('new-inst-pass').value;
+            if(!nama || !pass) { alert("Nama dan sandi wajib diisi!"); return; }
+            try {
+                const btn = event.target; btn.innerText = "Menyimpan...";
+                const instansiRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'instansi');
+                await window.addDoc(instansiRef, { nama: nama, password: pass, createdAt: new Date().toISOString() });
+                document.getElementById('new-inst-name').value = ''; document.getElementById('new-inst-pass').value = '';
+                btn.innerText = "Tersimpan ✔"; setTimeout(() => btn.innerText = "Simpan Instansi", 2000);
+            } catch(e) { console.error(e); alert("Gagal menambah data: " + e.message); }
+        }
+
+        window.editInstansiPassword = async function(instId) {
+            const currentName = instansiDataMap[instId].nama;
+            const newPass = prompt(`Masukkan sandi (password) baru untuk Instansi/Sekolah:\n${currentName}`);
+            if (newPass && newPass.trim() !== "") {
+                try {
+                    const docRef = window.doc(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'instansi', instId);
+                    await window.updateDoc(docRef, { password: newPass.trim() });
+                    alert("Sandi instansi berhasil diubah!");
+                } catch(e) { console.error(e); alert("Gagal mengubah sandi."); }
+            }
+        };
+
+        window.listenToAllTransactions = function() {
+            const transRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'transaksi');
+            if(dbUnsubscribeTransaksi) dbUnsubscribeTransaksi();
+            dbUnsubscribeTransaksi = window.onSnapshot(transRef, (snapshot) => {
+                const tbody = document.getElementById('admin-table-body');
+                if(tbody) tbody.innerHTML = ''; 
+                let transList = [];
+                snapshot.forEach(doc => { const data = doc.data(); window.transactionsMap[doc.id] = {id: doc.id, ...data}; transList.push({id: doc.id, ...data}); });
+                transList.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+                transList.forEach(data => {
+                    const instName = instansiDataMap[data.instansiId] ? instansiDataMap[data.instansiId].nama : "Instansi Dihapus";
+                    const tr = document.createElement('tr'); const grandTotal = parseInt(data.total) + parseInt(data.pajak);
+                    const tglSimple = new Date(data.tanggal).toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'});
+                    
+                    tr.innerHTML = `
+                        <td>${tglSimple}</td>
+                        <td>${instName}</td>
+                        <td style="font-size:0.8rem;">${data.item.length > 30 ? data.item.substring(0,30)+'...' : data.item}</td>
+                        <td style="font-weight:bold;">${formatRupiah(grandTotal)}</td>
+                        <td><button class="btn-sm ${data.status === 'LUNAS' ? 'status-lunas' : 'status-hutang'}" onclick="toggleStatus('${data.id}', '${data.status}')" title="Klik untuk ubah status">${data.status}</button></td>
+                        <td style="white-space:nowrap;">
+                            <button class="btn-sm" style="background:#facc15; color:#000;" onclick="editTransaksi('${data.id}')">Edit</button>
+                            <button class="btn-sm" style="background:var(--tosca-start); color:white;" onclick="openReceiptModal('${data.id}')">Nota</button>
+                            <button class="btn-sm" style="background:#ff4757; color:white; padding:4px 8px;" onclick="deleteTransaksi('${data.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+                        </td>
+                    `;
+                    if(tbody) tbody.appendChild(tr);
+                });
+            });
+        }
+        
+        window.editTransaksi = function(id) {
+            const data = window.transactionsMap[id];
+            if(!data) return;
+            window.editingTransId = id;
+            if (data.cart && data.cart.length > 0) { posCart = JSON.parse(JSON.stringify(data.cart)); } 
+            else { posCart = [{name: data.item, qty: 1, price: data.total}]; }
+            const instSelect = document.getElementById('pos-instansi');
+            if(instSelect) instSelect.value = data.instansiId;
+            const taxSelect = document.getElementById('pos-tax-type');
+            if(taxSelect) taxSelect.value = data.taxRate || 0;
+            updateCartUI();
+            
+            const btnHutang = document.getElementById('btn-hutang-submit');
+            const btnLunas = document.getElementById('btn-lunas-submit');
+            if(btnHutang) btnHutang.innerText = "UPDATE (TETAP HUTANG)";
+            if(btnLunas) btnLunas.innerText = "UPDATE JADI LUNAS";
+            alert("Mode Edit Aktif! Silakan ubah data di Keranjang Kasir lalu klik UPDATE.");
+            const modalContent = document.querySelector('.portal-modal-content');
+            if(modalContent) modalContent.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        window.toggleStatus = async function(transId, currentStatus) {
+            const newStatus = currentStatus === 'HUTANG' ? 'LUNAS' : 'HUTANG';
+            try {
+                const docRef = window.doc(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'transaksi', transId);
+                await window.updateDoc(docRef, { status: newStatus });
+            } catch(e) { console.error("Gagal ubah status", e); }
+        }
+
+        window.deleteTransaksi = async function(transId) {
+            if(confirm("Yakin ingin menghapus data transaksi ini permanen?")) {
+                try {
+                    const docRef = window.doc(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'transaksi', transId);
+                    await window.deleteDoc(docRef);
+                } catch(e) { console.error("Gagal hapus data", e); }
+            }
+        }
+
+        let currentActiveReceipt = null;
+
+        window.openReceiptModal = function(transId) {
+            const data = window.transactionsMap[transId];
+            if(!data) return;
+            currentActiveReceipt = data;
+            const header = document.getElementById('rcpt-header'); const statusTxt = document.getElementById('rcpt-status');
+            if(data.status === 'LUNAS') { header.className = 'receipt-header header-lunas'; statusTxt.innerText = 'LUNAS'; } 
+            else { header.className = 'receipt-header header-hutang'; statusTxt.innerText = 'BELUM LUNAS'; }
+            
+            document.getElementById('rcpt-date').innerText = formatDateReadable(data.tanggal);
+            const grandTotal = parseInt(data.total) + parseInt(data.pajak);
+            document.getElementById('rcpt-total').innerText = formatRupiah(grandTotal);
+            document.getElementById('rcpt-id').innerText = data.trxId || ("#TRX" + transId.substring(0,6).toUpperCase());
+            document.getElementById('rcpt-customer').innerText = instansiDataMap[data.instansiId] ? instansiDataMap[data.instansiId].nama : "Instansi";
+            
+            const rateLabel = data.taxRate ? ` (${data.taxRate}%)` : '';
+            document.getElementById('rcpt-tax-label').innerText = `Pajak / PPN` + rateLabel;
+            document.getElementById('rcpt-tax').innerText = formatRupiah(data.pajak);
+            
+            const itemsContainer = document.getElementById('rcpt-items'); itemsContainer.innerHTML = '';
+            const cartItems = data.cart || [{name: data.item, qty: 1, price: data.total}];
+            cartItems.forEach(item => {
+                const sub = item.qty * item.price; const row = document.createElement('div'); row.className = 'r-item';
+                row.innerHTML = `<div class="r-item-left"><div class="r-item-name">${item.name}</div><div class="r-item-qty">${item.qty} x ${formatRupiah(item.price)}</div></div><div class="r-item-sub">${formatRupiah(sub)}</div>`;
+                itemsContainer.appendChild(row);
+            });
+            document.getElementById('receipt-modal')?.classList.add('active');
+            history.pushState({ receiptOpen: true }, "", "#nota");
+        }
+
+        window.closeReceiptModal = function() {
+            document.getElementById('receipt-modal')?.classList.remove('active');
+            currentActiveReceipt = null;
+        }
+
+        window.printReceipt = function() {
+            document.body.classList.add('is-printing-receipt'); window.print();
+            setTimeout(() => { document.body.classList.remove('is-printing-receipt'); }, 500);
+        }
+
+        window.shareReceiptWA = function() {
+            if(!currentActiveReceipt) return;
+            const data = currentActiveReceipt;
+            const instName = instansiDataMap[data.instansiId] ? instansiDataMap[data.instansiId].nama : "";
+            const grandTotal = formatRupiah(parseInt(data.total) + parseInt(data.pajak));
+            let msg = `*NOTA TAGIHAN D'JANGKOS*\n--------------------------------\nID Transaksi: ${data.trxId || data.id.substring(0,6)}\nTanggal: ${new Date(data.tanggal).toLocaleDateString('id-ID')}\nPelanggan: ${instName}\nStatus: *${data.status}*\n--------------------------------\nTotal Tagihan: *${grandTotal}*\n\nCek detail tagihan di website kami:\nwww.djangkos.com\n\nTerima kasih!`;
+            const encoded = encodeURIComponent(msg); window.open(`https://wa.me/?text=${encoded}`, '_blank');
+        }
+
+    </script>
+</body>
+</html>
