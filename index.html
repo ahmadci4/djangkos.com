@@ -7,26 +7,21 @@
     <meta name="keywords" content="Percetakan, Pengadaan Barang, SIPLAH, INAPROC, D'JANGKOS, ATK, Pembuatan Website">
     <title>D'JANGKOS | Percetakan & Pengadaan Terpercaya</title>
     
-    <!-- Google Fonts Import -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- ========================================== -->
-    <!-- ONESIGNAL PUSH NOTIFICATION SDK            -->
-    <!-- ========================================== -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
       window.OneSignalDeferred = window.OneSignalDeferred || [];
       OneSignalDeferred.push(async function(OneSignal) {
         await OneSignal.init({
-          appId: "7250435b-2ffc-44eb-a58d-401e05d803c2", // App ID OneSignal milik Abang
+          appId: "7250435b-2ffc-44eb-a58d-401e05d803c2",
           notifyButton: { enable: true },
         });
       });
     </script>
 
-    <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, doc, setDoc, getDocs, addDoc, onSnapshot, query, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
@@ -62,15 +57,12 @@
     </script>
 
     <style>
-        /* ==================== CSS VARIABLES ==================== */
         :root { --primary-blue: #1C6FE6; --dark-blue: #0A2E63; --bg-main: #061A3A; --bg-card: linear-gradient(180deg, #114EA8 0%, #0B3370 100%); --tosca-start: #02aab0; --tosca-end: #00cdac; --accent-yellow: #FACC15; --text-dark: #ffffff; --text-light: #A5C8FD; --white: #ffffff; --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.3); --shadow-md: 0 10px 20px rgba(0, 0, 0, 0.4); --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.6); --radius-md: 12px; --radius-lg: 20px; --transition: all 0.3s ease; }
-        /* ==================== RESET & TYPOGRAPHY ==================== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         html { scroll-behavior: smooth; }
         body { color: var(--text-dark); background-color: var(--bg-main); background-image: radial-gradient(circle at 50% 0%, #0A3775 0%, #061A3A 60%); background-attachment: fixed; line-height: 1.6; overflow-x: hidden; position: relative; }
         a { text-decoration: none; color: inherit; } ul { list-style: none; } img { max-width: 100%; height: auto; display: block; }
         
-        /* ==================== ANIMASI WATERMARK & BACKGROUND ==================== */
         .watermark-bg { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90vw; max-width: 800px; opacity: 0.03; z-index: 0; pointer-events: none; user-select: none; }
         .watermark-bg img { width: 100%; height: auto; filter: grayscale(100%); border-radius: 50%;}
 
@@ -79,25 +71,21 @@
         .ring-1 { width: 500px; height: 500px; top: -100px; left: -150px; animation-delay: 0s; } .ring-2 { width: 400px; height: 400px; top: 40%; right: -100px; background: radial-gradient(circle, rgba(250, 204, 21, 0.08) 0%, transparent 70%); animation-delay: -5s; } .ring-3 { width: 600px; height: 600px; bottom: -200px; left: 20%; animation-delay: -10s; }
         @keyframes floatAnim { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, 40px) scale(1.1); } 100% { transform: translate(-20px, -20px) scale(0.9); } }
         
-        /* ==================== REUSABLE COMPONENTS & ANIMATIONS ==================== */
         .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 10;} .section-padding { padding: 80px 0; }
         .section-title { text-align: center; margin-bottom: 50px; } .section-title h2 { font-size: 2.5rem; color: var(--white); margin-bottom: 10px; position: relative; display: inline-block; font-weight: 800; } .section-title h2::after { content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 60px; height: 4px; background: var(--accent-yellow); border-radius: 2px; } .section-title p { color: var(--text-light); }
         .btn { display: inline-block; padding: 12px 28px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: var(--transition); text-align: center; border: none; }
         .btn-primary { background: var(--accent-yellow); color: #000; box-shadow: 0 4px 15px rgba(250, 204, 21, 0.3); } .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(250, 204, 21, 0.5); background: #fff; }
         .btn-outline { background: transparent; color: var(--white); border: 2px solid var(--white); } .btn-outline:hover { background: var(--white); color: var(--bg-main); }
         
-        /* Scroll Reveal Animation */
         .reveal { opacity: 0; transform: translateY(60px); transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); } 
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* ==================== NAVBAR ==================== */
         header.navbar { position: fixed; top: 0; left: 0; width: 100%; background: rgba(6, 26, 58, 0.9); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); transition: var(--transition); }
         .navbar .container { display: flex; justify-content: space-between; align-items: center; height: 80px; }
         .logo { font-size: 1.8rem; font-weight: 800; color: var(--white); display: flex; align-items: center; gap: 10px; letter-spacing: 1px;} .logo span { color: var(--accent-yellow); }
         .nav-links { display: flex; gap: 20px; align-items: center;} .nav-links a { font-weight: 500; color: var(--text-light); transition: var(--transition); position: relative; font-size: 0.95rem; } .nav-links a:hover { color: var(--white); } .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: var(--accent-yellow); transition: var(--transition); } .nav-links a:hover::after { width: 100%; }
         .hamburger { display: none; cursor: pointer; background: none; border: none; } .hamburger svg { width: 30px; height: 30px; stroke: var(--white); }
         
-        /* ==================== HERO SECTION ==================== */
         .hero { min-height: 100vh; display: flex; align-items: center; position: relative; padding-top: 100px; overflow: hidden;}
         .hero-bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.45; z-index: 0; }
         .hero-content { max-width: 900px; text-align: center; margin: 0 auto; position: relative; z-index: 10;}
@@ -106,27 +94,22 @@
         .hero p.desc { font-size: 1.1rem; margin-bottom: 40px; color: var(--text-light); max-width: 700px; margin-left: auto; margin-right: auto; text-shadow: 0 2px 4px rgba(0,0,0,0.8); font-weight: 500;}
         .hero-btns { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; align-items: center;}
         
-        /* BANNER PROMO POP-UP */
         #promo-popup-modal { z-index: 10001; } #promo-popup-modal .modal-content { max-width: 500px; background: transparent; border: none; box-shadow: none; overflow: visible; padding: 15px;} #promo-popup-modal .modal-close { right: 0; top: 0; background: #ff4757; box-shadow: 0 4px 10px rgba(0,0,0,0.5); z-index: 20;} #promo-img-display { width: 100%; border-radius: 12px; box-shadow: 0 15px 30px rgba(0,0,0,0.6); object-fit: cover; }
         
-        /* ==================== PENGUMUMAN ==================== */
         .announcement-box { background: linear-gradient(90deg, rgba(28, 111, 230, 0.2) 0%, rgba(2, 170, 176, 0.1) 100%); border-left: 5px solid var(--accent-yellow); padding: 30px; border-radius: 0 var(--radius-md) var(--radius-md) 0; position: relative; overflow: hidden; margin-bottom: 20px; box-shadow: var(--shadow-sm); backdrop-filter: blur(5px);}
         .announcement-icon { position: absolute; right: -20px; bottom: -30px; opacity: 0.1; width: 150px; height: 150px; }
         .announcement-icon svg { width: 100%; height: 100%; fill: var(--white); }
 
-        /* ==================== EDUKASI ==================== */
         .glass-box { background: rgba(10, 46, 99, 0.6); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding: 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
         .edukasi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: stretch; } .edu-card { background: var(--bg-card); padding: 40px; border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.1); transition: var(--transition); text-align: center; display: flex; flex-direction: column; justify-content: space-between;} .edu-card:hover { transform: translateY(-5px); border-color: var(--accent-yellow); box-shadow: var(--shadow-md); }
         .glow-logo { max-width: 100%; height: 100px; object-fit: contain; margin: 0 auto 20px; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6)); background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%); border-radius: 20px; padding: 10px; }
         .edu-card h3 { color: var(--accent-yellow); font-size: 1.5rem; margin-bottom: 15px; } .edu-card p { color: var(--text-light); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px; }
         
-        /* ==================== KATALOG/LAYANAN ==================== */
         .dana-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; justify-content: center; }
         .dana-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: 25px 15px; text-align: center; cursor: pointer; transition: var(--transition); display: flex; flex-direction: column; align-items: center; box-shadow: var(--shadow-sm); } .dana-card:hover { transform: translateY(-8px); border-color: var(--accent-yellow); box-shadow: 0 10px 20px rgba(0,0,0,0.5), 0 0 15px rgba(250, 204, 21, 0.2); }
         .dana-icon-wrapper { width: 60px; height: 60px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; transition: var(--transition); } .dana-card:hover .dana-icon-wrapper { background: var(--accent-yellow); } .dana-icon-wrapper svg { width: 30px; height: 30px; stroke: var(--white); fill: none; stroke-width: 1.5; transition: var(--transition); } .dana-card:hover .dana-icon-wrapper svg { stroke: var(--bg-main); }
         .dana-title { font-size: 0.95rem; color: var(--white); font-weight: 600; line-height: 1.3; }
         
-        /* ==================== BLOG & ARTIKEL ==================== */
         .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
         .blog-card { background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid rgba(255,255,255,0.05); transition: var(--transition); box-shadow: var(--shadow-sm); display: flex; flex-direction: column;}
         .blog-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-md); border-color: rgba(255,255,255,0.2); }
@@ -136,14 +119,11 @@
         .blog-title { font-size: 1.25rem; color: var(--white); margin-bottom: 12px; font-weight: 700; line-height: 1.4; }
         .blog-desc { font-size: 0.95rem; color: var(--text-light); margin-bottom: 20px; line-height: 1.6; flex-grow: 1;}
 
-        /* ==================== TENTANG KAMI & GAMBAR KUSTOM ==================== */
         .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; } .about-img { border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 2px solid rgba(255,255,255,0.1); overflow: hidden; width: 100%; } .about-text h3 { color: var(--accent-yellow); font-size: 2rem; margin-bottom: 20px; } .about-text p { color: var(--text-light); margin-bottom: 20px; } .highlight-item { display: flex; align-items: center; gap: 10px; color: var(--white); font-weight: 500; margin-bottom: 10px; } .highlight-item svg { width: 20px; height: 20px; stroke: var(--accent-yellow); flex-shrink: 0;}
         
-        /* FIX: Hilangkan gambar placeholder untuk user biasa, munculkan kotak putus-putus untuk Admin */
         body:not(.edit-mode) img.empty-img-hide[src^="data:image/gif"] { display: none !important; margin: 0; padding: 0;}
         body.edit-mode img.empty-img-hide[src^="data:image/gif"] { display: block !important; background: rgba(250, 204, 21, 0.1); min-height: 120px; border: 2px dashed #FACC15; cursor: pointer; }
 
-        /* ==================== MODALS ==================== */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: var(--transition); } .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-content { background: var(--bg-main); border: 1px solid rgba(255,255,255,0.2); width: 90%; max-width: 800px; border-radius: var(--radius-lg); max-height: 90vh; overflow-y: auto; position: relative; transform: translateY(20px); transition: var(--transition); box-shadow: 0 25px 50px rgba(0,0,0,0.5); } .modal-overlay.active .modal-content { transform: translateY(0); }
         .modal-close { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); border: none; color: var(--white); width: 35px; height: 35px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: var(--transition); } .modal-close:hover { background: #ff4757; }
@@ -151,7 +131,6 @@
         .sub-item-list { display: flex; flex-direction: column; gap: 8px; } .sub-item { background: rgba(255,255,255,0.05); padding: 12px 15px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px; font-weight: 500; font-size: 0.95rem; } .sub-item svg { width: 18px; height: 18px; stroke: var(--tosca-start); flex-shrink: 0;}
         .blog-modal-content { color: var(--white); line-height: 1.8; font-size: 1rem; } .blog-modal-content p { margin-bottom: 15px; }
 
-        /* ==================== PORTAL KASIR ==================== */
         .portal-modal-content { background: var(--bg-main); border: 1px solid rgba(255,255,255,0.2); width: 95%; max-width: 1000px; border-radius: var(--radius-lg); max-height: 95vh; overflow-y: auto; position: relative; padding: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.8); } .portal-header { text-align: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px;} .portal-header h2 { color: var(--accent-yellow); font-size: 2rem; margin-bottom: 5px;}
         .form-group { margin-bottom: 15px; text-align: left; } .form-group label { display: block; margin-bottom: 5px; color: var(--text-light); font-size: 0.9rem; } .form-control { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: var(--white); font-family: inherit; } .form-control:focus { outline: none; border-color: var(--accent-yellow); }
         .admin-grid-layout { display: grid; grid-template-columns: 1fr 2.5fr; gap: 30px; }
@@ -161,19 +140,16 @@
         .pos-footer { background: #f8f9fa; padding: 25px; border-top: 1px solid #eee; } .pos-footer-inputs { display: flex; gap: 20px; margin-bottom: 20px; align-items: flex-end; flex-wrap: wrap; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #eee;} .pos-totals-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 2px dashed #ddd;} .pos-total-text { font-size: 1.8rem; font-weight: 800; color: #ff8a00; } .pos-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; } .btn-hutang { background: white; color: #ff4757; border: 2px solid #ff4757; border-radius: 8px; padding: 15px; font-weight: 700; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;} .btn-hutang:hover { background: rgba(255,71,87,0.1); } .btn-lunas { background: var(--primary-blue); color: white; border: none; border-radius: 8px; padding: 15px; font-weight: 700; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; box-shadow: 0 4px 10px rgba(28, 111, 230, 0.3);} .btn-lunas:hover { background: var(--dark-blue); transform: translateY(-2px);}
         .nota-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; } .nota-table th, .nota-table td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); } .nota-table th { background: rgba(0,0,0,0.5); color: var(--accent-yellow); font-weight: 600; white-space: nowrap;} .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; } .status-lunas { background: rgba(37, 211, 102, 0.2); color: #25D366; border: 1px solid #25D366; } .status-hutang { background: rgba(255, 71, 87, 0.2); color: #ff4757; border: 1px solid #ff4757; } .btn-sm { padding: 6px 12px; font-size: 0.8rem; border-radius: 6px; margin-right: 5px; border: none; cursor: pointer; font-weight: 600; }
         
-        /* RECEIPT & THERMAL PRINT */
         #receipt-modal { z-index: 10005; } .receipt-card { background: white; width: 100%; max-width: 400px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.3); font-family: 'Poppins', sans-serif; position: relative; margin: 20px auto; color: #333; } .receipt-header { padding: 30px 20px; text-align: center; color: white; position: relative; } .header-hutang { background: #FF8A00; } .header-lunas { background: #25D366; } .receipt-logo { background: white; width: 60px; height: 60px; border-radius: 50%; padding: 5px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; } .receipt-logo img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; } .receipt-status-text { font-size: 1.4rem; font-weight: 800; margin-bottom: 5px; } .receipt-date { font-size: 0.8rem; opacity: 0.9; } .receipt-body { background: white; padding: 25px 20px; border-radius: 20px 20px 0 0; margin-top: -20px; position: relative; } .receipt-total-box { text-align: center; margin-bottom: 20px; } .receipt-total-amount { font-size: 2.2rem; font-weight: 800; color: #333; line-height: 1.2; } .receipt-divider { border-top: 2px dashed #eee; margin: 15px 0; } .receipt-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; } .receipt-items { margin-top: 15px; } .r-item { display: flex; justify-content: space-between; margin-bottom: 12px; align-items: flex-start; } .r-item-left { flex: 1; } .r-item-name { font-weight: 600; font-size: 0.9rem; color: #333; line-height: 1.2; margin-bottom: 2px; } .r-item-sub { font-weight: 700; font-size: 0.95rem; color: #333; } .receipt-brand { text-align: center; margin-top: 20px; font-size: 0.8rem; font-weight: 600; color: var(--primary-blue); display: flex; justify-content: center; align-items: center; gap: 5px;} .receipt-actions { display: grid; grid-template-columns: 1fr 1fr 50px; gap: 10px; padding: 15px 20px; background: #f8f9fa; } .btn-wa { background: #25D366; color: white; border: none; border-radius: 8px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 5px; cursor: pointer; } .btn-simpan { background: var(--primary-blue); color: white; border: none; border-radius: 8px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 5px; cursor: pointer; } .btn-print-icon { background: #444; color: white; border: none; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .receipt-signatures { display: none; }
         @media print { @page { margin: 0; size: auto; } body { background: white; margin: 0; padding: 0; } body * { visibility: hidden; } #receipt-modal, #receipt-modal * { visibility: visible; } #receipt-modal { position: absolute; left: 0; top: 0; width: 100%; background: white !important; display: flex; align-items: flex-start; justify-content: flex-start; padding: 0;} .receipt-card { width: 100%; max-width: 80mm; margin: 0; box-shadow: none; border-radius: 0; padding: 5px; color: black !important; font-family: monospace, sans-serif; } .receipt-header { background: white !important; color: black !important; padding: 10px 0; border-bottom: 1px dashed black; border-radius: 0;} .receipt-logo { margin-bottom: 5px; border-radius: 0; padding: 0; height: 50px; width: 50px;} .receipt-logo img { filter: grayscale(100%); border-radius: 50%;} .receipt-status-text { color: black !important; font-size: 1.1rem; border: 1px solid black; padding: 2px 5px; display: inline-block; margin-top: 5px; border-radius: 4px;} .receipt-date { color: black !important; font-size: 0.7rem; margin-top: 5px;} .receipt-body { padding: 10px 0; margin-top: 0; background: white !important; border-radius: 0;} .receipt-total-amount { color: black !important; font-size: 1.6rem; } .receipt-divider { border-top: 1px dashed black !important; margin: 8px 0; } .receipt-row .label, .receipt-row .val { color: black !important; font-size: 0.75rem; } .r-item-name { color: black !important; font-size: 0.8rem; } .r-item-qty, .r-item-sub { color: black !important; font-size: 0.75rem; } .receipt-brand, .receipt-actions, .modal-close { display: none !important; } .receipt-signatures { display: flex; justify-content: space-between; margin-top: 30px; text-align: center; font-size: 0.7rem; color: black !important; padding: 0 5px; } }
 
-        /* ==================== STATS, FOOTER & NOTIF BOX ==================== */
         .stats-section { padding: 60px 0 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 50px; position: relative; z-index: 10; }
         .footer-cta { max-width: 800px; margin: 20px auto; padding: 40px 20px; background: rgba(255, 255, 255, 0.02); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: var(--shadow-md);}
         .footer-bottom { text-align: center; padding: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.4); background: #041228; position: relative; z-index: 10;}
         
         .notif-box { position: relative; z-index: 100; background: linear-gradient(135deg, rgba(28, 111, 230, 0.1) 0%, rgba(250, 204, 21, 0.05) 100%); border: 1px solid rgba(255,255,255,0.1); padding: 30px 20px; border-radius: var(--radius-lg); max-width: 800px; margin: 40px auto; box-shadow: var(--shadow-md); text-align: center;}
 
-        /* ==================== FLOATING CONTACT MENU ==================== */
         .floating-menu-container { position: fixed; bottom: 100px; right: 30px; z-index: 9998; display: flex; flex-direction: column; align-items: flex-end; }
         .floating-menu-items { display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; }
         .floating-menu-container:hover .floating-menu-items, .floating-menu-container.active .floating-menu-items { opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto; }
@@ -188,12 +164,10 @@
         .fab-btn:hover .fab-tooltip { opacity: 1; visibility: visible; transform: translateY(-50%) translateX(0); }
         @keyframes pulse-main { 0% { box-shadow: 0 0 0 0 rgba(28, 111, 230, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(28, 111, 230, 0); } 100% { box-shadow: 0 0 0 0 rgba(28, 111, 230, 0); } }
 
-        /* ==================== ADMIN EDIT MODE ==================== */
         .admin-panel { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 15px 25px; border-radius: 50px; z-index: 2147483647; display: none; align-items: center; gap: 10px; box-shadow: var(--shadow-lg); flex-wrap: wrap; justify-content: center; width: 95%; max-width: 750px; }
         .admin-panel button { background: var(--primary-blue); color: #fff; border: none; padding: 8px 15px; border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 0.85rem; transition: 0.2s;} .admin-panel button:hover { opacity: 0.9; transform: translateY(-2px); } .admin-panel button.exit-btn { background: #ff4757; }
         body.edit-mode .edit-txt { outline: 2px dashed var(--accent-yellow); padding: 2px; border-radius: 4px; background: rgba(255, 255, 255, 0.1); min-width: 20px; display: inline-block;} body.edit-mode .edit-txt:focus { background: white; color: black; outline: 2px solid var(--primary-blue); } body.edit-mode .edit-img { outline: 3px dashed var(--accent-yellow); cursor: pointer; opacity: 0.8; } body.edit-mode .edit-img:hover { opacity: 1; filter: brightness(1.2); }
 
-        /* ==================== RESPONSIVE DESIGN ==================== */
         @media (max-width: 992px) { .about-grid, .edukasi-grid { grid-template-columns: 1fr; } .hero h1 { font-size: 3rem; } .hero h1 .script-font { font-size: 4rem; } .about-img { order: -1; } .ring-1, .ring-2, .ring-3 { display: none; } }
         @media (max-width: 768px) {
             .nav-links { position: absolute; top: 80px; left: -100%; width: 100%; background: var(--bg-main); flex-direction: column; align-items: center; padding: 30px 0; border-bottom: 1px solid rgba(255,255,255,0.1); transition: var(--transition); }
@@ -209,7 +183,6 @@
 </head>
 <body>
 
-    <!-- Watermark Logo Transparan -->
     <div class="watermark-bg">
         <img class="edit-img" data-id="main-logo-img" src="images/logo-djangkos.jpg" onerror="this.src='https://via.placeholder.com/500?text=D'">
     </div>
@@ -220,7 +193,6 @@
         <div class="ring ring-3"></div>
     </div>
 
-    <!-- 1. NAVBAR -->
     <header class="navbar" id="navbar">
         <div class="container">
             <a href="#" class="logo">
@@ -244,7 +216,6 @@
         </div>
     </header>
 
-    <!-- 2. HERO SECTION -->
     <section id="beranda" class="hero">
         <img src="images/potocopy.jpg" class="hero-bg-layer edit-img" data-id="main-hero-bg" onerror="this.src='https://images.unsplash.com/photo-1563298723-dcfebaa392e3?auto=format&fit=crop&q=80'">
         <div class="container">
@@ -264,7 +235,6 @@
         </div>
     </section>
 
-    <!-- BANNER PROMO POP-UP -->
     <div id="promo-popup-modal" class="modal-overlay" style="z-index: 10001;">
         <div class="modal-content" style="padding: 10px;">
             <button onclick="closePromo()" class="modal-close" style="z-index: 20;">&times;</button>
@@ -274,7 +244,6 @@
         </div>
     </div>
 
-    <!-- PENGUMUMAN & INFORMASI -->
     <section id="pengumuman" class="section-padding" style="background: rgba(255, 255, 255, 0.02); border-bottom: 1px solid rgba(255,255,255,0.05);">
         <div class="container">
             <div class="section-title reveal" style="margin-bottom: 30px;">
@@ -294,7 +263,6 @@
         </div>
     </section>
 
-    <!-- 3. EDUKASI -->
     <section id="edukasi" class="section-padding" style="background: rgba(0,0,0,0.1);">
         <div class="container">
             <div class="section-title reveal">
@@ -318,7 +286,6 @@
         </div>
     </section>
 
-    <!-- 4. LAYANAN KAMI -->
     <section id="layanan" class="section-padding">
         <div class="container">
             <div class="section-title reveal">
@@ -339,12 +306,10 @@
         </div>
     </section>
 
-    <!-- 5. TENTANG KAMI -->
     <section id="tentang" class="section-padding" style="background: rgba(0,0,0,0.1);">
         <div class="container glass-box reveal">
             <div class="about-grid">
                 <div class="about-text">
-                    <!-- FOTO PLACEHOLDER SUDAH DIPERBAIKI (HANYA MUNCUL SAAT EDIT MODE) -->
                     <img class="edit-img empty-img-hide" data-id="tentang-extra-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Gambar Tambahan" style="width: 100%; border-radius: var(--radius-md); margin-bottom: 25px; object-fit: cover;">
                     <h3 class="edit-txt" data-id="about-title">Cepat, Terpercaya, Tangan Pertama</h3>
                     <p class="edit-txt" data-id="about-desc">D'JANGKOS adalah penyedia pengadaan barang/jasa terpercaya yang melayani sekolah, instansi, dan masyarakat. Memotong birokrasi panjang dengan sistem <b>tangan pertama</b>, memastikan kualitas maksimal dan waktu pengerjaan super efisien.</p>
@@ -362,7 +327,6 @@
         </div>
     </section>
 
-    <!-- SEKSI DIBALIK LAYAR (DEVELOPER INFO) -->
     <section class="section-padding reveal" style="background: linear-gradient(180deg, rgba(6, 26, 58, 0) 0%, rgba(2, 170, 176, 0.05) 100%); border-top: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 10;">
         <div class="container">
             <div style="max-width: 900px; margin: 0 auto; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-lg); padding: 40px; text-align: center; box-shadow: var(--shadow-lg); backdrop-filter: blur(10px);">
@@ -373,13 +337,12 @@
                 <div style="background: rgba(2, 170, 176, 0.1); padding: 25px; border-radius: var(--radius-md); border: 1px dashed var(--tosca-start);">
                     <h4 class="edit-txt" data-id="dev-sub" style="color: var(--white); font-size: 1.3rem; margin-bottom: 10px;">Ingin Punya Website Profesional Seperti Ini?</h4>
                     <p class="edit-txt" data-id="dev-sub-desc" style="font-size: 0.95rem; color: #ccc; margin-bottom: 20px;">Kami membuka layanan Jasa Pembuatan Website Cepat & Modern untuk Sekolah, Desa, Instansi Pemerintah, maupun Bisnis Pribadi. Harga bersahabat, fitur lengkap, dan terima beres.</p>
-                    <a href="https://wa.me/6285935389691?text=Halo%20Admin%20D'JANGKOS,%20saya%20tertarik%20untuk%20membuat%20website%20seperti%20djangkos.com" target="_blank" class="btn" style="background: var(--tosca-start); color: #fff; box-shadow: 0 4px 15px rgba(2, 170, 176, 0.3);">Konsultasi Pembuatan Web via WA</a>
+                    <a href="https://semetonweb.store" target="_blank" class="btn" style="background: var(--tosca-start); color: #fff; box-shadow: 0 4px 15px rgba(2, 170, 176, 0.3);">Kunjungi SemetonWeb.store</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- BLOG & ARTIKEL -->
     <section id="blog" class="section-padding" style="position: relative; z-index: 10;">
         <div class="container">
             <div class="section-title reveal">
@@ -388,7 +351,6 @@
             </div>
             
             <div class="blog-grid reveal">
-                <!-- Artikel 1 -->
                 <div class="blog-card">
                     <img class="blog-img edit-img" data-id="b1-img-thumb" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=600" alt="Blog 1" onerror="this.src='https://via.placeholder.com/600x400?text=Artikel+1'">
                     <div class="blog-content">
@@ -399,7 +361,6 @@
                     </div>
                 </div>
 
-                <!-- Artikel 2 -->
                 <div class="blog-card">
                     <img class="blog-img edit-img" data-id="b2-img-thumb" src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&q=80&w=600" alt="Blog 2" onerror="this.src='https://via.placeholder.com/600x400?text=Artikel+2'">
                     <div class="blog-content">
@@ -410,7 +371,6 @@
                     </div>
                 </div>
 
-                <!-- Artikel 3 -->
                 <div class="blog-card">
                     <img class="blog-img edit-img" data-id="b3-img-thumb" src="https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&q=80&w=600" alt="Blog 3" onerror="this.src='https://via.placeholder.com/600x400?text=Artikel+3'">
                     <div class="blog-content">
@@ -424,7 +384,6 @@
         </div>
     </section>
 
-    <!-- 6. THANKS TO & FOOTER SECTION -->
     <section class="stats-section" id="kontak">
         <div class="container reveal">
             <h2 class="edit-txt" data-id="stat-title">THANKS TO</h2>
@@ -437,7 +396,6 @@
                 </p>
             </div>
 
-            <!-- Form Berlangganan Notif Push OneSignal -->
             <div class="notif-box" id="notif-subscribe-box">
                 <h3 class="edit-txt" data-id="notif-title" style="color: var(--accent-yellow); font-size: 1.5rem; margin-bottom: 10px;">Dapatkan Info Promo Eksklusif!</h3>
                 <p class="edit-txt" data-id="notif-desc" style="color: var(--text-light); font-size: 0.95rem; margin-bottom: 20px;">Aktifkan notifikasi di browser Anda untuk mendapat pemberitahuan saat ada promo cetak atau layanan baru langsung di layar HP/Laptop Anda.</p>
@@ -451,7 +409,6 @@
                 <p class="edit-txt" data-id="footer-address" style="color: var(--text-light); font-size: 1rem; line-height: 1.6; max-width: 600px; margin: 0 auto 20px;">
                     Jalan Raya Ancak-Kopang, Karang Bajo, Kecamatan Bayan, Kabupaten Lombok Utara, Nusa Tenggara Barat. Kode Pos 83354
                 </p>
-                <!-- Email Info -->
                 <p style="color: var(--accent-yellow); font-size: 1.1rem; font-weight: 600; margin-bottom: 25px;">
                     ✉️ <a href="mailto:djangkos@gmail.com" id="footer-email-link">djangkos@gmail.com</a>
                 </p>
@@ -476,7 +433,6 @@
         <span class="edit-txt" data-id="copyright">Copyright &copy; 2026 D'JANGKOS COPIER. All Rights Reserved.</span>
     </div>
 
-    <!-- ==================== MODALS / STORAGE DATA HTML ==================== -->
     <div id="service-modal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close" onclick="triggerCloseModal()">&times;</button>
@@ -484,9 +440,7 @@
         </div>
     </div>
 
-    <!-- STORAGE KONTEN (Layanan & Blog) DISembunyikan disini -->
     <div id="service-data-storage" style="display: none;">
-        <!-- KATEGORI LAYANAN -->
         <div id="cat-1" class="cat-data-container">
             <img class="modal-header-img edit-img" data-id="m1-img" src="images/potocopy.jpg" onerror="this.src='https://images.unsplash.com/photo-1563298723-dcfebaa392e3?auto=format&fit=crop&q=80&w=600'">
             <div class="modal-body">
@@ -596,7 +550,6 @@
             </div>
         </div>
 
-        <!-- ARTIKEL BLOG FULL -->
         <div id="blog-1" class="cat-data-container">
             <img class="modal-header-img edit-img" data-id="b1-img-full" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=1200" onerror="this.src='https://via.placeholder.com/1200x600?text=Header+Artikel+1'">
             <div class="modal-body blog-modal-content">
@@ -641,7 +594,6 @@
         </div>
     </div>
 
-    <!-- MODAL PORTAL NOTA & TAGIHAN -->
     <div id="portal-modal" class="modal-overlay no-print">
         <div class="portal-modal-content">
             <button class="modal-close no-print" onclick="closePortalModal()">&times;</button>
@@ -649,7 +601,6 @@
                 <h2>Portal Rekap Tagihan</h2>
                 <p>Cek riwayat transaksi, hutang, dan cetak nota.</p>
             </div>
-            <!-- Login Pelanggan -->
             <div id="portal-login-view" style="max-width: 400px; margin: 0 auto; text-align: center;">
                 <div class="form-group">
                     <label>Pilih Instansi / Sekolah</label>
@@ -664,7 +615,6 @@
                     Login Admin? <a href="javascript:void(0)" onclick="switchPortalView('portal-admin-login')" style="color: var(--tosca-start);">Klik disini</a>
                 </p>
             </div>
-            <!-- Login Admin -->
             <div id="portal-admin-login" style="max-width: 400px; margin: 0 auto; text-align: center; display: none;">
                 <h3 style="margin-bottom: 20px; color: var(--tosca-start);">Login Administrator</h3>
                 <div class="form-group">
@@ -674,7 +624,6 @@
                 <button class="btn" style="background: var(--tosca-start); color: white; width: 100%; border: none;" onclick="loginAdminPortal()">Masuk sebagai Admin</button>
                 <button class="btn btn-outline" style="width: 100%; margin-top: 10px;" onclick="switchPortalView('portal-login-view')">Kembali</button>
             </div>
-            <!-- Dashboard Admin -->
             <div id="portal-admin-dashboard" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h3 style="color: var(--tosca-start);">Kasir & Admin Nota</h3>
@@ -683,15 +632,12 @@
                         <button class="btn btn-outline btn-sm" onclick="logoutPortal()">Keluar</button>
                     </div>
                 </div>
-                
                 <div class="admin-grid-layout">
-                    <!-- Tambah & Kelola Instansi -->
                     <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); height: fit-content;">
                         <h4 style="margin-bottom: 15px; color: var(--accent-yellow);">+ Kelola Pelanggan</h4>
                         <div class="form-group"><input type="text" id="new-inst-name" class="form-control" placeholder="Nama Instansi Baru"></div>
                         <div class="form-group"><input type="text" id="new-inst-pass" class="form-control" placeholder="Sandi Instansi Baru"></div>
                         <button class="btn btn-primary btn-sm" style="width: 100%; margin-bottom: 20px;" onclick="addInstansi()">Simpan Instansi</button>
-                        
                         <h5 style="color: var(--text-light); margin-bottom: 10px; font-size: 0.85rem;">Daftar Instansi & Sandi</h5>
                         <div style="max-height: 200px; overflow-y: auto;">
                             <table class="nota-table" style="font-size: 0.8rem;">
@@ -699,8 +645,6 @@
                             </table>
                         </div>
                     </div>
-
-                    <!-- POS -->
                     <div class="pos-container">
                         <div class="pos-header">
                             <h4><svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> Keranjang Kasir</h4>
@@ -743,7 +687,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div style="margin-top: 30px;">
                     <h4 style="margin-bottom: 10px;">Semua Riwayat Transaksi</h4>
                     <div class="table-responsive">
@@ -754,8 +697,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Dashboard Pelanggan -->
             <div id="portal-customer-dashboard" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px dashed rgba(255,255,255,0.2); padding-bottom: 15px;">
                     <div>
@@ -778,7 +719,6 @@
         </div>
     </div>
 
-    <!-- MODAL NOTA / RECEIPT -->
     <div id="receipt-modal" class="modal-overlay">
         <div class="receipt-card" id="receipt-card">
             <button class="modal-close no-print" onclick="closeReceiptModal()" style="top:-15px; right:-15px;">&times;</button>
@@ -799,8 +739,6 @@
                 <div class="receipt-items" id="rcpt-items"></div>
                 <div class="receipt-divider"></div>
                 <div class="receipt-row" style="font-size: 0.8rem;"><span class="label" id="rcpt-tax-label">Pajak (0%)</span><span class="val" id="rcpt-tax">Rp 0</span></div>
-                
-                <!-- Signature Space specifically designed for Print/Save -->
                 <div class="receipt-signatures">
                     <div style="flex: 1; padding: 0 10px;">
                         <p style="margin-bottom: 50px;">Tanda Terima</p>
@@ -811,7 +749,6 @@
                         <p style="border-bottom: 1px solid #333; display: inline-block; width: 100px; margin-bottom: 5px; font-weight:bold;">D'JANGKOS</p>
                     </div>
                 </div>
-
                 <div class="receipt-brand" style="margin-top: 30px;">
                     <img src="images/logo-djangkos.jpg" onerror="this.style.display='none'" style="width:16px;height:16px;margin-right:5px; border-radius:50%;"> D'Jangkos Digital Printing
                 </div>
@@ -823,32 +760,26 @@
         </div>
     </div>
 
-    <!-- FLOATING CONTACT MENU -->
     <div class="floating-menu-container" id="fab-container">
         <div class="floating-menu-items">
-            <!-- Admin Gear -->
             <div class="fab-btn fab-admin" id="admin-btn" title="Admin Setting">
                 <svg viewBox="0 0 24 24"><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="12" cy="12" r="3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></circle></svg>
                 <div class="fab-tooltip">Admin Mode</div>
             </div>
-            <!-- Email -->
             <a href="mailto:djangkos@gmail.com" class="fab-btn fab-email" id="fab-email">
                 <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" fill="white"></path><polyline points="22,6 12,13 2,6" fill="none" stroke="white" stroke-width="2"></polyline></svg>
                 <div class="fab-tooltip" id="tip-email">Email Kami</div>
             </a>
-            <!-- WA -->
             <a href="https://wa.me/6285935389691" target="_blank" class="fab-btn fab-wa" id="fab-wa">
                 <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
                 <div class="fab-tooltip" id="tip-wa">Chat WhatsApp</div>
             </a>
         </div>
-        <!-- Main Toggle Button (Logo Kontak) -->
         <div class="fab-btn fab-main" onclick="this.parentElement.classList.toggle('active')">
             <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
         </div>
     </div>
 
-    <!-- ADMIN PANEL -->
     <div class="admin-panel" id="admin-panel">
         <span><b>MODE EDIT</b></span>
         <button onclick="managePromoPopup()" style="background: var(--tosca-start);">Atur Promo Pop-up</button>
@@ -860,7 +791,6 @@
     </div>
 
     <script>
-        // --- 1. LOGIKA MODAL POPUP & HISTORY API ---
         function openContentModal(contentId) {
             const modalBody = document.getElementById('modal-dynamic-content');
             const targetElement = document.getElementById(contentId);
@@ -894,13 +824,11 @@
             if (event.target.classList.contains('modal-overlay') && event.target.id !== 'promo-popup-modal') { history.back(); }
         }
 
-        // --- 2. Mobile Menu Toggle ---
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('nav-links');
         if(hamburger) { hamburger.addEventListener('click', () => { navLinks?.classList.toggle('active'); }); }
         document.querySelectorAll('.nav-links a').forEach(link => { link.addEventListener('click', () => { navLinks?.classList.remove('active'); }); });
 
-        // --- 3. Sticky Navbar ---
         const navbar = document.getElementById('navbar');
         if(navbar) {
             window.addEventListener('scroll', () => {
@@ -914,7 +842,6 @@
             });
         }
 
-        // --- 4. Scroll Reveal Animation ---
         const reveals = document.querySelectorAll('.reveal');
         const revealOnScroll = () => {
             const windowHeight = window.innerHeight;
@@ -927,7 +854,6 @@
         window.addEventListener('scroll', revealOnScroll);
         revealOnScroll();
 
-        // --- 5. ADMIN EDIT MODE & KONTAK ---
         const adminBtn = document.getElementById('admin-btn');
         const adminPanel = document.getElementById('admin-panel');
         const saveBtn = document.getElementById('save-btn');
@@ -955,7 +881,6 @@
         const loadSavedData = () => {
             let savedData = JSON.parse(localStorage.getItem('djangkosV7Content')) || {};
             
-            // Fix agar teks placeholder SVG lama tidak bocor
             if(savedData['tentang-extra-img'] && savedData['tentang-extra-img'].includes('<svg')) {
                 savedData['tentang-extra-img'] = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
                 localStorage.setItem('djangkosV7Content', JSON.stringify(savedData));
@@ -980,7 +905,7 @@
 
         window.editWA = function() {
             const current = localStorage.getItem('djangkos_wa') || "6285935389691";
-            const newWa = prompt("Masukkan Nomor WhatsApp Anda\n(Gunakan kode negara 62, contoh: 62859... TANPA tanda + atau spasi):", current);
+            const newWa = prompt("Masukkan Nomor WhatsApp:\n(Gunakan kode negara 62, contoh: 62859... TANPA tanda + atau spasi):", current);
             if(newWa && newWa.trim() !== "") {
                 localStorage.setItem('djangkos_wa', newWa.trim()); applyContacts(); alert("Nomor WhatsApp berhasil diperbarui!");
             }
@@ -988,7 +913,7 @@
 
         window.editEmail = function() {
             const current = localStorage.getItem('djangkos_email') || "djangkos@gmail.com";
-            const newEm = prompt("Masukkan Alamat Email Anda:", current);
+            const newEm = prompt("Masukkan Alamat Email:", current);
             if(newEm && newEm.trim() !== "") {
                 localStorage.setItem('djangkos_email', newEm.trim()); applyContacts(); alert("Alamat Email berhasil diperbarui!");
             }
@@ -1106,10 +1031,6 @@
                 if(confirm("Keluar dari Mode Edit? Pastikan Anda sudah menyimpan perubahan.")) disableEditMode();
             });
         }
-
-        // ==========================================
-        // SISTEM PORTAL NOTA & KASIR (POS)
-        // ==========================================
 
         function formatRupiah(angka) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka); }
         function formatDateReadable(isoString) {
@@ -1461,9 +1382,5 @@
             const encoded = encodeURIComponent(msg); window.open(`https://wa.me/?text=${encoded}`, '_blank');
         }
     </script>
-    
-    <!-- SCRIPT TIDIO ABANG (Jangan lupa isi kode punya abang di bawah ini jika ingin dilanjutkan) -->
-    <!-- <script src="//code.tidio.co/KODE_TIDIO_ABANG.js" async></script> -->
-
 </body>
 </html>
