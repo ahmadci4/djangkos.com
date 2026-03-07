@@ -167,23 +167,25 @@
         /* Tombol Langganan Notif */
         .notif-box { position: relative; z-index: 100; background: linear-gradient(135deg, rgba(28, 111, 230, 0.1) 0%, rgba(250, 204, 21, 0.05) 100%); border: 1px solid rgba(255,255,255,0.1); padding: 30px 20px; border-radius: var(--radius-lg); max-width: 800px; margin: 40px auto; box-shadow: var(--shadow-md); text-align: center;}
 
-        /* ==================== ADMIN EDIT MODE ==================== */
-        .admin-toggle-btn { position: fixed; bottom: 30px; left: 30px; width: 55px; height: 55px; background: var(--primary-blue); border-radius: 50%; display: flex !important; align-items: center; justify-content: center; cursor: pointer; z-index: 2147483647; border: 3px solid var(--white); transition: var(--transition); box-shadow: 0 5px 20px rgba(0,0,0,0.8); }
-        .admin-toggle-btn:hover { background: var(--accent-yellow); transform: rotate(90deg); border-color: #000; }
-        .admin-toggle-btn svg { width: 28px; height: 28px; stroke: #fff; } .admin-toggle-btn:hover svg { stroke: #000; }
-        
+        /* ==================== FLOATING CONTACT MENU ==================== */
+        .floating-menu-container { position: fixed; bottom: 30px; right: 30px; z-index: 9998; display: flex; flex-direction: column; align-items: flex-end; }
+        .floating-menu-items { display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; }
+        .floating-menu-container:hover .floating-menu-items, .floating-menu-container.active .floating-menu-items { opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto; }
+        .fab-btn { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: var(--transition); cursor: pointer; text-decoration: none; position: relative; border: none; }
+        .fab-btn:hover { transform: scale(1.1); }
+        .fab-wa { background: #25D366; } .fab-wa:hover { background: #128C7E; } .fab-wa svg { width: 35px; height: 35px; fill: white; }
+        .fab-email { background: #EA4335; } .fab-email:hover { background: #C5221F; } .fab-email svg { width: 28px; height: 28px; }
+        .fab-admin { background: #333; border: 2px solid var(--accent-yellow); } .fab-admin:hover { background: var(--accent-yellow); } .fab-admin svg { width: 28px; height: 28px; stroke: #fff; fill: none; } .fab-admin:hover svg { stroke: #000; }
+        .fab-main { width: 65px; height: 65px; background: var(--primary-blue); box-shadow: 0 10px 25px rgba(28, 111, 230, 0.5); animation: pulse-main 2s infinite; z-index: 2; }
+        .fab-main svg { width: 32px; height: 32px; stroke: white; fill: none; stroke-width: 2; }
+        .fab-tooltip { position: absolute; right: 70px; top: 50%; transform: translateY(-50%) translateX(10px); background: var(--white); color: var(--bg-main); padding: 8px 15px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; white-space: nowrap; box-shadow: var(--shadow-md); opacity: 0; pointer-events: none; transition: 0.3s; visibility: hidden; }
+        .fab-btn:hover .fab-tooltip { opacity: 1; visibility: visible; transform: translateY(-50%) translateX(0); }
+        @keyframes pulse-main { 0% { box-shadow: 0 0 0 0 rgba(28, 111, 230, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(28, 111, 230, 0); } 100% { box-shadow: 0 0 0 0 rgba(28, 111, 230, 0); } }
+
+        /* ==================== ADMIN EDIT MODE (Sisa) ==================== */
         .admin-panel { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 15px 25px; border-radius: 50px; z-index: 2147483647; display: none; align-items: center; gap: 10px; box-shadow: var(--shadow-lg); flex-wrap: wrap; justify-content: center; width: 95%; max-width: 750px; }
         .admin-panel button { background: var(--primary-blue); color: #fff; border: none; padding: 8px 15px; border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 0.85rem; transition: 0.2s;} .admin-panel button:hover { opacity: 0.9; transform: translateY(-2px); } .admin-panel button.exit-btn { background: #ff4757; }
         body.edit-mode .edit-txt { outline: 2px dashed var(--accent-yellow); padding: 2px; border-radius: 4px; background: rgba(255, 255, 255, 0.1); min-width: 20px; display: inline-block;} body.edit-mode .edit-txt:focus { background: white; color: black; outline: 2px solid var(--primary-blue); } body.edit-mode .edit-img { outline: 3px dashed var(--accent-yellow); cursor: pointer; opacity: 0.8; } body.edit-mode .edit-img:hover { opacity: 1; filter: brightness(1.2); }
-
-        /* ==================== FLOATING WHATSAPP BUTTON ==================== */
-        .floating-wa-container { position: fixed; bottom: 30px; right: 30px; z-index: 9998; display: flex; align-items: center; }
-        .floating-wa { width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.4); transition: var(--transition); text-decoration: none; animation: pulse-wa 2s infinite; position: relative;}
-        .floating-wa:hover { transform: scale(1.1); background: #128C7E; }
-        .floating-wa svg { width: 35px; height: 35px; fill: white; }
-        .wa-tooltip { position: absolute; right: 75px; top: 50%; transform: translateY(-50%) translateX(10px); background: var(--white); color: var(--bg-main); padding: 10px 20px; border-radius: 20px 20px 0 20px; font-size: 0.9rem; font-weight: 600; white-space: nowrap !important; width: max-content !important; min-width: max-content; box-shadow: var(--shadow-md); opacity: 0; visibility: hidden; transition: var(--transition); pointer-events: none; }
-        .floating-wa:hover .wa-tooltip { opacity: 1; visibility: visible; transform: translateY(-50%) translateX(0); }
-        @keyframes pulse-wa { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
 
         /* ==================== RESPONSIVE DESIGN ==================== */
         @media (max-width: 992px) { .about-grid, .edukasi-grid { grid-template-columns: 1fr; } .hero h1 { font-size: 3rem; } .hero h1 .script-font { font-size: 4rem; } .about-img { order: -1; } .ring-1, .ring-2, .ring-3 { display: none; } }
@@ -422,7 +424,7 @@
                 </p>
                 <!-- Email Info -->
                 <p style="color: var(--accent-yellow); font-size: 1.1rem; font-weight: 600; margin-bottom: 25px;">
-                    ✉️ <a href="mailto:djangkos@gmail.com">djangkos@gmail.com</a>
+                    ✉️ <a href="mailto:djangkos@gmail.com" id="footer-email-link">djangkos@gmail.com</a>
                 </p>
                 
                 <a href="https://maps.app.goo.gl/tx4LyqNEV66zyQSt5" target="_blank" class="btn btn-outline edit-txt" data-id="btn-map" style="margin-bottom: 40px; background: rgba(255,255,255,0.05);">Buka di Google Maps</a>
@@ -792,9 +794,32 @@
         </div>
     </div>
 
-    <!-- HIDDEN ADMIN BUTTON & PANEL -->
-    <div class="admin-toggle-btn" id="admin-btn" title="Admin Setting">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+    <!-- FLOATING CONTACT MENU (WA, Email, Admin) -->
+    <div class="floating-menu-container" id="fab-container">
+        <div class="floating-menu-items">
+            <!-- Admin Gear -->
+            <div class="fab-btn fab-admin" id="admin-btn" title="Admin Setting">
+                <svg viewBox="0 0 24 24"><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="12" cy="12" r="3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></circle></svg>
+                <div class="fab-tooltip">Admin Mode</div>
+            </div>
+            
+            <!-- Email -->
+            <a href="mailto:djangkos@gmail.com" class="fab-btn fab-email" id="fab-email">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" fill="white"></path><polyline points="22,6 12,13 2,6" fill="none" stroke="white" stroke-width="2"></polyline></svg>
+                <div class="fab-tooltip" id="tip-email">Email Kami</div>
+            </a>
+            
+            <!-- WA -->
+            <a href="https://wa.me/6285935389691" target="_blank" class="fab-btn fab-wa" id="fab-wa">
+                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+                <div class="fab-tooltip" id="tip-wa">Chat WhatsApp</div>
+            </a>
+        </div>
+        
+        <!-- Main Toggle Button -->
+        <div class="fab-btn fab-main" onclick="this.parentElement.classList.toggle('active')">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        </div>
     </div>
 
     <!-- ADMIN PANEL -->
@@ -802,18 +827,10 @@
         <span><b>MODE EDIT</b></span>
         <button onclick="managePromoPopup()" style="background: var(--tosca-start);">Atur Promo Pop-up</button>
         <button onclick="editMasterPass()" style="background: #333;">Ubah Sandi Master</button>
+        <button onclick="editWA()" style="background: #25D366;">Set Nomor WA</button>
+        <button onclick="editEmail()" style="background: #EA4335;">Set Email</button>
         <button id="save-btn">Simpan Perubahan Teks/Foto</button>
         <button id="exit-btn" class="exit-btn">Keluar</button>
-    </div>
-
-    <!-- FLOATING WHATSAPP BUTTON -->
-    <div class="floating-wa-container">
-        <a href="https://wa.me/6285935389691" target="_blank" class="floating-wa" aria-label="Chat WhatsApp">
-            <svg viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-            </svg>
-            <div class="wa-tooltip">Punya Pertanyaan?</div>
-        </a>
     </div>
 
     <input type="file" id="image-upload" accept="image/*" style="display: none;">
@@ -910,6 +927,21 @@
         let instansiDataMap = {}; 
         window.transactionsMap = {};
 
+        // Fungsi Terapkan WA & Email
+        window.applyContacts = function() {
+            const w = localStorage.getItem('djangkos_wa') || "6285935389691";
+            const e = localStorage.getItem('djangkos_email') || "djangkos@gmail.com";
+            
+            const waBtn = document.getElementById('fab-wa');
+            if(waBtn) waBtn.href = "https://wa.me/" + w;
+            
+            const emBtn = document.getElementById('fab-email');
+            if(emBtn) emBtn.href = "mailto:" + e;
+            
+            const footEm = document.getElementById('footer-email-link');
+            if(footEm) { footEm.href = "mailto:" + e; footEm.innerText = e; }
+        };
+
         const loadSavedData = () => {
             const savedData = JSON.parse(localStorage.getItem('djangkosV7Content')) || {};
             document.querySelectorAll('.edit-txt').forEach(el => {
@@ -920,6 +952,9 @@
                 const id = el.getAttribute('data-id');
                 if (savedData[id]) el.src = savedData[id];
             });
+
+            // Terapkan Link WA dan Email agar selalu up-to-date
+            applyContacts();
 
             // Tampilkan Promo Popup
             const promoData = JSON.parse(localStorage.getItem('djangkosPromoData'));
@@ -933,6 +968,27 @@
         };
 
         window.addEventListener('DOMContentLoaded', loadSavedData);
+
+        // FITUR UBAH KONTAK
+        window.editWA = function() {
+            const current = localStorage.getItem('djangkos_wa') || "6285935389691";
+            const newWa = prompt("Masukkan Nomor WhatsApp Anda\n(Gunakan kode negara 62, contoh: 62859... TANPA tanda + atau spasi):", current);
+            if(newWa && newWa.trim() !== "") {
+                localStorage.setItem('djangkos_wa', newWa.trim());
+                applyContacts();
+                alert("Nomor WhatsApp berhasil diperbarui!");
+            }
+        };
+
+        window.editEmail = function() {
+            const current = localStorage.getItem('djangkos_email') || "djangkos@gmail.com";
+            const newEm = prompt("Masukkan Alamat Email Perusahaan Anda:", current);
+            if(newEm && newEm.trim() !== "") {
+                localStorage.setItem('djangkos_email', newEm.trim());
+                applyContacts();
+                alert("Alamat Email berhasil diperbarui!");
+            }
+        };
 
         // FITUR UBAH SANDI MASTER
         window.editMasterPass = function() {
