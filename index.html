@@ -21,14 +21,12 @@
       OneSignalDeferred.push(async function(OneSignal) {
         await OneSignal.init({
           appId: "7250435b-2ffc-44eb-a58d-401e05d803c2", // App ID OneSignal milik Abang
-          notifyButton: {
-            enable: true, // Menampilkan ikon lonceng merah di pojok kanan bawah web
-          },
+          notifyButton: { enable: true },
         });
       });
     </script>
 
-    <!-- Firebase SDKs (Hanya Database, Messaging Dihapus) -->
+    <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, doc, setDoc, getDocs, addDoc, onSnapshot, query, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
@@ -47,7 +45,6 @@
 
         window.firebaseApp = initializeApp(finalConfig);
         window.firebaseDb = getFirestore(window.firebaseApp);
-        
         window.appId = 'djangkos-app-id';
         
         window.collection = collection; window.doc = doc; window.setDoc = setDoc;
@@ -56,7 +53,6 @@
 
         window.addEventListener('DOMContentLoaded', () => { listenToInstansiList(); });
 
-        // Fungsi Tombol Notif Manual via OneSignal
         window.aktifkanNotifikasi = function() {
             window.OneSignalDeferred.push(async function(OneSignal) {
                 await OneSignal.Slidedown.promptPush();
@@ -73,33 +69,42 @@
         html { scroll-behavior: smooth; }
         body { color: var(--text-dark); background-color: var(--bg-main); background-image: radial-gradient(circle at 50% 0%, #0A3775 0%, #061A3A 60%); background-attachment: fixed; line-height: 1.6; overflow-x: hidden; position: relative; }
         a { text-decoration: none; color: inherit; } ul { list-style: none; } img { max-width: 100%; height: auto; display: block; }
-        /* ==================== ANIMASI LATAR BELAKANG SILUET ==================== */
-        .bg-rings { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -1; pointer-events: none; }
+        
+        /* ==================== ANIMASI WATERMARK & BACKGROUND ==================== */
+        .watermark-bg { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90vw; max-width: 800px; opacity: 0.03; z-index: 0; pointer-events: none; user-select: none; }
+        .watermark-bg img { width: 100%; height: auto; filter: grayscale(100%); border-radius: 50%;}
+
+        .bg-rings { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 1; pointer-events: none; }
         .ring { position: absolute; border-radius: 50%; filter: blur(12px); background: radial-gradient(circle, rgba(28, 111, 230, 0.15) 0%, transparent 70%); animation: floatAnim 15s infinite alternate ease-in-out; }
         .ring-1 { width: 500px; height: 500px; top: -100px; left: -150px; animation-delay: 0s; } .ring-2 { width: 400px; height: 400px; top: 40%; right: -100px; background: radial-gradient(circle, rgba(250, 204, 21, 0.08) 0%, transparent 70%); animation-delay: -5s; } .ring-3 { width: 600px; height: 600px; bottom: -200px; left: 20%; animation-delay: -10s; }
         @keyframes floatAnim { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, 40px) scale(1.1); } 100% { transform: translate(-20px, -20px) scale(0.9); } }
-        /* ==================== REUSABLE COMPONENTS ==================== */
+        
+        /* ==================== REUSABLE COMPONENTS & ANIMATIONS ==================== */
         .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 10;} .section-padding { padding: 80px 0; }
         .section-title { text-align: center; margin-bottom: 50px; } .section-title h2 { font-size: 2.5rem; color: var(--white); margin-bottom: 10px; position: relative; display: inline-block; font-weight: 800; } .section-title h2::after { content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 60px; height: 4px; background: var(--accent-yellow); border-radius: 2px; } .section-title p { color: var(--text-light); }
         .btn { display: inline-block; padding: 12px 28px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: var(--transition); text-align: center; border: none; }
         .btn-primary { background: var(--accent-yellow); color: #000; box-shadow: 0 4px 15px rgba(250, 204, 21, 0.3); } .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(250, 204, 21, 0.5); background: #fff; }
         .btn-outline { background: transparent; color: var(--white); border: 2px solid var(--white); } .btn-outline:hover { background: var(--white); color: var(--bg-main); }
-        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); } .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        /* Scroll Reveal Animation */
+        .reveal { opacity: 0; transform: translateY(60px); transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); } 
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
         /* ==================== NAVBAR ==================== */
         header.navbar { position: fixed; top: 0; left: 0; width: 100%; background: rgba(6, 26, 58, 0.9); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); transition: var(--transition); }
         .navbar .container { display: flex; justify-content: space-between; align-items: center; height: 80px; }
-        .logo { font-size: 1.8rem; font-weight: 800; color: var(--white); display: flex; align-items: center; gap: 10px; } .logo span { color: var(--accent-yellow); }
+        .logo { font-size: 1.8rem; font-weight: 800; color: var(--white); display: flex; align-items: center; gap: 10px; letter-spacing: 1px;} .logo span { color: var(--accent-yellow); }
         .nav-links { display: flex; gap: 20px; align-items: center;} .nav-links a { font-weight: 500; color: var(--text-light); transition: var(--transition); position: relative; font-size: 0.95rem; } .nav-links a:hover { color: var(--white); } .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: var(--accent-yellow); transition: var(--transition); } .nav-links a:hover::after { width: 100%; }
         .hamburger { display: none; cursor: pointer; background: none; border: none; } .hamburger svg { width: 30px; height: 30px; stroke: var(--white); }
         
-        /* ==================== HERO SECTION (Background Bisa Diedit) ==================== */
+        /* ==================== HERO SECTION ==================== */
         .hero { min-height: 100vh; display: flex; align-items: center; position: relative; padding-top: 100px; overflow: hidden;}
         .hero-bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.45; z-index: 0; }
         .hero-content { max-width: 900px; text-align: center; margin: 0 auto; position: relative; z-index: 10;}
         .hero-subtitle { font-size: 1.2rem; letter-spacing: 2px; color: var(--text-light); margin-bottom: 5px; font-weight: 600; }
         .hero h1 { font-size: 4rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px; text-shadow: 0 10px 30px rgba(0,0,0,0.8); } .hero h1 .script-font { font-family: 'Dancing Script', cursive; color: var(--accent-yellow); font-size: 5rem; display: block; margin-top: -10px; margin-bottom: 10px; font-weight: 700; }
         .hero p.desc { font-size: 1.1rem; margin-bottom: 40px; color: var(--text-light); max-width: 700px; margin-left: auto; margin-right: auto; text-shadow: 0 2px 4px rgba(0,0,0,0.8); font-weight: 500;}
-        .hero-btns { display: flex; gap: 20px; justify-content: center; }
+        .hero-btns { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; align-items: center;}
         
         /* BANNER PROMO POP-UP */
         #promo-popup-modal { z-index: 10001; } #promo-popup-modal .modal-content { max-width: 500px; background: transparent; border: none; box-shadow: none; overflow: visible; padding: 15px;} #promo-popup-modal .modal-close { right: 0; top: 0; background: #ff4757; box-shadow: 0 4px 10px rgba(0,0,0,0.5); z-index: 20;} #promo-img-display { width: 100%; border-radius: 12px; box-shadow: 0 15px 30px rgba(0,0,0,0.6); object-fit: cover; }
@@ -131,18 +136,20 @@
         .blog-title { font-size: 1.25rem; color: var(--white); margin-bottom: 12px; font-weight: 700; line-height: 1.4; }
         .blog-desc { font-size: 0.95rem; color: var(--text-light); margin-bottom: 20px; line-height: 1.6; flex-grow: 1;}
 
-        /* ==================== TENTANG KAMI ==================== */
+        /* ==================== TENTANG KAMI & GAMBAR KUSTOM ==================== */
         .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; } .about-img { border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 2px solid rgba(255,255,255,0.1); overflow: hidden; width: 100%; } .about-text h3 { color: var(--accent-yellow); font-size: 2rem; margin-bottom: 20px; } .about-text p { color: var(--text-light); margin-bottom: 20px; } .highlight-item { display: flex; align-items: center; gap: 10px; color: var(--white); font-weight: 500; margin-bottom: 10px; } .highlight-item svg { width: 20px; height: 20px; stroke: var(--accent-yellow); flex-shrink: 0;}
         
+        /* FIX: Hilangkan gambar placeholder untuk user biasa, munculkan kotak putus-putus untuk Admin */
+        body:not(.edit-mode) img.empty-img-hide[src^="data:image/gif"] { display: none !important; margin: 0; padding: 0;}
+        body.edit-mode img.empty-img-hide[src^="data:image/gif"] { display: block !important; background: rgba(250, 204, 21, 0.1); min-height: 120px; border: 2px dashed #FACC15; cursor: pointer; }
+
         /* ==================== MODALS ==================== */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: var(--transition); } .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-content { background: var(--bg-main); border: 1px solid rgba(255,255,255,0.2); width: 90%; max-width: 800px; border-radius: var(--radius-lg); max-height: 90vh; overflow-y: auto; position: relative; transform: translateY(20px); transition: var(--transition); box-shadow: 0 25px 50px rgba(0,0,0,0.5); } .modal-overlay.active .modal-content { transform: translateY(0); }
         .modal-close { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); border: none; color: var(--white); width: 35px; height: 35px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: var(--transition); } .modal-close:hover { background: #ff4757; }
         .modal-header-img { width: 100%; height: 300px; object-fit: cover; border-bottom: 3px solid var(--accent-yellow); } .modal-body { padding: 30px; } .modal-title { font-size: 1.8rem; color: var(--accent-yellow); font-weight: 700; margin-bottom: 10px; } .modal-desc { color: var(--text-light); font-size: 0.95rem; margin-bottom: 25px; line-height: 1.5; }
         .sub-item-list { display: flex; flex-direction: column; gap: 8px; } .sub-item { background: rgba(255,255,255,0.05); padding: 12px 15px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px; font-weight: 500; font-size: 0.95rem; } .sub-item svg { width: 18px; height: 18px; stroke: var(--tosca-start); flex-shrink: 0;}
-        
-        .blog-modal-content { color: var(--white); line-height: 1.8; font-size: 1rem; }
-        .blog-modal-content p { margin-bottom: 15px; }
+        .blog-modal-content { color: var(--white); line-height: 1.8; font-size: 1rem; } .blog-modal-content p { margin-bottom: 15px; }
 
         /* ==================== PORTAL KASIR ==================== */
         .portal-modal-content { background: var(--bg-main); border: 1px solid rgba(255,255,255,0.2); width: 95%; max-width: 1000px; border-radius: var(--radius-lg); max-height: 95vh; overflow-y: auto; position: relative; padding: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.8); } .portal-header { text-align: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px;} .portal-header h2 { color: var(--accent-yellow); font-size: 2rem; margin-bottom: 5px;}
@@ -160,15 +167,14 @@
         @media print { @page { margin: 0; size: auto; } body { background: white; margin: 0; padding: 0; } body * { visibility: hidden; } #receipt-modal, #receipt-modal * { visibility: visible; } #receipt-modal { position: absolute; left: 0; top: 0; width: 100%; background: white !important; display: flex; align-items: flex-start; justify-content: flex-start; padding: 0;} .receipt-card { width: 100%; max-width: 80mm; margin: 0; box-shadow: none; border-radius: 0; padding: 5px; color: black !important; font-family: monospace, sans-serif; } .receipt-header { background: white !important; color: black !important; padding: 10px 0; border-bottom: 1px dashed black; border-radius: 0;} .receipt-logo { margin-bottom: 5px; border-radius: 0; padding: 0; height: 50px; width: 50px;} .receipt-logo img { filter: grayscale(100%); border-radius: 50%;} .receipt-status-text { color: black !important; font-size: 1.1rem; border: 1px solid black; padding: 2px 5px; display: inline-block; margin-top: 5px; border-radius: 4px;} .receipt-date { color: black !important; font-size: 0.7rem; margin-top: 5px;} .receipt-body { padding: 10px 0; margin-top: 0; background: white !important; border-radius: 0;} .receipt-total-amount { color: black !important; font-size: 1.6rem; } .receipt-divider { border-top: 1px dashed black !important; margin: 8px 0; } .receipt-row .label, .receipt-row .val { color: black !important; font-size: 0.75rem; } .r-item-name { color: black !important; font-size: 0.8rem; } .r-item-qty, .r-item-sub { color: black !important; font-size: 0.75rem; } .receipt-brand, .receipt-actions, .modal-close { display: none !important; } .receipt-signatures { display: flex; justify-content: space-between; margin-top: 30px; text-align: center; font-size: 0.7rem; color: black !important; padding: 0 5px; } }
 
         /* ==================== STATS, FOOTER & NOTIF BOX ==================== */
-        .stats-section { padding: 60px 0 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 50px; }
+        .stats-section { padding: 60px 0 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 50px; position: relative; z-index: 10; }
         .footer-cta { max-width: 800px; margin: 20px auto; padding: 40px 20px; background: rgba(255, 255, 255, 0.02); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: var(--shadow-md);}
-        .footer-bottom { text-align: center; padding: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.4); background: #041228; }
+        .footer-bottom { text-align: center; padding: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.4); background: #041228; position: relative; z-index: 10;}
         
-        /* Tombol Langganan Notif */
         .notif-box { position: relative; z-index: 100; background: linear-gradient(135deg, rgba(28, 111, 230, 0.1) 0%, rgba(250, 204, 21, 0.05) 100%); border: 1px solid rgba(255,255,255,0.1); padding: 30px 20px; border-radius: var(--radius-lg); max-width: 800px; margin: 40px auto; box-shadow: var(--shadow-md); text-align: center;}
 
         /* ==================== FLOATING CONTACT MENU ==================== */
-        .floating-menu-container { position: fixed; bottom: 30px; right: 30px; z-index: 9998; display: flex; flex-direction: column; align-items: flex-end; }
+        .floating-menu-container { position: fixed; bottom: 100px; right: 30px; z-index: 9998; display: flex; flex-direction: column; align-items: flex-end; }
         .floating-menu-items { display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; }
         .floating-menu-container:hover .floating-menu-items, .floating-menu-container.active .floating-menu-items { opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto; }
         .fab-btn { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: var(--transition); cursor: pointer; text-decoration: none; position: relative; border: none; }
@@ -176,13 +182,13 @@
         .fab-wa { background: #25D366; } .fab-wa:hover { background: #128C7E; } .fab-wa svg { width: 35px; height: 35px; fill: white; }
         .fab-email { background: #EA4335; } .fab-email:hover { background: #C5221F; } .fab-email svg { width: 28px; height: 28px; }
         .fab-admin { background: #333; border: 2px solid var(--accent-yellow); } .fab-admin:hover { background: var(--accent-yellow); } .fab-admin svg { width: 28px; height: 28px; stroke: #fff; fill: none; } .fab-admin:hover svg { stroke: #000; }
-        .fab-main { width: 65px; height: 65px; background: var(--primary-blue); box-shadow: 0 10px 25px rgba(28, 111, 230, 0.5); animation: pulse-main 2s infinite; z-index: 2; }
-        .fab-main svg { width: 32px; height: 32px; stroke: white; fill: none; stroke-width: 2; }
+        .fab-main { width: 60px; height: 60px; background: var(--primary-blue); box-shadow: 0 10px 25px rgba(28, 111, 230, 0.5); animation: pulse-main 2s infinite; z-index: 2; }
+        .fab-main svg { width: 28px; height: 28px; stroke: white; fill: none; stroke-width: 2; }
         .fab-tooltip { position: absolute; right: 70px; top: 50%; transform: translateY(-50%) translateX(10px); background: var(--white); color: var(--bg-main); padding: 8px 15px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; white-space: nowrap; box-shadow: var(--shadow-md); opacity: 0; pointer-events: none; transition: 0.3s; visibility: hidden; }
         .fab-btn:hover .fab-tooltip { opacity: 1; visibility: visible; transform: translateY(-50%) translateX(0); }
         @keyframes pulse-main { 0% { box-shadow: 0 0 0 0 rgba(28, 111, 230, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(28, 111, 230, 0); } 100% { box-shadow: 0 0 0 0 rgba(28, 111, 230, 0); } }
 
-        /* ==================== ADMIN EDIT MODE (Sisa) ==================== */
+        /* ==================== ADMIN EDIT MODE ==================== */
         .admin-panel { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 15px 25px; border-radius: 50px; z-index: 2147483647; display: none; align-items: center; gap: 10px; box-shadow: var(--shadow-lg); flex-wrap: wrap; justify-content: center; width: 95%; max-width: 750px; }
         .admin-panel button { background: var(--primary-blue); color: #fff; border: none; padding: 8px 15px; border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 0.85rem; transition: 0.2s;} .admin-panel button:hover { opacity: 0.9; transform: translateY(-2px); } .admin-panel button.exit-btn { background: #ff4757; }
         body.edit-mode .edit-txt { outline: 2px dashed var(--accent-yellow); padding: 2px; border-radius: 4px; background: rgba(255, 255, 255, 0.1); min-width: 20px; display: inline-block;} body.edit-mode .edit-txt:focus { background: white; color: black; outline: 2px solid var(--primary-blue); } body.edit-mode .edit-img { outline: 3px dashed var(--accent-yellow); cursor: pointer; opacity: 0.8; } body.edit-mode .edit-img:hover { opacity: 1; filter: brightness(1.2); }
@@ -203,6 +209,11 @@
 </head>
 <body>
 
+    <!-- Watermark Logo Transparan -->
+    <div class="watermark-bg">
+        <img class="edit-img" data-id="main-logo-img" src="images/logo-djangkos.jpg" onerror="this.src='https://via.placeholder.com/500?text=D'">
+    </div>
+
     <div class="bg-rings">
         <div class="ring ring-1"></div>
         <div class="ring ring-2"></div>
@@ -214,7 +225,7 @@
         <div class="container">
             <a href="#" class="logo">
                 <img src="images/logo-djangkos.jpg" alt="Logo" class="edit-img" data-id="main-logo-img" style="height: 40px; width: 40px; border-radius: 50%; object-fit: cover;" onerror="this.src='https://via.placeholder.com/40?text=D'">
-                <span class="edit-txt" data-id="nav-brand">D'JANGKOS</span><span style="color:var(--accent-yellow)">.</span>
+                <span class="edit-txt" data-id="nav-brand">DJANGKOS<span style="color:var(--accent-yellow)">.COM</span></span>
             </a>
             <button class="hamburger" id="hamburger">
                 <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -247,7 +258,7 @@
                 <p class="desc edit-txt" data-id="hero-desc">Mitra resmi pengadaan, percetakan, dan solusi digital kreatif terlengkap. Tangan pertama, proses cepat, desain profesional.</p>
                 <div class="hero-btns">
                     <a href="#layanan" class="btn btn-primary edit-txt" data-id="btn-lihat-layanan">Lihat Layanan</a>
-                    <a href="#edukasi" class="btn btn-outline edit-txt" data-id="btn-pelajari-siplah">Pelajari SIPLAH</a>
+                    <a href="#kontak" class="btn btn-outline edit-txt" data-id="btn-pelajari-siplah" style="font-size: 0.9rem; padding: 10px 20px; max-width: 100%; white-space: normal; line-height: 1.4; display: flex; align-items: center; text-align: left;">Instansi/sekolah yg sudah berlangganan SIPLah dan Inaproc di kami</a>
                 </div>
             </div>
         </div>
@@ -263,7 +274,7 @@
         </div>
     </div>
 
-    <!-- SEKSI BARU: PENGUMUMAN & INFORMASI -->
+    <!-- PENGUMUMAN & INFORMASI -->
     <section id="pengumuman" class="section-padding" style="background: rgba(255, 255, 255, 0.02); border-bottom: 1px solid rgba(255,255,255,0.05);">
         <div class="container">
             <div class="section-title reveal" style="margin-bottom: 30px;">
@@ -333,7 +344,8 @@
         <div class="container glass-box reveal">
             <div class="about-grid">
                 <div class="about-text">
-                    <img class="edit-img" data-id="tentang-extra-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='200' style='background:%23041228'><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23FACC15' font-size='20' font-family='sans-serif'>[ KLIK UNTUK MENGUBAH GAMBAR INI ]</text></svg>" alt="Gambar Tambahan" style="width: 100%; border-radius: var(--radius-md); margin-bottom: 25px; object-fit: cover;">
+                    <!-- FOTO PLACEHOLDER SUDAH DIPERBAIKI (HANYA MUNCUL SAAT EDIT MODE) -->
+                    <img class="edit-img empty-img-hide" data-id="tentang-extra-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Gambar Tambahan" style="width: 100%; border-radius: var(--radius-md); margin-bottom: 25px; object-fit: cover;">
                     <h3 class="edit-txt" data-id="about-title">Cepat, Terpercaya, Tangan Pertama</h3>
                     <p class="edit-txt" data-id="about-desc">D'JANGKOS adalah penyedia pengadaan barang/jasa terpercaya yang melayani sekolah, instansi, dan masyarakat. Memotong birokrasi panjang dengan sistem <b>tangan pertama</b>, memastikan kualitas maksimal dan waktu pengerjaan super efisien.</p>
                     <div style="margin-top:20px;">
@@ -350,8 +362,25 @@
         </div>
     </section>
 
-    <!-- SEKSI BARU: BLOG & ARTIKEL -->
-    <section id="blog" class="section-padding">
+    <!-- SEKSI DIBALIK LAYAR (DEVELOPER INFO) -->
+    <section class="section-padding reveal" style="background: linear-gradient(180deg, rgba(6, 26, 58, 0) 0%, rgba(2, 170, 176, 0.05) 100%); border-top: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 10;">
+        <div class="container">
+            <div style="max-width: 900px; margin: 0 auto; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-lg); padding: 40px; text-align: center; box-shadow: var(--shadow-lg); backdrop-filter: blur(10px);">
+                <h3 class="edit-txt" data-id="dev-title" style="color: var(--accent-yellow); font-size: 1.8rem; margin-bottom: 15px;">Dibalik Layar DJANGKOS.COM</h3>
+                <p class="edit-txt" data-id="dev-desc" style="color: var(--text-light); font-size: 1.05rem; line-height: 1.8; margin-bottom: 30px;">
+                    Tahukah Anda? Website e-katalog dan portal tagihan cerdas yang sedang Anda akses ini sepenuhnya dirancang, dikoding, dan dikembangkan secara mandiri oleh tim IT internal <b>D'JANGKOS</b>. Kami tidak hanya ahlinya percetakan, tapi juga menghadirkan solusi digital kekinian untuk instansi!
+                </p>
+                <div style="background: rgba(2, 170, 176, 0.1); padding: 25px; border-radius: var(--radius-md); border: 1px dashed var(--tosca-start);">
+                    <h4 class="edit-txt" data-id="dev-sub" style="color: var(--white); font-size: 1.3rem; margin-bottom: 10px;">Ingin Punya Website Profesional Seperti Ini?</h4>
+                    <p class="edit-txt" data-id="dev-sub-desc" style="font-size: 0.95rem; color: #ccc; margin-bottom: 20px;">Kami membuka layanan Jasa Pembuatan Website Cepat & Modern untuk Sekolah, Desa, Instansi Pemerintah, maupun Bisnis Pribadi. Harga bersahabat, fitur lengkap, dan terima beres.</p>
+                    <a href="https://wa.me/6285935389691?text=Halo%20Admin%20D'JANGKOS,%20saya%20tertarik%20untuk%20membuat%20website%20seperti%20djangkos.com" target="_blank" class="btn" style="background: var(--tosca-start); color: #fff; box-shadow: 0 4px 15px rgba(2, 170, 176, 0.3);">Konsultasi Pembuatan Web via WA</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BLOG & ARTIKEL -->
+    <section id="blog" class="section-padding" style="position: relative; z-index: 10;">
         <div class="container">
             <div class="section-title reveal">
                 <h2 class="edit-txt" data-id="blog-sec-title">Artikel & Berita</h2>
@@ -437,7 +466,7 @@
                     Anda bingung dalam menyusun ARKAS SIPLah? kami bimbing sampai selesai. Atau anda punya pertanyaan lain?, jangan sungkan menghubungi admin ramah kami.
                 </p>
                 <p>
-                    <a href="https://www.djangkos.com" target="_blank" class="edit-txt" data-id="footer-web" style="color: var(--tosca-start); font-weight: 800; font-size: 1.3rem; letter-spacing: 1px;">www.djangkos.com</a>
+                    <a href="https://www.djangkos.com" target="_blank" class="edit-txt" data-id="footer-web" style="color: var(--tosca-start); font-weight: 800; font-size: 1.3rem; letter-spacing: 1px;">DJANGKOS.COM</a>
                 </p>
             </div>
         </div>
@@ -794,7 +823,7 @@
         </div>
     </div>
 
-    <!-- FLOATING CONTACT MENU (WA, Email, Admin) -->
+    <!-- FLOATING CONTACT MENU -->
     <div class="floating-menu-container" id="fab-container">
         <div class="floating-menu-items">
             <!-- Admin Gear -->
@@ -802,21 +831,18 @@
                 <svg viewBox="0 0 24 24"><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="12" cy="12" r="3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></circle></svg>
                 <div class="fab-tooltip">Admin Mode</div>
             </div>
-            
             <!-- Email -->
             <a href="mailto:djangkos@gmail.com" class="fab-btn fab-email" id="fab-email">
                 <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" fill="white"></path><polyline points="22,6 12,13 2,6" fill="none" stroke="white" stroke-width="2"></polyline></svg>
                 <div class="fab-tooltip" id="tip-email">Email Kami</div>
             </a>
-            
             <!-- WA -->
             <a href="https://wa.me/6285935389691" target="_blank" class="fab-btn fab-wa" id="fab-wa">
                 <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
                 <div class="fab-tooltip" id="tip-wa">Chat WhatsApp</div>
             </a>
         </div>
-        
-        <!-- Main Toggle Button -->
+        <!-- Main Toggle Button (Logo Kontak) -->
         <div class="fab-btn fab-main" onclick="this.parentElement.classList.toggle('active')">
             <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
         </div>
@@ -833,9 +859,6 @@
         <button id="exit-btn" class="exit-btn">Keluar</button>
     </div>
 
-    <input type="file" id="image-upload" accept="image/*" style="display: none;">
-    <input type="file" id="promo-upload" accept="image/*" style="display: none;">
-
     <script>
         // --- 1. LOGIKA MODAL POPUP & HISTORY API ---
         function openContentModal(contentId) {
@@ -848,7 +871,6 @@
             }
         }
         
-        // Kompatibilitas dengan kode layanan yang lama
         function openServiceModal(catId) { openContentModal(catId); }
 
         function closeServiceModalOnly() {
@@ -875,12 +897,8 @@
         // --- 2. Mobile Menu Toggle ---
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('nav-links');
-        if(hamburger) {
-            hamburger.addEventListener('click', () => { navLinks?.classList.toggle('active'); });
-        }
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => { navLinks?.classList.remove('active'); });
-        });
+        if(hamburger) { hamburger.addEventListener('click', () => { navLinks?.classList.toggle('active'); }); }
+        document.querySelectorAll('.nav-links a').forEach(link => { link.addEventListener('click', () => { navLinks?.classList.remove('active'); }); });
 
         // --- 3. Sticky Navbar ---
         const navbar = document.getElementById('navbar');
@@ -909,7 +927,7 @@
         window.addEventListener('scroll', revealOnScroll);
         revealOnScroll();
 
-        // --- 5. ADMIN EDIT MODE & PROMO BANNER ---
+        // --- 5. ADMIN EDIT MODE & KONTAK ---
         const adminBtn = document.getElementById('admin-btn');
         const adminPanel = document.getElementById('admin-panel');
         const saveBtn = document.getElementById('save-btn');
@@ -921,42 +939,33 @@
         let isEditMode = false;
         let currentEditingImage = null;
 
-        // Firebase Global State
         let dbUnsubscribeInstansi = null;
         let dbUnsubscribeTransaksi = null;
         let instansiDataMap = {}; 
         window.transactionsMap = {};
 
-        // Fungsi Terapkan WA & Email
         window.applyContacts = function() {
             const w = localStorage.getItem('djangkos_wa') || "6285935389691";
             const e = localStorage.getItem('djangkos_email') || "djangkos@gmail.com";
-            
-            const waBtn = document.getElementById('fab-wa');
-            if(waBtn) waBtn.href = "https://wa.me/" + w;
-            
-            const emBtn = document.getElementById('fab-email');
-            if(emBtn) emBtn.href = "mailto:" + e;
-            
-            const footEm = document.getElementById('footer-email-link');
-            if(footEm) { footEm.href = "mailto:" + e; footEm.innerText = e; }
+            const waBtn = document.getElementById('fab-wa'); if(waBtn) waBtn.href = "https://wa.me/" + w;
+            const emBtn = document.getElementById('fab-email'); if(emBtn) emBtn.href = "mailto:" + e;
+            const footEm = document.getElementById('footer-email-link'); if(footEm) { footEm.href = "mailto:" + e; footEm.innerText = e; }
         };
 
         const loadSavedData = () => {
-            const savedData = JSON.parse(localStorage.getItem('djangkosV7Content')) || {};
-            document.querySelectorAll('.edit-txt').forEach(el => {
-                const id = el.getAttribute('data-id');
-                if (savedData[id]) el.innerHTML = savedData[id];
-            });
-            document.querySelectorAll('.edit-img').forEach(el => {
-                const id = el.getAttribute('data-id');
-                if (savedData[id]) el.src = savedData[id];
-            });
+            let savedData = JSON.parse(localStorage.getItem('djangkosV7Content')) || {};
+            
+            // Fix agar teks placeholder SVG lama tidak bocor
+            if(savedData['tentang-extra-img'] && savedData['tentang-extra-img'].includes('<svg')) {
+                savedData['tentang-extra-img'] = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+                localStorage.setItem('djangkosV7Content', JSON.stringify(savedData));
+            }
 
-            // Terapkan Link WA dan Email agar selalu up-to-date
+            document.querySelectorAll('.edit-txt').forEach(el => { const id = el.getAttribute('data-id'); if (savedData[id]) el.innerHTML = savedData[id]; });
+            document.querySelectorAll('.edit-img').forEach(el => { const id = el.getAttribute('data-id'); if (savedData[id]) el.src = savedData[id]; });
+
             applyContacts();
 
-            // Tampilkan Promo Popup
             const promoData = JSON.parse(localStorage.getItem('djangkosPromoData'));
             if (promoData && promoData.img) {
                 const display = document.getElementById('promo-img-display');
@@ -969,34 +978,27 @@
 
         window.addEventListener('DOMContentLoaded', loadSavedData);
 
-        // FITUR UBAH KONTAK
         window.editWA = function() {
             const current = localStorage.getItem('djangkos_wa') || "6285935389691";
             const newWa = prompt("Masukkan Nomor WhatsApp Anda\n(Gunakan kode negara 62, contoh: 62859... TANPA tanda + atau spasi):", current);
             if(newWa && newWa.trim() !== "") {
-                localStorage.setItem('djangkos_wa', newWa.trim());
-                applyContacts();
-                alert("Nomor WhatsApp berhasil diperbarui!");
+                localStorage.setItem('djangkos_wa', newWa.trim()); applyContacts(); alert("Nomor WhatsApp berhasil diperbarui!");
             }
         };
 
         window.editEmail = function() {
             const current = localStorage.getItem('djangkos_email') || "djangkos@gmail.com";
-            const newEm = prompt("Masukkan Alamat Email Perusahaan Anda:", current);
+            const newEm = prompt("Masukkan Alamat Email Anda:", current);
             if(newEm && newEm.trim() !== "") {
-                localStorage.setItem('djangkos_email', newEm.trim());
-                applyContacts();
-                alert("Alamat Email berhasil diperbarui!");
+                localStorage.setItem('djangkos_email', newEm.trim()); applyContacts(); alert("Alamat Email berhasil diperbarui!");
             }
         };
 
-        // FITUR UBAH SANDI MASTER
         window.editMasterPass = function() {
             const currentPass = localStorage.getItem('djangkosMasterPass') || 'djangkos@copier';
             const newPass = prompt("Masukkan sandi Master / Admin Nota baru:", currentPass);
             if (newPass && newPass.trim() !== "") {
-                localStorage.setItem('djangkosMasterPass', newPass.trim());
-                alert("Sandi Master berhasil diperbarui!");
+                localStorage.setItem('djangkosMasterPass', newPass.trim()); alert("Sandi Master berhasil diperbarui!");
             }
         };
 
@@ -1005,7 +1007,10 @@
                 if(!isEditMode) {
                     const masterPass = localStorage.getItem('djangkosMasterPass') || 'djangkos@copier';
                     const pass = prompt("Masukkan Sandi Master:");
-                    if (pass === masterPass) { enableEditMode(); } 
+                    if (pass === masterPass) { 
+                        enableEditMode(); 
+                        document.getElementById('fab-container').classList.remove('active');
+                    } 
                     else if (pass !== null) { alert("Sandi Master Salah!"); }
                 }
             });
@@ -1014,7 +1019,6 @@
         const enableEditMode = () => {
             isEditMode = true; document.body.classList.add('edit-mode');
             if(adminPanel) adminPanel.style.display = 'flex'; 
-            if(adminBtn) adminBtn.style.display = 'none';
             document.querySelectorAll('.edit-txt').forEach(el => { el.setAttribute('contenteditable', 'true'); });
             document.querySelectorAll('.edit-img').forEach(el => { el.addEventListener('click', imageClickHandler); });
         };
@@ -1022,7 +1026,6 @@
         const disableEditMode = () => {
             isEditMode = false; document.body.classList.remove('edit-mode');
             if(adminPanel) adminPanel.style.display = 'none'; 
-            if(adminBtn) adminBtn.style.display = 'flex';
             document.querySelectorAll('.edit-txt').forEach(el => { el.removeAttribute('contenteditable'); });
             document.querySelectorAll('.edit-img').forEach(el => { el.removeEventListener('click', imageClickHandler); });
         };
@@ -1030,12 +1033,9 @@
         function imageClickHandler(e) {
             if(isEditMode && e.target !== promoImg) { 
                 currentEditingImage = e.target; 
-                const url = prompt("CARA MENGGANTI FOTO:\n\n1. PASTE LINK FOTO LANGSUNG (Harus berakhiran .jpg atau .png). \n⚠️ Link Postingan Instagram / Facebook TIDAK BISA digunakan karena diblokir oleh mereka.\n\n2. ATAU: KOSONGKAN teks di bawah ini lalu tekan OK untuk MENGUPLOAD FOTO langsung dari HP/Laptop Anda:", currentEditingImage.src.startsWith('data:') ? "" : currentEditingImage.src);
-                if (url && url.trim() !== "") {
-                    currentEditingImage.src = url.trim();
-                } else if (url === "") { 
-                    imageUpload?.click(); 
-                }
+                const url = prompt("CARA MENGGANTI FOTO:\n1. PASTE LINK FOTO LANGSUNG (berakhiran .jpg atau .png).\n\n2. ATAU: KOSONGKAN teks di bawah ini lalu tekan OK untuk MENGUPLOAD FOTO langsung dari HP/Laptop Anda:", currentEditingImage.src.startsWith('data:') ? "" : currentEditingImage.src);
+                if (url && url.trim() !== "") { currentEditingImage.src = url.trim(); } 
+                else if (url === "") { imageUpload?.click(); }
             }
         }
 
@@ -1156,9 +1156,7 @@
                         tableAdminList.appendChild(tr);
                     }
                 });
-            }, (error) => {
-                console.error("Gagal load instansi:", error);
-            });
+            }, (error) => { console.error("Gagal load instansi:", error); });
         }
 
         window.openPortalModal = function() {
@@ -1189,7 +1187,6 @@
             clearCart();
         }
 
-        // ================= POS / KASIR KERANJANG =================
         let posCart = [];
         window.editingTransId = null; 
 
@@ -1224,7 +1221,6 @@
             const btnLunas = document.getElementById('btn-lunas-submit');
             if(btnHutang) btnHutang.innerText = "SIMPAN HUTANG";
             if(btnLunas) btnLunas.innerText = "LUNAS & CETAK NOTA";
-            
             updateCartUI(); 
         }
 
@@ -1252,7 +1248,6 @@
             const taxRate = parseFloat(document.getElementById('pos-tax-type')?.value) || 0;
             const taxAmount = subtotal * (taxRate / 100);
             const grandTotal = subtotal + taxAmount;
-            
             if(document.getElementById('cart-grand-total')) document.getElementById('cart-grand-total').innerText = formatRupiah(grandTotal);
         }
 
@@ -1265,36 +1260,21 @@
             let subtotal = 0; posCart.forEach(i => subtotal += (i.price * i.qty));
             const taxRate = parseFloat(document.getElementById('pos-tax-type').value) || 0;
             const taxAmount = subtotal * (taxRate / 100);
-            
             const summaryString = posCart.map(i => `${i.qty}x ${i.name}`).join(', ');
             
             try {
                 if(window.editingTransId) {
                     const docRef = window.doc(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'transaksi', window.editingTransId);
-                    await window.updateDoc(docRef, { 
-                        instansiId: instId, 
-                        item: summaryString, 
-                        cart: posCart, 
-                        total: subtotal, 
-                        pajak: taxAmount, 
-                        taxRate: taxRate, 
-                        status: status 
-                    });
+                    await window.updateDoc(docRef, { instansiId: instId, item: summaryString, cart: posCart, total: subtotal, pajak: taxAmount, taxRate: taxRate, status: status });
                     alert("Transaksi berhasil di-update!");
                 } else {
-                    const dateIso = new Date().toISOString();
-                    const trxId = "TRX" + Date.now().toString().slice(-5);
+                    const dateIso = new Date().toISOString(); const trxId = "TRX" + Date.now().toString().slice(-5);
                     const transRef = window.collection(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'transaksi');
-                    await window.addDoc(transRef, { 
-                        trxId: trxId, instansiId: instId, tanggal: dateIso, 
-                        item: summaryString, cart: posCart, total: subtotal, 
-                        pajak: taxAmount, taxRate: taxRate, status: status, createdAt: dateIso 
-                    });
+                    await window.addDoc(transRef, { trxId: trxId, instansiId: instId, tanggal: dateIso, item: summaryString, cart: posCart, total: subtotal, pajak: taxAmount, taxRate: taxRate, status: status, createdAt: dateIso });
                     if(status !== 'LUNAS') alert("Tagihan HUTANG berhasil dicatat!"); 
                 }
                 
-                const savedInstId = instId;
-                clearCart();
+                const savedInstId = instId; clearCart();
                 
                 if(status === 'LUNAS') {
                     setTimeout(() => {
@@ -1368,8 +1348,7 @@
             if (newPass && newPass.trim() !== "") {
                 try {
                     const docRef = window.doc(window.firebaseDb, 'artifacts', window.appId, 'public', 'data', 'instansi', instId);
-                    await window.updateDoc(docRef, { password: newPass.trim() });
-                    alert("Sandi instansi berhasil diubah!");
+                    await window.updateDoc(docRef, { password: newPass.trim() }); alert("Sandi instansi berhasil diubah!");
                 } catch(e) { console.error(e); alert("Gagal mengubah sandi."); }
             }
         };
@@ -1411,16 +1390,12 @@
             window.editingTransId = id;
             if (data.cart && data.cart.length > 0) { posCart = JSON.parse(JSON.stringify(data.cart)); } 
             else { posCart = [{name: data.item, qty: 1, price: data.total}]; }
-            const instSelect = document.getElementById('pos-instansi');
-            if(instSelect) instSelect.value = data.instansiId;
-            const taxSelect = document.getElementById('pos-tax-type');
-            if(taxSelect) taxSelect.value = data.taxRate || 0;
+            const instSelect = document.getElementById('pos-instansi'); if(instSelect) instSelect.value = data.instansiId;
+            const taxSelect = document.getElementById('pos-tax-type'); if(taxSelect) taxSelect.value = data.taxRate || 0;
             updateCartUI();
             
-            const btnHutang = document.getElementById('btn-hutang-submit');
-            const btnLunas = document.getElementById('btn-lunas-submit');
-            if(btnHutang) btnHutang.innerText = "UPDATE (TETAP HUTANG)";
-            if(btnLunas) btnLunas.innerText = "UPDATE JADI LUNAS";
+            const btnHutang = document.getElementById('btn-hutang-submit'); const btnLunas = document.getElementById('btn-lunas-submit');
+            if(btnHutang) btnHutang.innerText = "UPDATE (TETAP HUTANG)"; if(btnLunas) btnLunas.innerText = "UPDATE JADI LUNAS";
             alert("Mode Edit Aktif! Silakan ubah data di Keranjang Kasir lalu klik UPDATE.");
             const modalContent = document.querySelector('.portal-modal-content');
             if(modalContent) modalContent.scrollTo({top: 0, behavior: 'smooth'});
@@ -1474,15 +1449,8 @@
             history.pushState({ receiptOpen: true }, "", "#nota");
         }
 
-        window.closeReceiptModal = function() {
-            document.getElementById('receipt-modal')?.classList.remove('active');
-            currentActiveReceipt = null;
-        }
-
-        window.printReceipt = function() {
-            document.body.classList.add('is-printing-receipt'); window.print();
-            setTimeout(() => { document.body.classList.remove('is-printing-receipt'); }, 500);
-        }
+        window.closeReceiptModal = function() { document.getElementById('receipt-modal')?.classList.remove('active'); currentActiveReceipt = null; }
+        window.printReceipt = function() { document.body.classList.add('is-printing-receipt'); window.print(); setTimeout(() => { document.body.classList.remove('is-printing-receipt'); }, 500); }
 
         window.shareReceiptWA = function() {
             if(!currentActiveReceipt) return;
@@ -1492,7 +1460,10 @@
             let msg = `*NOTA TAGIHAN D'JANGKOS*\n--------------------------------\nID Transaksi: ${data.trxId || data.id.substring(0,6)}\nTanggal: ${new Date(data.tanggal).toLocaleDateString('id-ID')}\nPelanggan: ${instName}\nStatus: *${data.status}*\n--------------------------------\nTotal Tagihan: *${grandTotal}*\n\nCek detail tagihan di website kami:\nwww.djangkos.com\n\nTerima kasih!`;
             const encoded = encodeURIComponent(msg); window.open(`https://wa.me/?text=${encoded}`, '_blank');
         }
-
     </script>
+    
+    <!-- SCRIPT TIDIO ABANG (Jangan lupa isi kode punya abang di bawah ini jika ingin dilanjutkan) -->
+    <!-- <script src="//code.tidio.co/KODE_TIDIO_ABANG.js" async></script> -->
+
 </body>
 </html>
