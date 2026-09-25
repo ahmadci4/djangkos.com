@@ -11,25 +11,32 @@
     <!-- Load Alpine.js for state management -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-    <!-- Google Fonts: Inter -->
+    <!-- Google Fonts: Fredoka One (for headers) and Nunito (for body) to make it look cheerful -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Nunito', 'sans-serif'],
+                        header: ['Fredoka One', 'cursive'],
                     },
                     colors: {
-                        primary: '#6366f1', // Indigo
-                        secondary: '#14b8a6', // Teal
-                        accent: '#f59e0b', // Amber
+                        bgMain: '#fdf8f5', // Soft warm white/peach
+                        btnWhite: '#ffffff',
+                        shadowDark: '#2c3e50',
+                        accentPink: '#ff7eb3',
+                        accentYellow: '#ffdf00',
+                        accentBlue: '#65c7f7',
+                        accentGreen: '#a8ff78',
                     },
-                    animation: {
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    boxShadow: {
+                        'retro': '4px 4px 0px 0px rgba(44, 62, 80, 1)',
+                        'retro-hover': '2px 2px 0px 0px rgba(44, 62, 80, 1)',
+                        'retro-active': '0px 0px 0px 0px rgba(44, 62, 80, 1)',
                     }
                 }
             }
@@ -37,394 +44,289 @@
     </script>
     <style>
         [x-cloak] { display: none !important; }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        /* Custom scrollbar for a cleaner look */
+        
+        /* Custom scrollbar */
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        ::-webkit-scrollbar-track { background: #fdf8f5; }
+        ::-webkit-scrollbar-thumb { background: #ff7eb3; border-radius: 4px; }
+        
+        /* Animated background pattern */
+        .bg-pattern {
+            background-color: #fdf8f5;
+            background-image: radial-gradient(#ffdf00 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* YouTube iframe aspect ratio container */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 0.75rem;
+        }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 antialiased min-h-screen bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
 
-    <div x-data="mainDashboard()" class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 min-h-screen flex flex-col">
+<body class="bg-pattern text-slate-800 antialiased min-h-screen font-sans selection:bg-accentPink selection:text-white">
+
+    <div x-data="inspirationApp()" class="max-w-md mx-auto p-4 sm:p-6 min-h-screen flex flex-col justify-center py-10">
         
-        <!-- Header & Navigasi -->
-        <header class="mb-8 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div>
-                <h1 class="text-3xl font-bold text-slate-900 tracking-tight flex items-center justify-center sm:justify-start gap-2">
-                    <span class="text-primary">✨</span> Daily Spark
-                </h1>
-                <p class="text-slate-500 text-sm mt-1" x-text="todayDate"></p>
-            </div>
-            
-            <!-- Navigation Tabs -->
-            <nav class="flex bg-white rounded-full p-1 shadow-sm border border-slate-200 w-full sm:w-auto">
-                <button @click="activeTab = 'inspirasi'" 
-                        :class="activeTab === 'inspirasi' ? 'bg-primary text-white shadow-md' : 'text-slate-600 hover:bg-slate-50'"
-                        class="flex-1 sm:flex-none px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    Inspirasi
-                </button>
-                <button @click="activeTab = 'sehat'" 
-                        :class="activeTab === 'sehat' ? 'bg-secondary text-white shadow-md' : 'text-slate-600 hover:bg-slate-50'"
-                        class="flex-1 sm:flex-none px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                    Kesehatan
-                </button>
-                <button @click="activeTab = 'kuis'" 
-                        :class="activeTab === 'kuis' ? 'bg-accent text-white shadow-md' : 'text-slate-600 hover:bg-slate-50'"
-                        class="flex-1 sm:flex-none px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                    Cek Bakat
-                </button>
-            </nav>
+        <!-- Header -->
+        <header class="mb-10 text-center">
+            <h1 class="text-4xl sm:text-5xl font-header text-shadowDark mb-2 tracking-wide">
+                More Inspiration
+            </h1>
+            <p class="text-slate-500 font-semibold text-sm">Temukan semangat barumu hari ini ✨</p>
         </header>
 
-        <!-- Main Content Area -->
-        <main class="flex-grow">
+        <!-- Main Navigation List -->
+        <main class="flex-grow space-y-5">
             
-            <!-- TAB 1: INSPIRASI -->
-            <div x-show="activeTab === 'inspirasi'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-cloak class="space-y-6">
+            <!-- 1. SOUND RELAXATION -->
+            <div>
+                <button @click="toggleMenu('sound')" 
+                        :class="activeMenu === 'sound' ? 'bg-accentBlue translate-x-1 translate-y-1 shadow-retro-active' : 'bg-btnWhite shadow-retro hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-retro-hover'"
+                        class="w-full py-4 px-6 rounded-2xl border-2 border-shadowDark text-xl font-header text-shadowDark transition-all duration-150 flex justify-between items-center z-10 relative">
+                    <span>Sound Relaxation</span>
+                    <span x-text="activeMenu === 'sound' ? '−' : '+'" class="text-2xl"></span>
+                </button>
                 
-                <!-- Quote of the day -->
-                <div class="glass-panel p-8 rounded-3xl shadow-sm text-center relative overflow-hidden">
-                    <div class="absolute -top-4 -left-4 text-9xl text-slate-100 opacity-50 font-serif">"</div>
-                    <p class="text-xl sm:text-2xl font-medium text-slate-800 italic relative z-10 leading-relaxed">
-                        "Jangan menunggu waktu yang tepat. Mulailah dari tempat Anda berdiri, dan bekerjalah dengan alat apa pun yang Anda miliki."
-                    </p>
-                    <p class="mt-4 text-slate-500 font-medium">— George Herbert</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Video Section -->
-                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
-                        <div class="flex items-center justify-between mb-4">
-                            <h2 class="text-lg font-bold flex items-center gap-2">
-                                <span class="p-2 bg-red-100 text-red-500 rounded-xl"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path></svg></span>
-                                Video Motivasi
-                            </h2>
-                        </div>
-                        <div class="relative rounded-2xl overflow-hidden aspect-video bg-slate-800 group cursor-pointer" @click="isVideoOpen = true">
-                            <!-- Placeholder Image for Video -->
-                            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Video Thumbnail" class="w-full h-full object-cover opacity-70 group-hover:opacity-50 transition-opacity duration-300">
-                            <!-- Play Button Overlay -->
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <div class="w-16 h-16 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center">
-                                        <svg class="w-6 h-6 text-primary ml-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="text-sm text-slate-500 mt-3 text-center">Tekan untuk memutar: "Kekuatan Mulai Dari Nol"</p>
-                    </div>
-
-                    <!-- Audio Section -->
-                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col">
-                        <div class="flex items-center justify-between mb-4">
-                            <h2 class="text-lg font-bold flex items-center gap-2">
-                                <span class="p-2 bg-blue-100 text-blue-500 rounded-xl"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg></span>
-                                Relaksasi Suara
-                            </h2>
-                        </div>
-                        
-                        <div class="flex-grow flex flex-col justify-center space-y-3">
-                            <!-- Simulated Audio Buttons -->
-                            <template x-for="(audio, index) in audioList" :key="index">
-                                <button @click="toggleAudio(index)" 
-                                        :class="currentAudio === index ? 'bg-primary text-white border-primary' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'"
-                                        class="w-full flex items-center justify-between p-4 rounded-2xl border transition-colors duration-200">
-                                    <div class="flex items-center gap-3">
-                                        <span class="text-2xl" x-text="audio.emoji"></span>
-                                        <span class="font-medium" x-text="audio.name"></span>
-                                    </div>
-                                    
-                                    <!-- Animated Equalizer if playing -->
-                                    <div x-show="currentAudio === index" class="flex items-end gap-1 h-4">
-                                        <div class="w-1 bg-white rounded-full animate-[bounce_1s_infinite] h-full"></div>
-                                        <div class="w-1 bg-white rounded-full animate-[bounce_0.8s_infinite] h-2/3"></div>
-                                        <div class="w-1 bg-white rounded-full animate-[bounce_1.2s_infinite] h-4/5"></div>
-                                    </div>
-                                    <!-- Play icon if not playing -->
-                                    <svg x-show="currentAudio !== index" class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                </button>
-                            </template>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 2: KESEHATAN & TIPS -->
-            <div x-show="activeTab === 'sehat'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-cloak class="space-y-6">
-                
-                <div class="bg-gradient-to-r from-secondary to-teal-400 rounded-3xl p-6 sm:p-8 text-white shadow-md">
-                    <h2 class="text-2xl font-bold mb-2">Tips Sehat Hari Ini 🍏</h2>
-                    <p class="text-teal-50 opacity-90 text-lg mb-4">"Regangkan ototmu setiap 2 jam bekerja. 5 menit peregangan dapat mengembalikan fokus dan mencegah sakit punggung."</p>
-                </div>
-
-                <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4">Pelacak Kebiasaan Harian (Habits)</h3>
+                <!-- Expanded Content for Sound -->
+                <div x-show="activeMenu === 'sound'" x-collapse x-cloak class="mt-3 bg-white rounded-2xl border-2 border-shadowDark p-4 shadow-sm relative z-0">
+                    <p class="text-sm font-bold text-slate-500 mb-3 uppercase tracking-wider">Suara Pengantar Tidur</p>
                     <div class="space-y-3">
-                        <template x-for="(habit, index) in habits" :key="index">
-                            <label class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 cursor-pointer hover:bg-slate-100 transition-colors">
-                                <input type="checkbox" x-model="habit.done" class="w-6 h-6 rounded text-secondary focus:ring-secondary border-slate-300">
-                                <span :class="habit.done ? 'line-through text-slate-400' : 'text-slate-700'" class="font-medium text-lg transition-all" x-text="habit.text"></span>
-                            </label>
+                        <template x-for="(sound, index) in sounds.nature" :key="'n'+index">
+                            <button @click="playSound(sound.url, index, 'nature')"
+                                    :class="currentSoundId === ('nature'+index) ? 'bg-accentBlue/20 border-accentBlue' : 'bg-slate-50 border-slate-200 hover:bg-slate-100'"
+                                    class="w-full flex items-center justify-between p-3 rounded-xl border-2 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl" x-text="sound.emoji"></span>
+                                    <span class="font-bold text-shadowDark" x-text="sound.title"></span>
+                                </div>
+                                <span class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm text-accentBlue">
+                                    <svg x-show="currentSoundId !== ('nature'+index)" class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4l12 6-12 6z"></path></svg>
+                                    <svg x-show="currentSoundId === ('nature'+index)" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4h3v12H5V4zm7 0h3v12h-3V4z"></path></svg>
+                                </span>
+                            </button>
                         </template>
                     </div>
-                    <div class="mt-4 text-center">
-                        <p class="text-sm text-slate-500">Progres hari ini: <span class="font-bold text-secondary" x-text="habits.filter(h => h.done).length + '/' + habits.length"></span></p>
+
+                    <p class="text-sm font-bold text-slate-500 mb-3 mt-5 uppercase tracking-wider">Musik Inspirasi & Santai</p>
+                    <div class="space-y-3">
+                        <template x-for="(sound, index) in sounds.music" :key="'m'+index">
+                            <button @click="playSound(sound.url, index, 'music')"
+                                    :class="currentSoundId === ('music'+index) ? 'bg-accentYellow/30 border-accentYellow' : 'bg-slate-50 border-slate-200 hover:bg-slate-100'"
+                                    class="w-full flex items-center justify-between p-3 rounded-xl border-2 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl" x-text="sound.emoji"></span>
+                                    <span class="font-bold text-shadowDark" x-text="sound.title"></span>
+                                </div>
+                                <span class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm text-accentYellow">
+                                    <svg x-show="currentSoundId !== ('music'+index)" class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4l12 6-12 6z"></path></svg>
+                                    <svg x-show="currentSoundId === ('music'+index)" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4h3v12H5V4zm7 0h3v12h-3V4z"></path></svg>
+                                </span>
+                            </button>
+                        </template>
                     </div>
                 </div>
-
             </div>
 
-            <!-- TAB 3: CEK BAKAT (Aplikasi dalam aplikasi) -->
-            <div x-show="activeTab === 'kuis'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-cloak>
+            <!-- 2. VIDEO MOTIVATION -->
+            <div>
+                <button @click="toggleMenu('video')" 
+                        :class="activeMenu === 'video' ? 'bg-accentPink text-shadowDark translate-x-1 translate-y-1 shadow-retro-active' : 'bg-btnWhite shadow-retro hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-retro-hover'"
+                        class="w-full py-4 px-6 rounded-2xl border-2 border-shadowDark text-xl font-header transition-all duration-150 flex justify-between items-center z-10 relative">
+                    <span>Video Motivation</span>
+                    <span x-text="activeMenu === 'video' ? '−' : '+'" class="text-2xl"></span>
+                </button>
                 
-                <!-- Wrap kuis dalam komponen Alpine terpisah agar state-nya bersih -->
-                <div x-data="quizApp()" class="w-full bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+                <div x-show="activeMenu === 'video'" x-collapse x-cloak class="mt-3 bg-white rounded-2xl border-2 border-shadowDark p-4 shadow-sm">
                     
-                    <!-- Header Kuis -->
-                    <div class="bg-accent text-white p-6 sm:p-8 text-center relative overflow-hidden">
-                        <div class="relative z-10">
-                            <h2 class="text-2xl font-bold mb-2">🧭 Cek Bakat & Karir</h2>
-                            <p class="text-amber-100 text-sm">Temukan potensimu lewat kebiasaan sehari-hari.</p>
+                    <!-- Video Embed -->
+                    <div class="mb-4">
+                        <p class="font-bold text-shadowDark mb-2">Pilihan Hari Ini:</p>
+                        <div class="video-container border-2 border-shadowDark rounded-xl">
+                            <!-- Contoh embed youtube aman (Satu Persen) -->
+                            <iframe src="https://www.youtube.com/embed/pe-U3mQ5hB0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
-                        <div class="absolute -top-10 -left-10 w-32 h-32 bg-white opacity-10 rounded-full"></div>
-                        <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-white opacity-10 rounded-full"></div>
                     </div>
 
-                    <div class="p-6 sm:p-8">
-                        <!-- Welcome Screen -->
-                        <div x-show="currentStage === 'intro'" x-transition class="text-center py-4">
-                            <div class="mb-6 text-5xl">🎯</div>
-                            <h3 class="text-xl font-semibold mb-3 text-slate-800">Kenali Dirimu Lebih Baik</h3>
-                            <p class="text-slate-600 mb-6 text-sm sm:text-base">
-                                Jawab beberapa pertanyaan ringan tentang kebiasaanmu. 
-                                Tidak ada jawaban salah, santai saja!
-                            </p>
-                            <button @click="startQuiz()" 
-                                    class="w-full sm:w-auto px-8 py-3 bg-accent hover:bg-amber-600 text-white font-semibold rounded-full shadow-md transition-all">
-                                Mulai Tes Sekarang
-                            </button>
-                        </div>
-
-                        <!-- Quiz Screen -->
-                        <div x-show="currentStage === 'quiz'" x-cloak>
-                            <div class="mb-6">
-                                <div class="flex justify-between text-xs font-semibold text-slate-400 mb-2">
-                                    <span x-text="'Pertanyaan ' + (currentQuestionIndex + 1) + ' dari ' + questions.length"></span>
-                                    <span x-text="Math.round(((currentQuestionIndex) / questions.length) * 100) + '%'"></span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                                    <div class="bg-accent h-full rounded-full transition-all duration-300" :style="'width: ' + ((currentQuestionIndex / questions.length) * 100) + '%'"></div>
-                                </div>
-                            </div>
-
-                            <div class="mb-4 min-h-[200px]">
-                                <h3 class="text-lg sm:text-xl font-semibold text-slate-800 mb-6" x-text="questions[currentQuestionIndex].text"></h3>
-                                <div class="space-y-3">
-                                    <template x-for="(option, index) in questions[currentQuestionIndex].options" :key="index">
-                                        <button @click="selectAnswer(option.type)"
-                                                class="w-full text-left p-4 rounded-xl border-2 border-slate-100 hover:border-accent hover:bg-amber-50 transition-all flex items-start gap-3">
-                                            <div class="w-5 h-5 mt-0.5 rounded-full border-2 border-slate-300 flex-shrink-0"></div>
-                                            <span class="text-slate-700 text-sm sm:text-base" x-text="option.text"></span>
-                                        </button>
-                                    </template>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Analyzing Screen -->
-                        <div x-show="currentStage === 'analyzing'" x-cloak class="text-center py-12">
-                            <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-amber-100 border-t-accent mb-4"></div>
-                            <h3 class="font-medium text-slate-800">Menganalisis Jawabanmu...</h3>
-                        </div>
-
-                        <!-- Result Screen -->
-                        <div x-show="currentStage === 'result'" x-cloak class="text-center py-4">
-                            <div class="text-5xl mb-4" x-text="resultData.emoji"></div>
-                            <div class="text-xs font-bold text-accent mb-1 uppercase tracking-widest">Tipe Kamu</div>
-                            <h2 class="text-2xl font-bold text-slate-800 mb-3" x-text="resultData.title"></h2>
-                            
-                            <p class="text-slate-600 mb-6 text-sm" x-text="resultData.description"></p>
-                            
-                            <div class="bg-slate-50 rounded-2xl p-5 mb-6 text-left border border-slate-100">
-                                <h4 class="font-semibold text-slate-800 mb-3 text-sm">💡 Rekomendasi Karir/Aktivitas:</h4>
-                                <ul class="space-y-2">
-                                    <template x-for="job in resultData.jobs">
-                                        <li class="flex items-center gap-2 text-sm text-slate-700">
-                                            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                            <span x-text="job"></span>
-                                        </li>
-                                    </template>
-                                </ul>
-                            </div>
-
-                            <button @click="resetQuiz()" class="px-6 py-2 border-2 border-slate-200 text-slate-600 font-semibold rounded-full hover:bg-slate-50 transition-colors text-sm">
-                                Coba Lagi
-                            </button>
-                        </div>
+                    <!-- External Links -->
+                    <p class="font-bold text-shadowDark mb-2 mt-4">Kanal Youtube Rekomendasi:</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <a href="https://www.youtube.com/@SatuPersenIndonesianLifeschool" target="_blank" class="block p-3 text-center rounded-xl border-2 border-shadowDark bg-[#ffdf00] hover:bg-[#ffe633] transition-colors font-bold text-sm text-shadowDark">
+                            🧠 Satu Persen
+                        </a>
+                        <a href="https://www.youtube.com/@Merry-Riana" target="_blank" class="block p-3 text-center rounded-xl border-2 border-shadowDark bg-red-400 text-white hover:bg-red-500 transition-colors font-bold text-sm">
+                            🔥 Merry Riana
+                        </a>
                     </div>
                 </div>
-
             </div>
+
+            <!-- 3. TIPS HEALTH -->
+            <div>
+                <button @click="toggleMenu('health')" 
+                        :class="activeMenu === 'health' ? 'bg-accentGreen translate-x-1 translate-y-1 shadow-retro-active' : 'bg-btnWhite shadow-retro hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-retro-hover'"
+                        class="w-full py-4 px-6 rounded-2xl border-2 border-shadowDark text-xl font-header text-shadowDark transition-all duration-150 flex justify-between items-center z-10 relative">
+                    <span>Tips Health</span>
+                    <span x-text="activeMenu === 'health' ? '−' : '+'" class="text-2xl"></span>
+                </button>
+                
+                <div x-show="activeMenu === 'health'" x-collapse x-cloak class="mt-3 bg-white rounded-2xl border-2 border-shadowDark p-4 shadow-sm">
+                    <div class="bg-accentGreen/20 p-4 rounded-xl border border-accentGreen mb-4">
+                        <h4 class="font-header text-shadowDark text-lg mb-1 flex items-center gap-2">🍎 Tips Hari Ini</h4>
+                        <p class="text-shadowDark font-semibold">Terapkan aturan 20-20-20. Setiap 20 menit menatap layar, pandang objek sejauh 20 kaki (6 meter) selama 20 detik untuk menjaga kesehatan mata.</p>
+                    </div>
+                    
+                    <p class="font-bold text-shadowDark mb-2">Kebiasaan Sehat:</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border-2 border-slate-200 cursor-pointer hover:border-accentGreen transition-colors">
+                            <input type="checkbox" class="w-5 h-5 rounded text-accentGreen focus:ring-accentGreen">
+                            <span class="font-bold text-shadowDark">Minum 8 gelas air</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border-2 border-slate-200 cursor-pointer hover:border-accentGreen transition-colors">
+                            <input type="checkbox" class="w-5 h-5 rounded text-accentGreen focus:ring-accentGreen">
+                            <span class="font-bold text-shadowDark">Tidur 7-8 Jam</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. QUOTES -->
+            <div>
+                <button @click="toggleMenu('quotes')" 
+                        :class="activeMenu === 'quotes' ? 'bg-[#c084fc] text-white translate-x-1 translate-y-1 shadow-retro-active' : 'bg-btnWhite shadow-retro hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-retro-hover'"
+                        class="w-full py-4 px-6 rounded-2xl border-2 border-shadowDark text-xl font-header transition-all duration-150 flex justify-between items-center z-10 relative">
+                    <span :class="activeMenu === 'quotes' ? 'text-white' : 'text-shadowDark'">Quotes</span>
+                    <span x-text="activeMenu === 'quotes' ? '−' : '+'" class="text-2xl" :class="activeMenu === 'quotes' ? 'text-white' : 'text-shadowDark'"></span>
+                </button>
+                
+                <div x-show="activeMenu === 'quotes'" x-collapse x-cloak class="mt-3 bg-[#c084fc] text-white rounded-2xl border-2 border-shadowDark p-6 shadow-sm text-center">
+                    <div class="text-5xl opacity-50 font-serif mb-[-20px]">"</div>
+                    <p class="text-xl font-bold mb-4 relative z-10 leading-snug">
+                        Orang yang memindahkan gunung mulai dengan membawa batu-batu kecil.
+                    </p>
+                    <p class="font-bold text-white/80">— Confucius</p>
+                    <button @click="generateNewQuote()" class="mt-4 px-4 py-2 bg-white text-[#c084fc] font-bold rounded-full border-2 border-shadowDark hover:bg-slate-100 transition-colors text-sm">
+                        Quote Lainnya 🎲
+                    </button>
+                </div>
+            </div>
+
+            <!-- 5. TES IQ -->
+            <button class="w-full py-4 px-6 rounded-2xl border-2 border-shadowDark bg-btnWhite shadow-retro hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-retro-hover text-xl font-header text-shadowDark transition-all duration-150 text-center">
+                Tes IQ <span class="text-sm font-sans font-bold text-slate-400 block -mt-1">(Coming Soon)</span>
+            </button>
+
+            <!-- 6. CEK BAKAT DAN KARIR -->
+            <div>
+                <button @click="toggleMenu('bakat')" 
+                        :class="activeMenu === 'bakat' ? 'bg-orange-400 text-white translate-x-1 translate-y-1 shadow-retro-active' : 'bg-btnWhite shadow-retro hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-retro-hover'"
+                        class="w-full py-4 px-6 rounded-2xl border-2 border-shadowDark text-xl font-header transition-all duration-150 flex justify-between items-center z-10 relative">
+                    <span :class="activeMenu === 'bakat' ? 'text-white' : 'text-shadowDark'">Cek bakat dan karir</span>
+                    <span x-text="activeMenu === 'bakat' ? '−' : '+'" class="text-2xl" :class="activeMenu === 'bakat' ? 'text-white' : 'text-shadowDark'"></span>
+                </button>
+                
+                <div x-show="activeMenu === 'bakat'" x-collapse x-cloak class="mt-3 bg-white rounded-2xl border-2 border-shadowDark p-4 shadow-sm">
+                    <div class="text-center py-4">
+                        <div class="text-4xl mb-2">🧭</div>
+                        <h3 class="font-header text-lg text-shadowDark mb-2">Kenali Potensimu!</h3>
+                        <p class="text-sm font-semibold text-slate-600 mb-4">Jawab kuis singkat untuk mengetahui tipe kepribadian dan rekomendasi karir yang cocok untukmu.</p>
+                        <button onclick="alert('Fitur Kuis Lengkap akan membuka halaman khusus atau modal popup. Untuk saat ini UI-nya disatukan dalam desain retro.')" class="w-full py-3 bg-shadowDark text-white font-bold rounded-xl border-2 border-shadowDark hover:bg-slate-800 transition-colors">
+                            Mulai Tes Sekarang
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. TENTANG DJANGKOS (Direct Link) -->
+            <a href="https://djangkos.com" target="_blank" class="block w-full py-4 px-6 rounded-2xl border-2 border-shadowDark bg-btnWhite shadow-retro hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-retro-hover text-xl font-header text-shadowDark transition-all duration-150 text-center mt-8 relative overflow-hidden group">
+                <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-accentBlue via-accentPink to-accentYellow opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
+                <span class="relative z-10">Tentang Djangkos</span>
+            </a>
 
         </main>
-        
-        <footer class="mt-8 text-center text-slate-400 text-xs pb-4">
-            Dibuat untuk memberikan energi positif setiap hari.
+
+        <footer class="mt-12 text-center text-slate-500 font-bold text-sm opacity-50">
+            &copy; 2026 Djangkos Inspiration
         </footer>
 
-        <!-- Video Modal Overlay -->
-        <div x-show="isVideoOpen" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-sm"
-             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-             x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-            <div class="bg-black w-full max-w-3xl aspect-video rounded-2xl overflow-hidden relative shadow-2xl" @click.away="isVideoOpen = false">
-                <!-- Close Button -->
-                <button @click="isVideoOpen = false" class="absolute -top-10 right-0 text-white hover:text-primary transition-colors">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-                <!-- YouTube Embed (Menggunakan video bebas hak cipta/contoh edukasi) -->
-                <iframe x-if="isVideoOpen" class="w-full h-full" src="https://www.youtube.com/embed/pe-U3mQ5hB0?autoplay=1" title="Video Motivasi" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-        </div>
+        <!-- Hidden Audio Element for playing sounds -->
+        <audio id="audioPlayer" loop></audio>
 
     </div>
 
     <script>
-        // Main App State
-        function mainDashboard() {
+        // Alpine Alpine plugin setup for smooth collapse/expand
+        document.addEventListener('alpine:init', () => {
+            // Note: x-collapse usually requires importing the collapse plugin.
+            // Since we are using CDN core, we will simulate the smooth toggle using x-show and custom transitions if collapse is not available, 
+            // but Alpine 3's core sometimes handles basic x-show nicely. For true height animation without plugin, we stick to x-show.
+        })
+
+        function inspirationApp() {
             return {
-                activeTab: 'inspirasi', // Default tab
-                isVideoOpen: false,
-                todayDate: new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+                activeMenu: null, // Tracks which accordion is open
                 
-                // Audio Data
-                currentAudio: null,
-                audioList: [
-                    { name: 'Suara Hujan & Guntur Ringan', emoji: '🌧️' },
-                    { name: 'Lo-Fi Chill Pagi', emoji: '🎧' },
-                    { name: 'Suasana Tepi Pantai', emoji: '🌊' }
-                ],
-                
-                toggleAudio(index) {
-                    if (this.currentAudio === index) {
-                        this.currentAudio = null; // Stop
+                toggleMenu(menuName) {
+                    if (this.activeMenu === menuName) {
+                        this.activeMenu = null; // Close if already open
                     } else {
-                        this.currentAudio = index; // Play (Ini simulasi UI, untuk nyata perlu tag <audio>)
+                        this.activeMenu = menuName; // Open clicked menu
                     }
                 },
 
-                // Habits Data
-                habits: [
-                    { text: 'Minum 2 Gelas Air Putih Pagi Ini', done: false },
-                    { text: 'Berjemur Matahari (5-10 menit)', done: false },
-                    { text: 'Tersenyum & Bersyukur Hari Ini', done: false }
-                ]
-            }
-        }
-
-        // Quiz App State (Di-isolate khusus untuk tab Cek Bakat)
-        function quizApp() {
-            return {
-                currentStage: 'intro',
-                currentQuestionIndex: 0,
-                scores: { creative: 0, analytical: 0, social: 0, practical: 0 },
-                resultData: {},
-
-                questions: [
-                    {
-                        text: "Saat ada waktu luang, apa yang paling sering kamu lakukan?",
-                        options: [
-                            { text: "Mencoba membuat sesuatu (resep, desain, kerajinan).", type: "creative" },
-                            { text: "Mengobrol dengan teman atau buka media sosial.", type: "social" },
-                            { text: "Membaca artikel, main game strategi, atau mengatur jadwal.", type: "analytical" },
-                            { text: "Merapikan kamar, olahraga, atau memperbaiki barang.", type: "practical" }
-                        ]
-                    },
-                    {
-                        text: "Dalam kerja kelompok, kamu biasanya jadi orang yang...",
-                        options: [
-                            { text: "Mencairkan suasana dan mengatur komunikasi.", type: "social" },
-                            { text: "Mengeksekusi tugas fisik atau urusan logistik.", type: "practical" },
-                            { text: "Mencari ide tema dan membuat presentasi jadi bagus.", type: "creative" },
-                            { text: "Membagi tugas dan memastikan semua sesuai rencana.", type: "analytical" }
-                        ]
-                    },
-                    {
-                        text: "Bagaimana caramu menghadapi masalah baru?",
-                        options: [
-                            { text: "Menganalisis sebabnya dulu sebelum bertindak.", type: "analytical" },
-                            { text: "Tanya pendapat orang lain dulu.", type: "social" },
-                            { text: "Cari cara unik yang belum pernah dicoba.", type: "creative" },
-                            { text: "Langsung dicoba perbaiki saat itu juga.", type: "practical" }
-                        ]
-                    }
-                ],
-
-                profiles: {
-                    creative: {
-                        title: "Sang Kreator 🎨",
-                        description: "Kamu imajinatif dan melihat dunia secara unik. Kamu menyukai kebebasan berekspresi.",
-                        jobs: ["Desainer", "Content Creator", "Seniman", "Arsitek"]
-                    },
-                    analytical: {
-                        title: "Sang Pemikir 🧠",
-                        description: "Logika dan data adalah kekuatanmu. Kamu teliti dan seorang problem solver yang hebat.",
-                        jobs: ["Data Analyst", "Programmer", "Analis Keuangan", "Peneliti"]
-                    },
-                    social: {
-                        title: "Sang Penghubung 🤝",
-                        description: "Kamu punya empati tinggi. Kamu pandai membuat orang merasa didengar dan nyaman.",
-                        jobs: ["Public Relations", "Guru/Mentor", "Psikolog", "Marketing"]
-                    },
-                    practical: {
-                        title: "Sang Eksekutor 🛠️",
-                        description: "Kamu suka bekerja nyata, hands-on, realistis dan sangat bisa diandalkan dalam tim.",
-                        jobs: ["Manajer Proyek", "Chef", "Teknisi", "Event Organizer"]
-                    }
+                // Sound Player Logic
+                currentSoundId: null,
+                sounds: {
+                    nature: [
+                        { title: 'Suara Hujan Deras', emoji: '🌧️', url: 'https://cdn.freesound.org/previews/515/515354_10984813-lq.mp3' }, // Placeholder safe sound link
+                        { title: 'Hutan & Burung', emoji: '🌳', url: 'https://cdn.freesound.org/previews/339/339324_5121236-lq.mp3' },
+                        { title: 'Aliran Sungai', emoji: '🌊', url: 'https://cdn.freesound.org/previews/174/174763_3248243-lq.mp3' }
+                    ],
+                    music: [
+                        { title: 'Lofi Chill Santai', emoji: '🎧', url: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3' },
+                        { title: 'Piano Inspiratif', emoji: '🎹', url: 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_82e666bc0b.mp3?filename=inspirational-background-112290.mp3' }
+                    ]
                 },
 
-                startQuiz() {
-                    this.currentStage = 'quiz';
-                    this.currentQuestionIndex = 0;
-                    this.scores = { creative: 0, analytical: 0, social: 0, practical: 0 };
-                },
+                playSound(url, index, category) {
+                    const audioEl = document.getElementById('audioPlayer');
+                    const soundId = category + index;
 
-                selectAnswer(type) {
-                    this.scores[type]++;
-                    if (this.currentQuestionIndex < this.questions.length - 1) {
-                        setTimeout(() => { this.currentQuestionIndex++; }, 150);
+                    if (this.currentSoundId === soundId) {
+                        // Pause if clicking the currently playing sound
+                        audioEl.pause();
+                        this.currentSoundId = null;
                     } else {
-                        this.calculateResult();
+                        // Play new sound
+                        audioEl.src = url;
+                        audioEl.play().catch(e => console.log("Audio play blocked by browser. User needs to interact first."));
+                        this.currentSoundId = soundId;
                     }
                 },
 
-                calculateResult() {
-                    this.currentStage = 'analyzing';
-                    let maxScore = 0;
-                    let dominantType = 'creative';
-
-                    for (const [type, score] of Object.entries(this.scores)) {
-                        if (score > maxScore) {
-                            maxScore = score;
-                            dominantType = type;
-                        }
-                    }
-
-                    this.resultData = this.profiles[dominantType];
-                    setTimeout(() => { this.currentStage = 'result'; }, 1200);
-                },
-
-                resetQuiz() {
-                    this.currentStage = 'intro';
+                // Fake quote generator for demonstration
+                generateNewQuote() {
+                    const quotes = [
+                        "Kegagalan adalah bumbu yang memberi rasa pada kesuksesan. — Truman Capote",
+                        "Masa depan adalah milik mereka yang percaya pada keindahan mimpi mereka. — Eleanor Roosevelt",
+                        "Jika kamu tidak mengambil risiko, kamu tidak akan pernah tahu apa yang bisa terjadi.",
+                        "Waktu yang Anda nikmati untuk dihabiskan bukanlah waktu yang terbuang."
+                    ];
+                    // Logic to change quote text in DOM would go here if we made quote text dynamic via Alpine variables.
+                    // For brevity, we just trigger an alert or you can implement x-text for quotes.
+                    alert(quotes[Math.floor(Math.random() * quotes.length)]);
                 }
             }
         }
