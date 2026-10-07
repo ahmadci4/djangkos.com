@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Struk DANA Editable</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .receipt-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: white;
+            position: relative;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-radius: 8px;
+            overflow: hidden;
+            /* Added background pattern simulation for watermarks if needed, but keeping clean for now */
+        }
+
+        /* Editable element indicator (optional, makes it easier to see what can be changed) */
+        [contenteditable="true"]:hover {
+            background-color: #f0fdf4;
+            outline: 1px dashed #22c55e;
+            border-radius: 2px;
+            cursor: text;
+        }
+
+        [contenteditable="true"]:focus {
+            background-color: #f0fdf4;
+            outline: 2px solid #22c55e;
+            border-radius: 2px;
+            cursor: text;
+        }
+
+        /* Specific styling for the jagged edge at bottom */
+        .jagged-bottom {
+            background-image: radial-gradient(circle at 10px 0, transparent 10px, white 11px);
+            background-size: 20px 20px;
+            background-repeat: repeat-x;
+            height: 10px;
+            width: 100%;
+            margin-top: -10px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .watermark {
+            position: absolute;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 0;
+            display: flex;
+            flex-wrap: wrap;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            transform: rotate(-30deg);
+        }
+        
+        .watermark div {
+            margin: 40px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        /* Updated watermark styling for image */
+        .watermark-img {
+            position: absolute;
+            opacity: 0.04; /* Very low opacity for the background pattern */
+            pointer-events: none;
+            z-index: 0;
+            display: flex;
+            flex-wrap: wrap;
+            width: 250%; /* Make it larger to cover rotated area */
+            height: 250%;
+            top: -75%;
+            left: -75%;
+            transform: rotate(-30deg);
+            gap: 60px; /* Space between watermarks */
+            justify-content: center;
+            align-content: center;
+        }
+
+        .watermark-img img {
+            width: 100px; /* Adjust size of watermark logo */
+            height: auto;
+            object-fit: contain;
+            filter: grayscale(100%); /* Optional: make watermark black and white */
+        }
+
+        /* Utility to keep content above watermark */
+        .content-layer {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Hide print button when printing */
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            .receipt-container {
+                box-shadow: none;
+                max-width: none;
+                width: 100%;
+            }
+            .no-print {
+                display: none;
+            }
+            [contenteditable="true"]:hover, [contenteditable="true"]:focus {
+                outline: none;
+                background-color: transparent;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="fixed top-4 right-4 no-print z-50">
+        <button onclick="window.print()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded shadow">
+            <i class="fas fa-print mr-2"></i> Print / Save PDF
+        </button>
+        <p class="text-xs text-gray-500 mt-2 bg-white p-2 rounded shadow text-center">Klik teks untuk mengedit</p>
+    </div>
+
+    <!-- Hidden file input for logo -->
+    <input type="file" id="logoUpload" accept="image/*" class="hidden">
+
+    <div class="receipt-container pb-4" id="receiptContainer">
+        <!-- Optional Background Watermarks (Text version hidden, Image version added) -->
+        <!-- 
+        <div class="watermark" aria-hidden="true">
+            <div>DANA</div><div>DANA</div><div>DANA</div><div>DANA</div><div>DANA</div>
+        </div> 
+        -->
+        
+        <!-- Image Watermark Container -->
+        <div class="watermark-img" id="watermarkContainer" aria-hidden="true">
+            <!-- Images will be injected here by JS -->
+        </div>
+
+        <div class="content-layer">
+            <!-- Header Section (Blue gradient background in original, but mostly white in the content area) -->
+            <div class="bg-[#118EEA] h-20 w-full absolute top-0 left-0" style="height: 120px;"></div>
+            
+            <div class="pt-8 px-6 pb-4 relative z-10 bg-white rounded-t-lg mt-2 mx-2">
+                
+                <!-- DANA Logo area - Now clickable to upload -->
+                <div class="flex justify-center mb-6 pt-2 cursor-pointer relative group" id="logoContainer" title="Klik untuk mengganti logo">
+                    <!-- Default SVG Logo -->
+                    <svg id="defaultLogo" width="120" height="32" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z" fill="#118EEA"/>
+                        <path d="M8.5 17.5C8.5 17.5 11 13 16 13C21 13 23.5 17.5 23.5 17.5C23.5 17.5 21 21 16 21C11 21 8.5 17.5 8.5 17.5Z" fill="white"/>
+                        <text x="45" y="24" font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#118EEA" letter-spacing="4">DANA</text>
+                    </svg>
+                    <!-- Image element for uploaded logo (hidden by default) -->
+                    <img id="uploadedLogo" src="" alt="DANA Logo" class="hidden max-h-[40px] max-w-[150px] object-contain">
+                    
+                    <!-- Hover overlay -->
+                    <div class="absolute inset-0 bg-black bg-opacity-10 hidden group-hover:flex items-center justify-center rounded no-print">
+                        <i class="fas fa-upload text-gray-700"></i>
+                    </div>
+                </div>
+
+                <!-- Date and ID Row -->
+                <div class="flex justify-between items-center text-[11px] text-gray-500 border-b border-gray-200 pb-3">
+                    <div contenteditable="true">30 Jan 2026 • 08:35</div>
+                    <div contenteditable="true">ID DANA 0859••••9691</div>
+                </div>
+
+                <!-- Transaction Status -->
+                <div class="flex items-center mt-4">
+                    <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center mr-2">
+                        <i class="fas fa-check text-white text-[10px]"></i>
+                    </div>
+                    <div class="text-sm text-gray-700" contenteditable="true">Transaksi berhasil!</div>
+                </div>
+
+                <!-- Main Item Description -->
+                <div class="mt-3 text-[15px] font-semibold text-gray-800 leading-snug" contenteditable="true">
+                    Token Listrik 200Rb 32194706803 SD I<br>BAYAN
+                </div>
+
+                <!-- Token Area -->
+                <div class="mt-4">
+                    <div class="text-[13px] text-gray-800 font-medium mb-2" contenteditable="true">Nomor Token</div>
+                    <div class="bg-[#F08300] rounded-lg p-4 relative text-white">
+                        <div class="flex justify-between items-center">
+                            <div class="text-[20px] font-bold tracking-wider" contenteditable="true">1557 3477 8367 2059 5435</div>
+                            <i class="far fa-copy text-sm opacity-80 cursor-pointer no-print" title="Copy Token"></i>
+                        </div>
+                        <div class="text-[11px] mt-1 opacity-90" contenteditable="true">Jumlah kWh : 256.9</div>
+                    </div>
+                    <div class="text-[11px] text-gray-500 mt-2" contenteditable="true">Masukkan nomor ke meteran listrik.</div>
+                </div>
+
+                <!-- Total Payment Area -->
+                <div class="mt-4 bg-[#F8F9FA] rounded-md p-3">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="text-sm font-bold text-gray-800" contenteditable="true">Total Bayar</div>
+                        <div class="text-base font-bold text-gray-800" contenteditable="true">Rp201.700</div>
+                    </div>
+                    
+                    <div class="flex justify-between items-start pt-3 border-t border-gray-200">
+                        <div class="text-[13px] text-gray-500" contenteditable="true">Metode Pembayaran</div>
+                        <div class="text-[13px] text-gray-800 text-right">
+                            <div contenteditable="true">Saldo DANA</div>
+                            <div class="text-gray-500" contenteditable="true">(SmartPay)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="border-b border-gray-200 my-4 border-dashed"></div>
+
+                <!-- Detail Pesanan Header -->
+                <div class="flex justify-between items-center mb-3">
+                    <div class="text-sm font-bold text-gray-800" contenteditable="true">Detail Pesanan</div>
+                    <div class="border border-green-500 text-green-500 text-[11px] px-2 py-0.5 rounded" contenteditable="true">Berhasil</div>
+                </div>
+
+                <!-- Invoice -->
+                <div class="flex justify-between items-start mb-4">
+                    <div class="text-[13px] text-gray-500" contenteditable="true">Nomor Invoice</div>
+                    <div class="text-[13px] text-[#118EEA] text-right break-all w-3/5 font-medium" contenteditable="true">
+                        cldna406697bfcb50a43905c
+                    </div>
+                </div>
+
+                <!-- Detailed Struk Content -->
+                <div class="text-center text-[11px] text-gray-500 mb-4" contenteditable="true">
+                    STRUK PEMBELIAN LISTRIK PRABAYAR
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex justify-between text-[12px]">
+                        <div class="text-gray-500 w-1/3" contenteditable="true">NO METER</div>
+                        <div class="text-gray-800 text-right w-2/3" contenteditable="true">32194706803</div>
+                    </div>
+                    <div class="flex justify-between text-[12px]">
+                        <div class="text-gray-500 w-1/3" contenteditable="true">IDPEL</div>
+                        <div class="text-gray-800 text-right w-2/3" contenteditable="true">32194706803</div>
+                    </div>
+                    <div class="flex justify-between text-[12px]">
+                        <div class="text-gray-500 w-1/3" contenteditable="true">NAMA</div>
+                        <div class="text-gray-800 text-right w-2/3" contenteditable="true">SD I BAYAN</div>
+                    </div>
+                    <div class="flex justify-between text-[12px]">
+                        <div class="text-gray-500 w-1/3" contenteditable="true">TARIF/DAYA</div>
+                        <div class="text-gray-800 text-right w-2/3" contenteditable="true">S1/1300VA</div>
+                    </div>
+                    <div class="flex justify-between text-[12px] items-start">
+                        <div class="text-gray-500 w-1/3" contenteditable="true">NO REF</div>
+                        <div class="text-gray-800 text-right w-2/3 break-all" contenteditable="true">22002100CLDNA406697BFCB50A43905C</div>
+                    </div>
+                    
+                    <div class="pt-1"></div> <!-- spacing -->
+                    
+                    <div class="flex justify-between text-[12px]">
+                        <div class="text-gray-500 w-1/3" contenteditable="true">RP BAYAR</div>
+                        <div class="text-gray-800 text-right w-2/3" contenteditable="true">RP 201.500</div>
+                    </div>
+                    <div class="flex justify-between text-[12px]">
+                        <div class="text-gray-500 w-1/3" contenteditable="true">METERAI</div>
+                        <div class="text-gray-800 text-right w-2/3" contenteditable="true">RP 0,00</div>
+                    </div>
+                    <div class="flex justify-between text-[12px]">
+                        <div class="text-gray-500 w-1/3" contenteditable="true">PPN</div>
+                        <div class="text-gray-800 text-right w-2/3" contenteditable="true">RP 0,00</div>
+                    </div>
+                    <div class="flex justify-between text-[12px]">
+                        <div class="text-gray-500 w-1/3" contenteditable="true">PBJT-TL</div>
+                        <div class="text-gray-800 text-right w-2/3" contenteditable="true">RP 18.182,00</div>
+                    </div>
+                    <div class="flex justify-between text-[12px]">
+                        <div class="text-gray-500 w-1/3" contenteditable="true">ANGSURAN</div>
+                        <div class="text-gray-800 text-right w-2/3" contenteditable="true">RP 0,00</div>
+                    </div>
+                    <div class="flex justify-between text-[12px]">
+                        <div class="text-gray-500 w-1/2" contenteditable="true">RP STROOM/TOKEN</div>
+                        <div class="text-gray-800 text-right w-1/2" contenteditable="true">RP 181.818,00</div>
+                    </div>
+                    
+                    <div class="pt-1"></div> <!-- spacing -->
+                    
+                    <div class="flex justify-between text-[12px]">
+                        <div class="text-gray-500 w-1/3" contenteditable="true">JML KWH</div>
+                        <div class="text-gray-800 text-right w-2/3" contenteditable="true">256,9</div>
+                    </div>
+                    <div class="flex justify-between text-[12px] items-start">
+                        <div class="text-gray-500 w-2/5" contenteditable="true">STROOM/TOKEN</div>
+                        <div class="text-gray-800 text-right w-3/5" contenteditable="true">1557 347 7 83 67 2 059 5435</div>
+                    </div>
+                    
+                    <div class="pt-2"></div> <!-- spacing -->
+                    
+                    <div class="flex justify-between text-[12px]">
+                        <div class="text-gray-500 w-1/3" contenteditable="true">BIAYA ADMIN</div>
+                        <div class="text-gray-800 text-right w-2/3" contenteditable="true">RP 1.500</div>
+                    </div>
+                </div>
+
+                <div class="text-center text-[10px] text-gray-500 mt-6 px-4" contenteditable="true">
+                    BANK BTN|Informasi Hubungi Call Center 123 Atau hubungi PLN Terdekat|Download PLN Mobile
+                </div>
+
+                <!-- Divider -->
+                <div class="border-b border-gray-200 my-5 border-dashed"></div>
+
+                <!-- Detail Transaksi -->
+                <div class="text-sm font-bold text-gray-800 mb-3" contenteditable="true">Detail Transaksi</div>
+                
+                <div class="flex justify-between text-[13px] mb-4">
+                    <div class="text-gray-500" contenteditable="true">ID Grup Transaksi</div>
+                    <div class="text-gray-800" contenteditable="true">••• 6885</div>
+                </div>
+
+                <div class="text-[13px] font-bold text-gray-800 mb-2" contenteditable="true">Token Listrik 200Rb</div>
+                
+                <div class="flex justify-between items-start text-[13px] mb-3">
+                    <div class="text-gray-500 flex items-center">
+                        <span contenteditable="true">ID Transaksi</span>
+                        <i class="far fa-copy ml-1 text-[10px] text-gray-400 no-print"></i>
+                    </div>
+                    <div class="text-gray-800 text-right font-mono text-[11px] leading-tight break-all w-3/5" contenteditable="true">
+                        20260130111212800100166619850646886
+                    </div>
+                </div>
+
+                <div class="flex justify-between text-[13px] mb-4">
+                    <div class="text-gray-500" contenteditable="true">ID Order Merchant</div>
+                    <div class="text-gray-800" contenteditable="true">••• 6911</div>
+                </div>
+
+                <!-- Transaksi Prioritas -->
+                <div class="text-[13px] font-bold text-gray-800 mb-2 mt-4" contenteditable="true">Transaksi Prioritas</div>
+                
+                <div class="flex justify-between items-start text-[13px] mb-3">
+                    <div class="text-gray-500 flex items-center">
+                        <span contenteditable="true">ID Transaksi</span>
+                        <i class="far fa-copy ml-1 text-[10px] text-gray-400 no-print"></i>
+                    </div>
+                    <div class="text-gray-800 text-right font-mono text-[11px] leading-tight break-all w-3/5" contenteditable="true">
+                        20260130111212800100166613450692247
+                    </div>
+                </div>
+
+                <div class="flex justify-between text-[13px] mb-6">
+                    <div class="text-gray-500" contenteditable="true">ID Order Merchant</div>
+                    <div class="text-gray-800" contenteditable="true">••• 0400</div>
+                </div>
+
+            </div>
+            
+            <!-- Bottom Edge Effect -->
+            <div class="w-full bg-[#f8f9fa] h-4 mt-[-10px] relative z-20" style="background-image: radial-gradient(circle at 6px 0, transparent 6px, #f8f9fa 7px); background-size: 16px 10px; background-repeat: repeat-x;"></div>
+            
+            <!-- Footer Protection -->
+            <div class="bg-[#f8f9fa] py-4 text-center border-t border-gray-100 flex justify-center items-center rounded-b-lg">
+                <span class="text-[11px] text-gray-500 mr-1" contenteditable="true">Diamankan oleh</span>
+                <!-- DANA Protection Logo Simplified -->
+                <div class="flex items-center text-[#118EEA] font-bold text-[12px]">
+                    <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr-1">
+                        <path d="M6 0L0 2.5V6.5C0 10.5 2.5 13.5 6 14C9.5 13.5 12 10.5 12 6.5V2.5L6 0Z" fill="#118EEA"/>
+                        <path d="M5.5 10.5L2.5 7.5L3.5 6.5L5.5 8.5L9.5 4.5L10.5 5.5L5.5 10.5Z" fill="white"/>
+                    </svg>
+                    DANA <span class="font-normal text-[10px] ml-0.5">PROTECTION</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Copy functionality for icon clicks (optional feature for realism)
+        document.addEventListener('DOMContentLoaded', () => {
+            const copyIcons = document.querySelectorAll('.fa-copy');
+            
+            copyIcons.forEach(icon => {
+                icon.addEventListener('click', function(e) {
+                    // Find the closest sibling or parent with the text to copy
+                    const container = this.parentElement;
+                    let textToCopy = '';
+                    
+                    // Specific logic for the big token block
+                    if(container.classList.contains('justify-between') && container.parentElement.classList.contains('bg-[#F08300]')) {
+                        textToCopy = container.querySelector('[contenteditable="true"]').innerText.replace(/\s+/g, '');
+                    } else {
+                        // Logic for ID Transaksi rows
+                        const siblingDiv = container.nextElementSibling;
+                        if(siblingDiv) {
+                            textToCopy = siblingDiv.innerText.trim();
+                        }
+                    }
+
+                    if (textToCopy) {
+                        navigator.clipboard.writeText(textToCopy).then(() => {
+                            // Temporary visual feedback
+                            const originalClass = this.className;
+                            this.className = 'fas fa-check text-green-500 ml-1 text-[10px]';
+                            setTimeout(() => {
+                                this.className = originalClass;
+                            }, 1500);
+                        }).catch(err => {
+                            console.error('Failed to copy: ', err);
+                        });
+                    }
+                });
+            });
+
+            // Prevent line breaks in contenteditable if needed, though allowing them gives more flexibility
+            const editables = document.querySelectorAll('[contenteditable="true"]');
+            editables.forEach(el => {
+                el.addEventListener('keydown', function(e) {
+                    // Prevent enter key if you want strictly single lines
+                    // if (e.key === 'Enter') {
+                    //     e.preventDefault();
+                    // }
+                });
+            });
+
+            // Logo Upload Logic
+            const logoContainer = document.getElementById('logoContainer');
+            const logoUpload = document.getElementById('logoUpload');
+            const defaultLogo = document.getElementById('defaultLogo');
+            const uploadedLogo = document.getElementById('uploadedLogo');
+            const watermarkContainer = document.getElementById('watermarkContainer');
+
+            // Click container to trigger file input
+            logoContainer.addEventListener('click', () => {
+                logoUpload.click();
+            });
+
+            // Handle file selection
+            logoUpload.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(event) {
+                        const imageUrl = event.target.result;
+                        
+                        // Update main logo
+                        defaultLogo.classList.add('hidden');
+                        uploadedLogo.src = imageUrl;
+                        uploadedLogo.classList.remove('hidden');
+                        
+                        // Generate watermarks
+                        generateWatermarks(imageUrl);
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Function to generate the repeating watermark background
+            function generateWatermarks(imageUrl) {
+                // Clear existing watermarks
+                watermarkContainer.innerHTML = '';
+                
+                // Create a grid of watermarks. Adjust numbers for density.
+                const rows = 12;
+                const cols = 8;
+                
+                for (let i = 0; i < rows * cols; i++) {
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    watermarkContainer.appendChild(img);
+                }
+            }
+
+            // Generate initial default SVG watermark if desired (optional, matching original text watermark)
+            // For now, it stays blank until an image is uploaded as per request.
+        });
+    </script>
+</body>
+</html>
