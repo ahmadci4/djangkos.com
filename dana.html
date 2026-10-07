@@ -5,52 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Struk DANA Editable & Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- html2pdf for direct PDF download -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.css" integrity="sha512-x/9Kx/0w0/0" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f3f4f6;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .main-layout {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        @media (min-width: 768px) {
-            .main-layout {
-                flex-direction: row;
-                align-items: flex-start;
-                justify-content: center;
-            }
-        }
-
-        /* Control Panel Styles */
-        .control-panel {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            flex-shrink: 0;
-        }
-
-        /* Receipt Styles */
-        .receipt-wrapper {
-            display: flex;
-            justify-content: center;
-            width: 100%;
         }
 
         .receipt-container {
@@ -59,553 +20,375 @@
             background-color: white;
             position: relative;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            border-radius: 8px;
+            margin: 0 auto;
             overflow: hidden;
         }
 
-        /* Editable element indicator */
-        [contenteditable="true"]:hover {
-            background-color: #f0fdf4;
-            outline: 1px dashed #22c55e;
-            border-radius: 2px;
-            cursor: text;
+        [contenteditable="true"] {
+            outline: none;
+            border-bottom: 1px dashed transparent;
+            transition: all 0.2s;
+        }
+        
+        [contenteditable="true"]:hover, [contenteditable="true"]:focus {
+            border-bottom: 1px dashed #3b82f6;
+            background-color: rgba(59, 130, 246, 0.05);
         }
 
-        [contenteditable="true"]:focus {
-            background-color: #f0fdf4;
-            outline: 2px solid #22c55e;
-            border-radius: 2px;
-            cursor: text;
-        }
-
-        /* Watermark Styles */
-        .watermark-img {
+        .watermark-container {
             position: absolute;
-            opacity: 0.06;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
             pointer-events: none;
-            z-index: 0;
+        }
+
+        .watermark-grid {
             display: flex;
             flex-wrap: wrap;
-            width: 250%;
-            height: 250%;
-            top: -75%;
-            left: -75%;
+            width: 150%;
+            height: 150%;
+            margin-left: -25%;
+            margin-top: -25%;
             transform: rotate(-30deg);
-            gap: 60px;
-            justify-content: center;
-            align-content: center;
+            opacity: 0.04;
+            pointer-events: none;
         }
 
-        .watermark-img img {
-            width: 120px;
-            height: auto;
+        .watermark-img {
+            width: 100px;
+            height: 40px;
             object-fit: contain;
+            margin: 20px 40px;
         }
 
-        .content-layer {
-            position: relative;
-            z-index: 10;
+        .jagged-bottom {
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 16px;
+            background-size: 16px 16px;
+            background-image: radial-gradient(circle at 8px 16px, transparent 10px, white 11px);
+            z-index: 20;
         }
-
-        /* Hide specific elements during PDF generation or Print */
-        @media print, .pdf-mode {
-            body {
-                background-color: white;
-                padding: 0;
-            }
-            .main-layout {
-                display: block;
-            }
-            .control-panel {
-                display: none !important;
-            }
-            .receipt-container {
-                box-shadow: none;
-                margin: 0 auto;
-            }
-            .no-print {
-                display: none !important;
-            }
-            [contenteditable="true"]:hover, [contenteditable="true"]:focus {
-                outline: none;
-                background-color: transparent;
-            }
+        
+        .print-mode [contenteditable="true"] {
+            border-bottom: none !important;
+            background-color: transparent !important;
         }
     </style>
 </head>
-<body>
+<body class="p-4 md:p-8 flex flex-col md:flex-row gap-8 justify-center items-start">
 
-    <div class="main-layout">
+    <!-- PANEL KONTROL -->
+    <div id="controlPanel" class="w-full md:w-96 bg-white p-6 rounded-xl shadow-md sticky top-8">
+        <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+            Pengaturan Struk
+        </h2>
         
-        <!-- CONTROL PANEL (Formulir Generator) -->
-        <div class="control-panel no-print">
-            <h2 class="text-xl font-bold mb-4 text-gray-800"><i class="fas fa-sliders-h mr-2"></i> Pengaturan Struk</h2>
-            
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Judul / Deskripsi Transaksi</label>
-                    <input type="text" id="input-title" class="w-full border border-gray-300 rounded p-2 text-sm focus:ring-[#118EEA] focus:border-[#118EEA]" placeholder="Contoh: Kirim Uang ke Budi / Token Listrik" value="Token Listrik 200Rb 32194706803 SD I BAYAN">
-                </div>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Nama (Penerima / Pelanggan)</label>
+                <input type="text" id="inputNama" value="SD I BAYAN" class="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Nominal Transaksi (Rp)</label>
+                <input type="number" id="inputNominal" value="200000" class="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Pembayaran</label>
+                <select id="inputJenis" class="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500 bg-white">
+                    <option value="listrik">Token Listrik</option>
+                    <option value="pulsa">Pulsa Internet</option>
+                </select>
+            </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Nominal Transaksi (Rp)</label>
-                    <input type="number" id="input-amount" class="w-full border border-gray-300 rounded p-2 text-sm focus:ring-[#118EEA] focus:border-[#118EEA]" placeholder="Contoh: 200000" value="201700">
-                </div>
+            <button onclick="generateData()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md flex justify-center items-center gap-2 mt-4 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                Generate Data & ID Acak
+            </button>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Metode Pembayaran</label>
-                    <input type="text" id="input-method" class="w-full border border-gray-300 rounded p-2 text-sm focus:ring-[#118EEA] focus:border-[#118EEA]" value="Saldo DANA">
-                </div>
+            <hr class="my-4">
 
-                <!-- Togle Jenis Transaksi -->
-                <div class="flex items-center mt-4 bg-blue-50 p-3 rounded-lg border border-blue-100">
-                    <input type="checkbox" id="toggle-pln" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" checked>
-                    <label for="toggle-pln" class="ml-2 text-sm text-gray-800 font-medium cursor-pointer">
-                        Format Khusus Token PLN
-                    </label>
-                </div>
-                <p class="text-xs text-gray-500 mt-1">Hilangkan centang untuk format transfer/pembayaran biasa.</p>
-
-                <hr class="my-2 border-gray-200">
-
-                <button onclick="generateRandomData()" class="w-full bg-[#118EEA] hover:bg-blue-600 text-white font-bold py-2 px-4 rounded shadow transition duration-200">
-                    <i class="fas fa-random mr-1"></i> Generate Data & ID Acak
+            <div class="flex gap-2">
+                <button onclick="downloadPDF()" class="flex-1 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md flex justify-center items-center gap-2 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Unduh PDF
                 </button>
-
-                <div class="flex gap-2 mt-2">
-                    <button onclick="downloadPDF()" class="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded shadow transition duration-200">
-                        <i class="fas fa-file-pdf mr-1"></i> Unduh PDF
-                    </button>
-                    <button onclick="window.print()" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded shadow transition duration-200">
-                        <i class="fas fa-print mr-1"></i> Print
-                    </button>
-                </div>
-                
-                <p class="text-[11px] text-gray-500 text-center mt-3">*Semua teks di dalam struk tetap bisa di-klik & diedit manual.</p>
             </div>
-        </div>
-
-        <!-- RECEIPT CONTAINER -->
-        <div class="receipt-wrapper">
-            <!-- Hidden file input for logo -->
-            <input type="file" id="logoUpload" accept="image/*" class="hidden">
-
-            <div class="receipt-container pb-4" id="receiptContainer">
-                
-                <div class="content-layer">
-                    <!-- Header Section -->
-                    <div class="bg-[#118EEA] h-20 w-full absolute top-0 left-0" style="height: 120px;"></div>
-                    
-                    <div class="pt-8 px-6 pb-4 relative z-10 bg-white rounded-t-lg mt-2 mx-2 overflow-hidden">
-                        
-                        <!-- Image Watermark Container (Dipindahkan ke sini agar tidak tertutup background putih) -->
-                        <div class="watermark-img" id="watermarkContainer" aria-hidden="true">
-                            <!-- Images will be injected here by JS -->
-                        </div>
-
-                        <!-- Wrapper z-10 agar konten teks berada di atas watermark -->
-                        <div class="relative z-10">
-                            
-                            <!-- DANA Logo area - Clickable to upload -->
-                            <div class="flex justify-center mb-6 pt-2 cursor-pointer relative group" id="logoContainer" title="Klik untuk mengganti logo">
-                                <!-- Default SVG Logo -->
-                                <svg id="defaultLogo" width="120" height="32" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z" fill="#118EEA"/>
-                                    <path d="M8.5 17.5C8.5 17.5 11 13 16 13C21 13 23.5 17.5 23.5 17.5C23.5 17.5 21 21 16 21C11 21 8.5 17.5 8.5 17.5Z" fill="white"/>
-                                    <text x="45" y="24" font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#118EEA" letter-spacing="4">DANA</text>
-                                </svg>
-                                <!-- Image element for uploaded logo (hidden by default, ukuran diperbesar) -->
-                                <img id="uploadedLogo" src="" alt="DANA Logo" class="hidden h-[55px] w-auto max-w-[220px] object-contain">
-                                
-                                <!-- Hover overlay -->
-                                <div class="absolute inset-0 bg-black bg-opacity-10 hidden group-hover:flex items-center justify-center rounded no-print">
-                                    <i class="fas fa-upload text-gray-700"></i>
-                                </div>
-                            </div>
-
-                            <!-- Date and ID Row -->
-                        </div>
-
-                        <!-- Transaction Status -->
-                        <div class="flex items-center mt-4">
-                            <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center mr-2">
-                                <i class="fas fa-check text-white text-[10px]"></i>
-                            </div>
-                            <div class="text-sm text-gray-700" contenteditable="true">Transaksi berhasil!</div>
-                        </div>
-
-                        <!-- Main Item Description -->
-                        <div id="text-title" class="mt-3 text-[15px] font-semibold text-gray-800 leading-snug" contenteditable="true">
-                            Token Listrik 200Rb 32194706803 SD I BAYAN
-                        </div>
-
-                        <!-- Token Area (Toggable) -->
-                        <div id="section-token-box" class="mt-4">
-                            <div class="text-[13px] text-gray-800 font-medium mb-2" contenteditable="true">Nomor Token</div>
-                            <div class="bg-[#F08300] rounded-lg p-4 relative text-white">
-                                <div class="flex justify-between items-center">
-                                    <div class="text-[20px] font-bold tracking-wider" contenteditable="true">1557 3477 8367 2059 5435</div>
-                                    <i class="far fa-copy text-sm opacity-80 cursor-pointer no-print" title="Copy Token"></i>
-                                </div>
-                                <div class="text-[11px] mt-1 opacity-90" contenteditable="true">Jumlah kWh : 256.9</div>
-                            </div>
-                            <div class="text-[11px] text-gray-500 mt-2" contenteditable="true">Masukkan nomor ke meteran listrik.</div>
-                        </div>
-
-                        <!-- Total Payment Area -->
-                        <div class="mt-4 bg-[#F8F9FA] rounded-md p-3">
-                            <div class="flex justify-between items-center mb-3">
-                                <div class="text-sm font-bold text-gray-800" contenteditable="true">Total Bayar</div>
-                                <div id="text-amount-1" class="text-base font-bold text-gray-800" contenteditable="true">Rp201.700</div>
-                            </div>
-                            
-                            <div class="flex justify-between items-start pt-3 border-t border-gray-200">
-                                <div class="text-[13px] text-gray-500" contenteditable="true">Metode Pembayaran</div>
-                                <div class="text-[13px] text-gray-800 text-right">
-                                    <div id="text-method" contenteditable="true">Saldo DANA</div>
-                                    <div class="text-gray-500" contenteditable="true">(SmartPay)</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Divider -->
-                        <div class="border-b border-gray-200 my-4 border-dashed"></div>
-
-                        <!-- Detail Pesanan Header -->
-                        <div class="flex justify-between items-center mb-3">
-                            <div class="text-sm font-bold text-gray-800" contenteditable="true">Detail Pesanan</div>
-                            <div class="border border-green-500 text-green-500 text-[11px] px-2 py-0.5 rounded" contenteditable="true">Berhasil</div>
-                        </div>
-
-                        <!-- Invoice -->
-                        <div class="flex justify-between items-start mb-4">
-                            <div class="text-[13px] text-gray-500" contenteditable="true">Nomor Invoice</div>
-                            <div id="text-invoice" class="text-[13px] text-[#118EEA] text-right break-all w-3/5 font-medium uppercase" contenteditable="true">
-                                CLDNA406697BFCB50A43905C
-                            </div>
-                        </div>
-
-                        <!-- Detailed Struk Content (Toggable) -->
-                        <div id="section-pln-detail">
-                            <div class="text-center text-[11px] text-gray-500 mb-4 font-bold" contenteditable="true">
-                                STRUK PEMBELIAN LISTRIK PRABAYAR
-                            </div>
-
-                            <div class="space-y-2">
-                                <div class="flex justify-between text-[12px]">
-                                    <div class="text-gray-500 w-1/3" contenteditable="true">NO METER</div>
-                                    <div class="text-gray-800 text-right w-2/3" contenteditable="true">32194706803</div>
-                                </div>
-                                <div class="flex justify-between text-[12px]">
-                                    <div class="text-gray-500 w-1/3" contenteditable="true">IDPEL</div>
-                                    <div class="text-gray-800 text-right w-2/3" contenteditable="true">32194706803</div>
-                                </div>
-                                <div class="flex justify-between text-[12px]">
-                                    <div class="text-gray-500 w-1/3" contenteditable="true">NAMA</div>
-                                    <div class="text-gray-800 text-right w-2/3" contenteditable="true">SD I BAYAN</div>
-                                </div>
-                                <div class="flex justify-between text-[12px]">
-                                    <div class="text-gray-500 w-1/3" contenteditable="true">TARIF/DAYA</div>
-                                    <div class="text-gray-800 text-right w-2/3" contenteditable="true">S1/1300VA</div>
-                                </div>
-                                <div class="flex justify-between text-[12px] items-start">
-                                    <div class="text-gray-500 w-1/3" contenteditable="true">NO REF</div>
-                                    <div id="text-noref" class="text-gray-800 text-right w-2/3 break-all uppercase" contenteditable="true">22002100CLDNA406697BFCB50A43905C</div>
-                                </div>
-                                
-                                <div class="pt-1"></div>
-                                
-                                <div class="flex justify-between text-[12px]">
-                                    <div class="text-gray-500 w-1/3" contenteditable="true">RP BAYAR</div>
-                                    <div id="text-amount-2" class="text-gray-800 text-right w-2/3" contenteditable="true">RP 201.500</div>
-                                </div>
-                                <div class="flex justify-between text-[12px]">
-                                    <div class="text-gray-500 w-1/3" contenteditable="true">METERAI</div>
-                                    <div class="text-gray-800 text-right w-2/3" contenteditable="true">RP 0,00</div>
-                                </div>
-                                <div class="flex justify-between text-[12px]">
-                                    <div class="text-gray-500 w-1/3" contenteditable="true">PPN</div>
-                                    <div class="text-gray-800 text-right w-2/3" contenteditable="true">RP 0,00</div>
-                                </div>
-                                <div class="flex justify-between text-[12px]">
-                                    <div class="text-gray-500 w-1/3" contenteditable="true">PBJT-TL</div>
-                                    <div class="text-gray-800 text-right w-2/3" contenteditable="true">RP 18.182,00</div>
-                                </div>
-                                <div class="flex justify-between text-[12px]">
-                                    <div class="text-gray-500 w-1/3" contenteditable="true">ANGSURAN</div>
-                                    <div class="text-gray-800 text-right w-2/3" contenteditable="true">RP 0,00</div>
-                                </div>
-                                <div class="flex justify-between text-[12px]">
-                                    <div class="text-gray-500 w-1/2" contenteditable="true">RP STROOM/TOKEN</div>
-                                    <div class="text-gray-800 text-right w-1/2" contenteditable="true">RP 181.818,00</div>
-                                </div>
-                                
-                                <div class="pt-1"></div>
-                                
-                                <div class="flex justify-between text-[12px]">
-                                    <div class="text-gray-500 w-1/3" contenteditable="true">JML KWH</div>
-                                    <div class="text-gray-800 text-right w-2/3" contenteditable="true">256,9</div>
-                                </div>
-                                <div class="flex justify-between text-[12px] items-start">
-                                    <div class="text-gray-500 w-2/5" contenteditable="true">STROOM/TOKEN</div>
-                                    <div class="text-gray-800 text-right w-3/5" contenteditable="true">1557 347 7 83 67 2 059 5435</div>
-                                </div>
-                                
-                                <div class="pt-2"></div>
-                                
-                                <div class="flex justify-between text-[12px]">
-                                    <div class="text-gray-500 w-1/3" contenteditable="true">BIAYA ADMIN</div>
-                                    <div class="text-gray-800 text-right w-2/3" contenteditable="true">RP 1.500</div>
-                                </div>
-                            </div>
-
-                            <div class="text-center text-[10px] text-gray-500 mt-6 px-4" contenteditable="true">
-                                BANK BTN|Informasi Hubungi Call Center 123 Atau hubungi PLN Terdekat|Download PLN Mobile
-                            </div>
-
-                            <!-- Divider -->
-                            <div class="border-b border-gray-200 my-5 border-dashed"></div>
-                        </div>
-
-                        <!-- Detail Transaksi -->
-                        <div class="text-sm font-bold text-gray-800 mb-3" contenteditable="true">Detail Transaksi</div>
-                        
-                        <div class="flex justify-between text-[13px] mb-4">
-                            <div class="text-gray-500" contenteditable="true">ID Grup Transaksi</div>
-                            <div id="text-group-id" class="text-gray-800" contenteditable="true">••• 6885</div>
-                        </div>
-
-                        <div id="text-title-2" class="text-[13px] font-bold text-gray-800 mb-2" contenteditable="true">Token Listrik 200Rb</div>
-                        
-                        <div class="flex justify-between items-start text-[13px] mb-3">
-                            <div class="text-gray-500 flex items-center">
-                                <span contenteditable="true">ID Transaksi</span>
-                                <i class="far fa-copy ml-1 text-[10px] text-gray-400 no-print"></i>
-                            </div>
-                            <div id="text-trans-id-1" class="text-gray-800 text-right font-mono text-[11px] leading-tight break-all w-3/5" contenteditable="true">
-                                20260130111212800100166619850646886
-                            </div>
-                        </div>
-
-                        <div class="flex justify-between text-[13px] mb-4">
-                            <div class="text-gray-500" contenteditable="true">ID Order Merchant</div>
-                            <div id="text-merchant-id-1" class="text-gray-800" contenteditable="true">••• 6911</div>
-                        </div>
-
-                        <!-- Transaksi Prioritas -->
-                        <div class="text-[13px] font-bold text-gray-800 mb-2 mt-4" contenteditable="true">Transaksi Prioritas</div>
-                        
-                        <div class="flex justify-between items-start text-[13px] mb-3">
-                            <div class="text-gray-500 flex items-center">
-                                <span contenteditable="true">ID Transaksi</span>
-                                <i class="far fa-copy ml-1 text-[10px] text-gray-400 no-print"></i>
-                            </div>
-                            <div id="text-trans-id-2" class="text-gray-800 text-right font-mono text-[11px] leading-tight break-all w-3/5" contenteditable="true">
-                                20260130111212800100166613450692247
-                            </div>
-                        </div>
-
-                        <div class="flex justify-between text-[13px] mb-6">
-                            <div class="text-gray-500" contenteditable="true">ID Order Merchant</div>
-                            <div id="text-merchant-id-2" class="text-gray-800" contenteditable="true">••• 0400</div>
-                        </div>
-
-                        </div> <!-- Penutup Wrapper z-10 -->
-                    </div>
-                    
-                    <!-- Bottom Edge Effect -->
-                    <div class="w-full bg-[#f8f9fa] h-4 mt-[-10px] relative z-20" style="background-image: radial-gradient(circle at 6px 0, transparent 6px, #f8f9fa 7px); background-size: 16px 10px; background-repeat: repeat-x;"></div>
-                    
-                    <!-- Footer Protection -->
-                    <div class="bg-[#f8f9fa] py-4 text-center border-t border-gray-100 flex justify-center items-center rounded-b-lg">
-                        <span class="text-[11px] text-gray-500 mr-1" contenteditable="true">Diamankan oleh</span>
-                        <!-- DANA Protection Logo Simplified -->
-                        <div class="flex items-center text-[#118EEA] font-bold text-[12px]">
-                            <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr-1">
-                                <path d="M6 0L0 2.5V6.5C0 10.5 2.5 13.5 6 14C9.5 13.5 12 10.5 12 6.5V2.5L6 0Z" fill="#118EEA"/>
-                                <path d="M5.5 10.5L2.5 7.5L3.5 6.5L5.5 8.5L9.5 4.5L10.5 5.5L5.5 10.5Z" fill="white"/>
-                            </svg>
-                            DANA <span class="font-normal text-[10px] ml-0.5">PROTECTION</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <p class="text-xs text-gray-500 text-center mt-2">*Semua teks di dalam struk tetap bisa di-klik & diedit manual.</p>
         </div>
     </div>
 
+    <!-- TAMPILAN STRUK -->
+    <div id="receiptElement" class="receipt-container rounded-t-xl rounded-b-md relative pb-10">
+        <!-- Biru atas -->
+        <div class="h-2 bg-blue-500 w-full absolute top-0 left-0 z-20"></div>
+
+        <!-- Watermark Container -->
+        <div class="watermark-container">
+            <div class="watermark-grid" id="watermarkGrid"></div>
+        </div>
+
+        <div class="p-5 relative z-10">
+            <!-- Header Logo (Cari h-[100px] di bawah ini untuk mengubah ukuran logo) -->
+            <div class="flex justify-center pt-6 pb-4 relative z-10">
+                <img id="mainLogo" src="images/logo-dana.png" alt="DANA Logo" class="h-[100px] object-contain cursor-pointer" onclick="document.getElementById('logoUpload').click()" title="Klik untuk mengubah logo" />
+                <input type="file" id="logoUpload" accept="image/*" class="hidden" onchange="handleLogoUpload(event)">
+            </div>
+
+            <!-- Tanggal dan User -->
+            <div class="flex justify-between text-[11px] text-gray-500 border-b border-gray-100 pb-3 mt-2 font-medium">
+                <span id="txtTanggal" contenteditable="true">30 Jan 2026 • 08:35</span>
+                <span contenteditable="true">ID DANA 0859••••9691</span>
+            </div>
+
+            <!-- Status -->
+            <div class="flex items-center gap-2 mt-4 text-sm font-medium">
+                <div class="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
+                    <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <span class="text-gray-600" contenteditable="true">Transaksi berhasil!</span>
+            </div>
+
+            <!-- Deskripsi Transaksi -->
+            <div class="mt-2 text-[15px] font-semibold text-gray-800 leading-tight" id="txtDeskripsi" contenteditable="true">
+                Token Listrik 200Rb 32194706803 SD I BAYAN
+            </div>
+
+            <!-- BOX KHUSUS TOKEN LISTRIK -->
+            <div id="boxTokenPLN" class="mt-4">
+                <div class="text-xs font-semibold text-gray-700 mb-1" contenteditable="true">Nomor Token</div>
+                <div class="bg-[#f08c00] rounded-xl p-3 text-white shadow-sm relative">
+                    <div class="text-[17px] font-bold tracking-widest leading-none mb-2" id="txtNomerToken" contenteditable="true">
+                        1557 3477 8367 2059 5435
+                    </div>
+                    <div class="text-[10px] opacity-90" id="txtKwh" contenteditable="true">
+                        Jumlah kWH : 256.9
+                    </div>
+                    <div class="absolute right-3 top-3 opacity-80 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    </div>
+                </div>
+                <div class="text-[10px] text-gray-500 mt-1" contenteditable="true">Masukkan nomor ke meteran listrik.</div>
+            </div>
+
+            <!-- Detail Pembayaran -->
+            <div class="bg-gray-50/50 rounded-lg p-3 mt-4 text-[13px]">
+                <div class="flex justify-between font-bold text-gray-800 mb-3 items-center">
+                    <span contenteditable="true">Total Bayar</span>
+                    <span class="text-base" id="txtTotal" contenteditable="true">Rp201.700</span>
+                </div>
+                <div class="flex justify-between text-gray-500 border-t border-gray-200/60 pt-3">
+                    <span contenteditable="true">Metode Pembayaran</span>
+                    <div class="text-right leading-tight text-gray-700 font-medium">
+                        <div id="txtMetode" contenteditable="true">Saldo DANA</div>
+                        <div class="text-[11px] font-normal text-gray-400" contenteditable="true">(SmartPay)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detail Pesanan -->
+            <div class="mt-6">
+                <div class="flex justify-between items-center mb-3">
+                    <div class="font-bold text-[13px] text-gray-800" contenteditable="true">Detail Pesanan</div>
+                    <div class="text-[#00a86b] text-[11px] border border-[#00a86b] px-2 py-0.5 rounded font-medium" contenteditable="true">Berhasil</div>
+                </div>
+                
+                <div class="flex justify-between text-[12px] mb-4">
+                    <span class="text-gray-500" contenteditable="true">Nomor Invoice</span>
+                    <span class="text-blue-500 w-3/5 text-right font-medium truncate" id="txtInvoice" contenteditable="true">cldna406697bfcb50a43905c</span>
+                </div>
+
+                <!-- RINCIAN LISTRIK -->
+                <div id="rincianListrik" class="text-[11px] space-y-2.5">
+                    <div class="text-center text-gray-600 font-semibold mb-3 mt-4 border-t border-gray-100 pt-3" contenteditable="true">STRUK PEMBELIAN LISTRIK PRABAYAR</div>
+                    
+                    <div class="flex justify-between"><span class="text-gray-500" contenteditable="true">NO METER</span><span class="text-gray-800 font-medium" id="plnMeter" contenteditable="true">32194706803</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500" contenteditable="true">IDPEL</span><span class="text-gray-800 font-medium" id="plnIdpel" contenteditable="true">32194706803</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500" contenteditable="true">NAMA</span><span class="text-gray-800 font-medium" id="plnNama" contenteditable="true">SD I BAYAN</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500" contenteditable="true">TARIF/DAYA</span><span class="text-gray-800 font-medium" contenteditable="true">S1/1300VA</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500" contenteditable="true">NO REF</span><span class="text-gray-800 font-medium text-right w-1/2 break-words leading-tight" id="txtRef" contenteditable="true">22002100CLDNA406697BFCB50A43905C</span></div>
+                    <div class="flex justify-between mt-2 pt-2 border-t border-dashed border-gray-200"><span class="text-gray-500" contenteditable="true">RP BAYAR</span><span class="text-gray-800 font-medium" id="plnBayar" contenteditable="true">RP 201.500</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500" contenteditable="true">METERAI</span><span class="text-gray-800 font-medium" contenteditable="true">RP 0,00</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500" contenteditable="true">PPN</span><span class="text-gray-800 font-medium" contenteditable="true">RP 0,00</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500" contenteditable="true">PBJT-TL</span><span class="text-gray-800 font-medium" id="plnPajak" contenteditable="true">RP 18.182,00</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500" contenteditable="true">ANGSURAN</span><span class="text-gray-800 font-medium" contenteditable="true">RP 0,00</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500" contenteditable="true">RP STROOM/TOKEN</span><span class="text-gray-800 font-medium" id="plnStroom" contenteditable="true">RP 181.818,00</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500" contenteditable="true">JML KWH</span><span class="text-gray-800 font-medium" id="plnKwhBawah" contenteditable="true">256,9</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500" contenteditable="true">STROOM/TOKEN</span><span class="text-gray-800 font-medium w-1/2 text-right leading-tight" id="plnTokenBawah" contenteditable="true">1557 347 7 83 67 2 059 5435</span></div>
+                    <div class="flex justify-between mt-2 pt-2 border-t border-dashed border-gray-200"><span class="text-gray-500" contenteditable="true">BIAYA ADMIN</span><span class="text-gray-800 font-medium" id="plnAdmin" contenteditable="true">RP 1.500</span></div>
+                    
+                    <div class="text-center text-[10px] text-gray-500 mt-4 leading-tight" contenteditable="true">
+                        BANK BTN|Informasi Hubungi Call Center 123 Atau hubungi PLN Terdekat|Download PLN Mobile
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer DANA Protection -->
+            <div class="flex justify-center items-center gap-1 border-t border-gray-100 mt-8 pt-4">
+                <span class="text-[11px] text-gray-500" contenteditable="true">Diamankan oleh</span>
+                <span class="text-blue-500 font-bold text-xs flex items-center">
+                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    DANA <span class="font-normal ml-1">PROTECTION</span>
+                </span>
+            </div>
+        </div>
+
+        <div class="jagged-bottom"></div>
+    </div>
+
     <script>
-        // Formatting Rupiah
-        function formatRupiah(number) {
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number).replace(/\s/g, '');
-        }
+        // Formatter Uang (Rp)
+        const formatRupiah = (angka) => {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(angka).replace(/\s/g, '');
+        };
 
-        // Generate Random Hex
-        function getRandomHex(length) {
-            const chars = '0123456789abcdef';
+        // Formatter Uang dengan koma (,00) untuk Rincian PLN
+        const formatRupiahKoma = (angka) => {
+            return 'RP ' + new Intl.NumberFormat('id-ID').format(angka) + ',00';
+        };
+
+        // Generator Random String
+        function randomString(length, chars) {
             let result = '';
-            for (let i = 0; i < length; i++) result += chars[Math.floor(Math.random() * chars.length)];
+            for (let i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
             return result;
         }
 
-        // Generate Random Numbers
-        function getRandomNumbers(length) {
+        // Generator Random Angka
+        function randomNumber(length) {
             let result = '';
-            for (let i = 0; i < length; i++) result += Math.floor(Math.random() * 10);
+            for (let i = length; i > 0; --i) result += Math.floor(Math.random() * 10);
             return result;
         }
 
-        // Main Generate Function
-        function generateRandomData() {
-            // Get Inputs
-            const title = document.getElementById('input-title').value || "Kirim Uang";
-            const amountRaw = document.getElementById('input-amount').value || "0";
-            const amountFormatted = formatRupiah(amountRaw);
-            const method = document.getElementById('input-method').value || "Saldo DANA";
+        // Generate Data dari Panel
+        function generateData() {
+            const nama = document.getElementById('inputNama').value;
+            const nominal = parseInt(document.getElementById('inputNominal').value) || 0;
+            const jenis = document.getElementById('inputJenis').value;
 
-            // Current Date Formatting (e.g. 30 Jan 2026 • 08:35)
+            // Generate Tanggal Sekarang
             const now = new Date();
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-            const dateStr = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()} • ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-            
-            // Format ID Transaksi date prefix (YYYYMMDD)
-            const idDatePrefix = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
+            const tgl = `${now.getDate().toString().padStart(2, '0')} ${months[now.getMonth()]} ${now.getFullYear()} • ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+            document.getElementById('txtTanggal').innerText = tgl;
 
-            // Update DOM Elements
-            document.getElementById('text-title').innerText = title;
-            document.getElementById('text-title-2').innerText = title;
-            document.getElementById('text-amount-1').innerText = amountFormatted;
-            if(document.getElementById('text-amount-2')) document.getElementById('text-amount-2').innerText = amountFormatted.replace('Rp', 'RP ');
-            document.getElementById('text-method').innerText = method;
-            document.getElementById('text-date').innerText = dateStr;
+            // Generate Random ID & Invoice
+            const hexChars = '0123456789abcdef';
+            document.getElementById('txtInvoice').innerText = 'cldna' + randomString(25, hexChars);
 
-            // Generate Random IDs
-            const randomInvoice = 'cldna' + getRandomHex(20);
-            document.getElementById('text-invoice').innerText = randomInvoice.toUpperCase();
-            
-            if(document.getElementById('text-noref')) {
-                document.getElementById('text-noref').innerText = '22002100' + randomInvoice.toUpperCase();
+            if (jenis === 'listrik') {
+                // Logika Perhitungan Listrik Standar
+                const biayaAdmin = 1500; 
+                const totalBayar = nominal + 1700; // Standar struk DANA: Nominal + 1700
+                const rpBayar = nominal + biayaAdmin; // Contoh: 201.500
+                const pajak = Math.round(nominal * 0.09091); // Simulasi perhitungan PBJT
+                const stroom = nominal - pajak;
+                const kwh = (stroom / 700).toFixed(1); // Simulasi pembagian kWH
+
+                const nomerMeter = '3219' + randomNumber(7);
+                const nomerToken = `${randomNumber(4)} ${randomNumber(4)} ${randomNumber(4)} ${randomNumber(4)} ${randomNumber(4)}`;
+
+                // Set Teks
+                document.getElementById('txtDeskripsi').innerText = `Token Listrik ${nominal/1000}Rb ${nomerMeter} ${nama}`;
+                document.getElementById('txtTotal').innerText = formatRupiah(totalBayar);
+                
+                // Set Rincian PLN
+                document.getElementById('txtNomerToken').innerText = nomerToken;
+                document.getElementById('plnTokenBawah').innerText = nomerToken;
+                document.getElementById('txtKwh').innerText = `Jumlah kWH : ${kwh}`;
+                document.getElementById('plnKwhBawah').innerText = kwh;
+                
+                document.getElementById('plnMeter').innerText = nomerMeter;
+                document.getElementById('plnIdpel').innerText = nomerMeter;
+                document.getElementById('plnNama').innerText = nama;
+                
+                document.getElementById('txtRef').innerText = '22002100CLDNA' + randomString(15, hexChars).toUpperCase();
+                document.getElementById('plnBayar').innerText = `RP ${new Intl.NumberFormat('id-ID').format(rpBayar)}`;
+                document.getElementById('plnPajak').innerText = formatRupiahKoma(pajak);
+                document.getElementById('plnStroom').innerText = formatRupiahKoma(stroom);
+                document.getElementById('plnAdmin').innerText = `RP ${new Intl.NumberFormat('id-ID').format(biayaAdmin)}`;
+
+                // Tampilkan box listrik
+                document.getElementById('boxTokenPLN').style.display = 'block';
+                document.getElementById('rincianListrik').style.display = 'block';
+            } else {
+                // Logika Pulsa Internet
+                const biayaAdminPulsa = 1500;
+                const totalBayar = nominal + biayaAdminPulsa;
+                const nomerHp = '08' + randomNumber(10);
+
+                // Set Teks
+                document.getElementById('txtDeskripsi').innerText = `Pulsa Data ${formatRupiah(nominal)} ${nomerHp} ${nama}`;
+                document.getElementById('txtTotal').innerText = formatRupiah(totalBayar);
+
+                // Sembunyikan box listrik
+                document.getElementById('boxTokenPLN').style.display = 'none';
+                document.getElementById('rincianListrik').style.display = 'none';
             }
-
-            document.getElementById('text-group-id').innerText = '••• ' + getRandomNumbers(4);
-            document.getElementById('text-merchant-id-1').innerText = '••• ' + getRandomNumbers(4);
-            document.getElementById('text-merchant-id-2').innerText = '••• ' + getRandomNumbers(4);
-            
-            // Long Transaction IDs
-            document.getElementById('text-trans-id-1').innerText = idDatePrefix + '111212800100' + getRandomNumbers(15);
-            document.getElementById('text-trans-id-2').innerText = idDatePrefix + '111212800100' + getRandomNumbers(15);
         }
 
-        // Toggle PLN Token Section
-        document.getElementById('toggle-pln').addEventListener('change', function() {
-            const isChecked = this.checked;
-            const tokenBox = document.getElementById('section-token-box');
-            const plnDetail = document.getElementById('section-pln-detail');
-            
-            if (isChecked) {
-                tokenBox.style.display = 'block';
-                plnDetail.style.display = 'block';
-                // Reset title to token template if empty
-                if(document.getElementById('input-title').value === '') {
-                    document.getElementById('input-title').value = "Token Listrik 200Rb 32194706803 SD I BAYAN";
-                }
-            } else {
-                tokenBox.style.display = 'none';
-                plnDetail.style.display = 'none';
-                // Set to generic transfer title
-                document.getElementById('input-title').value = "Kirim Uang ke John Doe";
+        // Watermark Logic
+        function createWatermark(srcUrl) {
+            const grid = document.getElementById('watermarkGrid');
+            grid.innerHTML = ''; 
+            for (let i = 0; i < 40; i++) {
+                const img = document.createElement('img');
+                img.src = srcUrl;
+                img.className = 'watermark-img';
+                grid.appendChild(img);
             }
-        });
+        }
 
-        // PDF Generation Function
+        // Inisialisasi awal watermark langsung baca folder images lokal
+        function initDefaultWatermark() {
+            createWatermark('images/logo-dana.png');
+        }
+
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('mainLogo').src = e.target.result;
+                    createWatermark(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Download PDF
         function downloadPDF() {
-            const element = document.getElementById('receiptContainer');
-            // Add a temporary class to hide hovers/outlines during capture
-            document.body.classList.add('pdf-mode');
+            const element = document.getElementById('receiptElement');
+            element.classList.add('print-mode');
             
             const opt = {
-                margin:       [0, 0, 0, 0], // top, left, bottom, right
-                filename:     'Struk_DANA_' + new Date().getTime() + '.pdf',
-                image:        { type: 'jpeg', quality: 1.0 },
-                html2canvas:  { scale: 3, useCORS: true, logging: false }, // Scale 3 for high quality
-                jsPDF:        { unit: 'px', format: [element.offsetWidth, element.offsetHeight], orientation: 'portrait' }
+                margin:       0,
+                filename:     'Struk-DANA.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, logging: false },
+                jsPDF:        { unit: 'px', format: [400, element.offsetHeight], orientation: 'portrait' }
             };
 
-            // Generate and save
             html2pdf().set(opt).from(element).save().then(() => {
-                // Remove the temporary class
-                document.body.classList.remove('pdf-mode');
+                element.classList.remove('print-mode');
             });
         }
 
-        // Initialized Event Listeners for Copy & Upload (From previous version)
-        document.addEventListener('DOMContentLoaded', () => {
-            // Copy functionality
-            const copyIcons = document.querySelectorAll('.fa-copy');
-            copyIcons.forEach(icon => {
-                icon.addEventListener('click', function(e) {
-                    const container = this.parentElement;
-                    let textToCopy = '';
-                    
-                    if(container.classList.contains('justify-between') && container.parentElement.classList.contains('bg-[#F08300]')) {
-                        textToCopy = container.querySelector('[contenteditable="true"]').innerText.replace(/\s+/g, '');
-                    } else {
-                        const siblingDiv = container.nextElementSibling;
-                        if(siblingDiv) textToCopy = siblingDiv.innerText.trim();
-                    }
-
-                    if (textToCopy) {
-                        navigator.clipboard.writeText(textToCopy).then(() => {
-                            const originalClass = this.className;
-                            this.className = 'fas fa-check text-green-500 ml-1 text-[10px]';
-                            setTimeout(() => this.className = originalClass, 1500);
-                        }).catch(err => console.error('Failed to copy', err));
-                    }
-                });
-            });
-
-            // Logo Upload Logic
-            const logoContainer = document.getElementById('logoContainer');
-            const logoUpload = document.getElementById('logoUpload');
-            const defaultLogo = document.getElementById('defaultLogo');
-            const uploadedLogo = document.getElementById('uploadedLogo');
-            const watermarkContainer = document.getElementById('watermarkContainer');
-
-            // Generate watermark default saat halaman dimuat
-            function initDefaultWatermark() {
-                const svgString = new XMLSerializer().serializeToString(defaultLogo);
-                const encodedSvg = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
-                generateWatermarks(encodedSvg);
-            }
+        window.onload = () => {
             initDefaultWatermark();
-
-            logoContainer.addEventListener('click', () => logoUpload.click());
-
-            logoUpload.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        const imageUrl = event.target.result;
-                        defaultLogo.classList.add('hidden');
-                        uploadedLogo.src = imageUrl;
-                        uploadedLogo.classList.remove('hidden');
-                        generateWatermarks(imageUrl);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            function generateWatermarks(imageUrl) {
-                watermarkContainer.innerHTML = '';
-                const rows = 12;
-                const cols = 8;
-                for (let i = 0; i < rows * cols; i++) {
-                    const img = document.createElement('img');
-                    img.src = imageUrl;
-                    watermarkContainer.appendChild(img);
-                }
-            }
-        });
+        };
     </script>
 </body>
 </html>
