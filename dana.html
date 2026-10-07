@@ -81,7 +81,7 @@
         /* Watermark Styles */
         .watermark-img {
             position: absolute;
-            opacity: 0.04;
+            opacity: 0.06;
             pointer-events: none;
             z-index: 0;
             display: flex;
@@ -97,10 +97,9 @@
         }
 
         .watermark-img img {
-            width: 100px;
+            width: 120px;
             height: auto;
             object-fit: contain;
-            filter: grayscale(100%);
         }
 
         .content-layer {
@@ -193,38 +192,38 @@
 
             <div class="receipt-container pb-4" id="receiptContainer">
                 
-                <!-- Image Watermark Container -->
-                <div class="watermark-img" id="watermarkContainer" aria-hidden="true">
-                    <!-- Images will be injected here by JS -->
-                </div>
-
                 <div class="content-layer">
                     <!-- Header Section -->
                     <div class="bg-[#118EEA] h-20 w-full absolute top-0 left-0" style="height: 120px;"></div>
                     
-                    <div class="pt-8 px-6 pb-4 relative z-10 bg-white rounded-t-lg mt-2 mx-2">
+                    <div class="pt-8 px-6 pb-4 relative z-10 bg-white rounded-t-lg mt-2 mx-2 overflow-hidden">
                         
-                        <!-- DANA Logo area - Clickable to upload -->
-                        <div class="flex justify-center mb-6 pt-2 cursor-pointer relative group" id="logoContainer" title="Klik untuk mengganti logo">
-                            <!-- Default SVG Logo -->
-                            <svg id="defaultLogo" width="120" height="32" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z" fill="#118EEA"/>
-                                <path d="M8.5 17.5C8.5 17.5 11 13 16 13C21 13 23.5 17.5 23.5 17.5C23.5 17.5 21 21 16 21C11 21 8.5 17.5 8.5 17.5Z" fill="white"/>
-                                <text x="45" y="24" font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#118EEA" letter-spacing="4">DANA</text>
-                            </svg>
-                            <!-- Image element for uploaded logo (hidden by default) -->
-                            <img id="uploadedLogo" src="" alt="DANA Logo" class="hidden max-h-[40px] max-w-[150px] object-contain">
-                            
-                            <!-- Hover overlay -->
-                            <div class="absolute inset-0 bg-black bg-opacity-10 hidden group-hover:flex items-center justify-center rounded no-print">
-                                <i class="fas fa-upload text-gray-700"></i>
-                            </div>
+                        <!-- Image Watermark Container (Dipindahkan ke sini agar tidak tertutup background putih) -->
+                        <div class="watermark-img" id="watermarkContainer" aria-hidden="true">
+                            <!-- Images will be injected here by JS -->
                         </div>
 
-                        <!-- Date and ID Row -->
-                        <div class="flex justify-between items-center text-[11px] text-gray-500 border-b border-gray-200 pb-3">
-                            <div id="text-date" contenteditable="true">30 Jan 2026 • 08:35</div>
-                            <div id="text-dana-id" contenteditable="true">ID DANA 0859••••9691</div>
+                        <!-- Wrapper z-10 agar konten teks berada di atas watermark -->
+                        <div class="relative z-10">
+                            
+                            <!-- DANA Logo area - Clickable to upload -->
+                            <div class="flex justify-center mb-6 pt-2 cursor-pointer relative group" id="logoContainer" title="Klik untuk mengganti logo">
+                                <!-- Default SVG Logo -->
+                                <svg id="defaultLogo" width="120" height="32" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z" fill="#118EEA"/>
+                                    <path d="M8.5 17.5C8.5 17.5 11 13 16 13C21 13 23.5 17.5 23.5 17.5C23.5 17.5 21 21 16 21C11 21 8.5 17.5 8.5 17.5Z" fill="white"/>
+                                    <text x="45" y="24" font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#118EEA" letter-spacing="4">DANA</text>
+                                </svg>
+                                <!-- Image element for uploaded logo (hidden by default, ukuran diperbesar) -->
+                                <img id="uploadedLogo" src="" alt="DANA Logo" class="hidden h-[55px] w-auto max-w-[220px] object-contain">
+                                
+                                <!-- Hover overlay -->
+                                <div class="absolute inset-0 bg-black bg-opacity-10 hidden group-hover:flex items-center justify-center rounded no-print">
+                                    <i class="fas fa-upload text-gray-700"></i>
+                                </div>
+                            </div>
+
+                            <!-- Date and ID Row -->
                         </div>
 
                         <!-- Transaction Status -->
@@ -411,6 +410,7 @@
                             <div id="text-merchant-id-2" class="text-gray-800" contenteditable="true">••• 0400</div>
                         </div>
 
+                        </div> <!-- Penutup Wrapper z-10 -->
                     </div>
                     
                     <!-- Bottom Edge Effect -->
@@ -569,6 +569,14 @@
             const defaultLogo = document.getElementById('defaultLogo');
             const uploadedLogo = document.getElementById('uploadedLogo');
             const watermarkContainer = document.getElementById('watermarkContainer');
+
+            // Generate watermark default saat halaman dimuat
+            function initDefaultWatermark() {
+                const svgString = new XMLSerializer().serializeToString(defaultLogo);
+                const encodedSvg = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
+                generateWatermarks(encodedSvg);
+            }
+            initDefaultWatermark();
 
             logoContainer.addEventListener('click', () => logoUpload.click());
 
