@@ -35,6 +35,7 @@
             background-color: rgba(59, 130, 246, 0.05);
         }
 
+        /* --- STYLING WATERMARK DIPERBAIKI --- */
         .watermark-container {
             position: absolute;
             top: 0;
@@ -42,28 +43,30 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            z-index: 1;
+            z-index: 1; /* Pastikan berada di atas background putih tapi di bawah teks */
             pointer-events: none;
         }
 
         .watermark-grid {
             display: flex;
             flex-wrap: wrap;
-            width: 150%;
-            height: 150%;
-            margin-left: -25%;
-            margin-top: -25%;
+            width: 250%;
+            height: 250%;
+            margin-left: -50%;
+            margin-top: -50%;
             transform: rotate(-30deg);
-            opacity: 0.04;
+            opacity: 0.12; /* Opasitas dinaikkan sedikit agar menyamai gambar */
             pointer-events: none;
+            align-content: flex-start; /* Menyebar dari atas, bukan bertumpuk di tengah */
         }
 
         .watermark-img {
-            width: 100px;
-            height: 40px;
+            width: 110px;
+            height: auto;
             object-fit: contain;
-            margin: 20px 40px;
+            margin: 25px 40px; /* Jarak dirapatkan sedikit agar lebih padat */
         }
+        /* ----------------------------------- */
 
         .jagged-bottom {
             position: absolute;
@@ -130,15 +133,15 @@
         <!-- Biru atas -->
         <div class="h-2 bg-blue-500 w-full absolute top-0 left-0 z-20"></div>
 
-        <!-- Watermark Container -->
+        <!-- Watermark Container (Diaktifkan kembali dengan posisi sempurna) -->
         <div class="watermark-container">
             <div class="watermark-grid" id="watermarkGrid"></div>
         </div>
 
         <div class="p-5 relative z-10">
-            <!-- Header Logo (Cari h-[100px] di bawah ini untuk mengubah ukuran logo) -->
+            <!-- Header Logo (Sudah diubah ukurannya menjadi h-[150px] sesuai permintaan) -->
             <div class="flex justify-center pt-6 pb-4 relative z-10">
-                <img id="mainLogo" src="images/logo-dana.png" alt="DANA Logo" class="h-[100px] object-contain cursor-pointer" onclick="document.getElementById('logoUpload').click()" title="Klik untuk mengubah logo" />
+                <img id="mainLogo" src="images/logo-dana.png" alt="DANA Logo" class="h-[150px] object-contain cursor-pointer" onclick="document.getElementById('logoUpload').click()" title="Klik untuk mengubah logo" />
                 <input type="file" id="logoUpload" accept="image/*" class="hidden" onchange="handleLogoUpload(event)">
             </div>
 
@@ -230,11 +233,11 @@
                 </div>
             </div>
 
-            <!-- Footer DANA Protection -->
+            <!-- Footer DANA Protection (Dipertahankan dan bisa di edit) -->
             <div class="flex justify-center items-center gap-1 border-t border-gray-100 mt-8 pt-4">
                 <span class="text-[11px] text-gray-500" contenteditable="true">Diamankan oleh</span>
-                <span class="text-blue-500 font-bold text-xs flex items-center">
-                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <span class="text-blue-500 font-bold text-xs flex items-center" contenteditable="true">
+                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24" contenteditable="false"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                     DANA <span class="font-normal ml-1">PROTECTION</span>
                 </span>
             </div>
@@ -291,11 +294,11 @@
             if (jenis === 'listrik') {
                 // Logika Perhitungan Listrik Standar
                 const biayaAdmin = 1500; 
-                const totalBayar = nominal + 1700; // Standar struk DANA: Nominal + 1700
-                const rpBayar = nominal + biayaAdmin; // Contoh: 201.500
-                const pajak = Math.round(nominal * 0.09091); // Simulasi perhitungan PBJT
+                const totalBayar = nominal + 1700; 
+                const rpBayar = nominal + biayaAdmin; 
+                const pajak = Math.round(nominal * 0.09091); 
                 const stroom = nominal - pajak;
-                const kwh = (stroom / 700).toFixed(1); // Simulasi pembagian kWH
+                const kwh = (stroom / 700).toFixed(1); 
 
                 const nomerMeter = '3219' + randomNumber(7);
                 const nomerToken = `${randomNumber(4)} ${randomNumber(4)} ${randomNumber(4)} ${randomNumber(4)} ${randomNumber(4)}`;
@@ -343,7 +346,8 @@
         function createWatermark(srcUrl) {
             const grid = document.getElementById('watermarkGrid');
             grid.innerHTML = ''; 
-            for (let i = 0; i < 40; i++) {
+            // Jumlah watermark diperbanyak dari 40 menjadi 150 agar menutupi seluruh halaman sampai atas
+            for (let i = 0; i < 150; i++) {
                 const img = document.createElement('img');
                 img.src = srcUrl;
                 img.className = 'watermark-img';
@@ -351,10 +355,10 @@
             }
         }
 
-        // Inisialisasi awal watermark langsung baca folder images lokal
-        function initDefaultWatermark() {
+        // Inisialisasi awal watermark menggunakan DOMContentLoaded untuk memastikan render berjalan optimal
+        document.addEventListener('DOMContentLoaded', function() {
             createWatermark('images/logo-dana.png');
-        }
+        });
 
         function handleLogoUpload(event) {
             const file = event.target.files[0];
@@ -385,10 +389,6 @@
                 element.classList.remove('print-mode');
             });
         }
-
-        window.onload = () => {
-            initDefaultWatermark();
-        };
     </script>
 </body>
 </html>
